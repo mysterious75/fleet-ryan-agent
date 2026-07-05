@@ -1,8 +1,8 @@
 # Fleet Configuration
-# Fleet Management Company — Fleet Management
+# Fleet Installation Company — Fleet Management
 
 company:
-  name: "Fleet Management Company"
+  name: "Fleet Installation Company"
   id: "orbital-installs"
   contact: "[client@email.com]"
   phone: "[Phone Number]"

@@ -9,7 +9,7 @@ from app.tasks.celery_app import celery_app
 
 logger = structlog.get_logger()
 
-MEMORY_DIR = Path("/app/agent-workspace/memory")
+MEMORY_DIR = Path("/workspace/memory")
 ARCHIVE_DIR = MEMORY_DIR / "archive"
 WEEKLY_DIR = MEMORY_DIR / "weekly"
 MONTHLY_DIR = MEMORY_DIR / "monthly"

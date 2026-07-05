@@ -18,9 +18,10 @@ class SamsaraService:
         self.base_url = settings.SAMSARA_BASE_URL
         self.api_token = settings.SAMSARA_API_TOKEN
         self.headers = {
-            "Authorization": f"Bearer {self.api_token}",
             "Content-Type": "application/json",
         }
+        if self.api_token:
+            self.headers["Authorization"] = f"Bearer {self.api_token}"
         # Use mock data when API token is not set
         self.use_mock = not self.api_token
         if self.use_mock:

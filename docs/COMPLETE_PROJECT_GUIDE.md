@@ -170,7 +170,7 @@ agent-workspace/
 | **Python Backend** | 15 | ~2,000 | FastAPI + Celery |
 | **Docker** | 3 | ~200 | Deployment |
 | **Scripts** | 2 | ~200 | Setup automation |
-| **Documentation** | 5 | ~2,000 | Architecture, research |
+| **Documentation** | 5 | ~2,500 | Architecture, FAQ, roadmap |
 | **Config** | 4 | ~300 | Environment, gitignore |
 | **Total** | **48** | **~6,200** | **Complete system** |
 
@@ -205,13 +205,14 @@ POST /api/v1/webhooks/motive              → Motive webhook
 POST /api/v1/webhooks/fleetio             → Fleetio webhook
 ```
 
-### Database Tables (5 tables, 82 fields)
+### Database Tables (6 tables, 94 fields)
 
 | Table | Fields | Purpose |
 |-------|--------|---------|
 | `vehicles` | 23 | Fleet vehicle data |
 | `drivers` | 16 | Driver info + HOS status |
 | `fault_codes` | 11 | Diagnostic trouble codes |
+| `fuel_transactions` | 12 | Fuel purchase tracking & anomaly detection |
 | `audit_log` | 13 | Full action audit trail |
 | `escalations` | 19 | Human approval requests |
 
@@ -589,7 +590,7 @@ fleet-ryan-agent/
 │
 └── docs/                               # Documentation
     ├── ARCHITECTURE.md                 # Technical architecture
-    ├── RESEARCH.md                     # Client research
     ├── IMPROVEMENTS.md                 # Feature roadmap
+    ├── FAQ_ANSWERS.md                  # Frequently asked questions
     └── COMPLETE_PROJECT_GUIDE.md       # This file
 ```

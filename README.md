@@ -50,7 +50,7 @@ An **autonomous fleet management agent** that runs 24/7 using OpenClaw's heartbe
 │                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │   DATA LAYER                                              │   │
-│  │   PostgreSQL (5 tables) | Redis (cache + queue)           │   │
+│  │   PostgreSQL (6 tables) | Redis (cache + queue)           │   │
 │  │   Mock Data (52 vehicles, 20 drivers, 15 fault codes)     │   │
 │  └──────────────────────────────────────────────────────────┘   │
 │                                                                  │
@@ -82,7 +82,7 @@ cp .env.example .env
 # Edit .env with your API keys (optional — mock data works without keys)
 
 # Start all services
-docker-compose up -d
+docker compose up -d
 
 # Access the API
 open http://localhost:8000/docs
@@ -170,13 +170,14 @@ uvicorn app.main:app --port 8765
 
 ---
 
-## Database Schema (5 Tables)
+## Database Schema (6 Tables)
 
 | Table | Fields | Purpose |
 |-------|--------|---------|
 | `vehicles` | 23 | Fleet vehicle data (location, fuel, speed, odometer) |
 | `drivers` | 16 | Driver info + HOS status |
 | `fault_codes` | 11 | Diagnostic trouble codes (P-codes, C-codes) |
+| `fuel_transactions` | 12 | Fuel purchase tracking & anomaly detection |
 | `audit_log` | 13 | Full action audit trail |
 | `escalations` | 19 | Human approval requests |
 
@@ -350,6 +351,7 @@ fleet-ryan-agent/
 └── docs/                               # Documentation
     ├── ARCHITECTURE.md                 # Technical architecture
     ├── IMPROVEMENTS.md                 # Feature roadmap
+    ├── FAQ_ANSWERS.md                  # Frequently asked questions
     └── COMPLETE_PROJECT_GUIDE.md       # Everything in one doc
 ```
 

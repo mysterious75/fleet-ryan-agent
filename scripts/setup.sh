@@ -18,7 +18,7 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Check Docker Compose
-if ! command -v docker-compose &> /dev/null; then
+if ! command -v docker compose &> /dev/null && ! docker compose version &> /dev/null; then
     echo "❌ Docker Compose is not installed. Please install Docker Compose first."
     echo "   https://docs.docker.com/compose/install/"
     exit 1
@@ -46,11 +46,11 @@ fi
 # Build and start services
 echo ""
 echo "🔨 Building Docker containers..."
-docker-compose build
+docker compose build
 
 echo ""
 echo "🚀 Starting services..."
-docker-compose up -d
+docker compose up -d
 
 # Wait for services to be ready
 echo ""
@@ -62,14 +62,14 @@ echo ""
 echo "🏥 Checking service health..."
 
 # Check PostgreSQL
-if docker-compose exec -T postgres pg_isready -U fleetryan > /dev/null 2>&1; then
+if docker compose exec -T postgres pg_isready -U fleetryan > /dev/null 2>&1; then
     echo "✅ PostgreSQL is ready"
 else
     echo "❌ PostgreSQL is not ready"
 fi
 
 # Check Redis
-if docker-compose exec -T redis redis-cli ping > /dev/null 2>&1; then
+if docker compose exec -T redis redis-cli ping > /dev/null 2>&1; then
     echo "✅ Redis is ready"
 else
     echo "❌ Redis is not ready"
@@ -92,9 +92,9 @@ echo "   - API Docs: http://localhost:8000/docs"
 echo "   - OpenClaw: http://localhost:18789"
 echo ""
 echo "🔧 Management:"
-echo "   - View logs: docker-compose logs -f"
-echo "   - Stop services: docker-compose down"
-echo "   - Restart: docker-compose restart"
+echo "   - View logs: docker compose logs -f"
+echo "   - Stop services: docker compose down"
+echo "   - Restart: docker compose restart"
 echo ""
 echo "📝 Next steps:"
 echo "   1. Edit .env with your API keys"

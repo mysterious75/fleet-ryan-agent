@@ -120,9 +120,12 @@ async def get_maintenance_costs(
             vehicle_id=vehicle_id, days=days
         )
         return {
-            "costs": costs,
-            "total_cost": sum(c.get("cost", 0) for c in costs),
+            "entries": costs.get("entries", []),
+            "total_cost": costs.get("total_cost", 0),
             "average_per_vehicle": costs.get("average_per_vehicle", 0),
+            "vehicle_count": costs.get("vehicle_count", 0),
+            "entry_count": costs.get("entry_count", 0),
+            "period_days": costs.get("period_days", days),
             "timestamp": datetime.utcnow(),
         }
     except Exception as e:

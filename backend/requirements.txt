@@ -16,7 +16,7 @@ psycopg2-binary==2.9.10
 
 # Background Tasks
 celery==5.5.3
-redis==6.2.0
+redis>=5.0,<6.0
 celery-redbeat==2.3.2
 
 # HTTP Client (for fleet APIs)
@@ -27,7 +27,6 @@ aiohttp==3.12.8
 python-telegram-bot==22.2
 
 # Data Processing
-pandas==2.3.0
 python-dateutil==2.9.0
 
 # Security
@@ -42,7 +41,6 @@ prometheus-client==0.22.1
 # Testing
 pytest==8.4.1
 pytest-asyncio==1.0.0
-httpx==0.28.1
 
 # Utilities
 pyyaml==6.0.2

@@ -14,7 +14,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U fleetryan"]
+      test: ["CMD-SHELL", "pg_isready -U fleetryan -d fleetryan"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -52,6 +52,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app
+      - ./agent-workspace:/workspace
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     restart: unless-stopped
 
@@ -70,6 +71,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app
+      - ./agent-workspace:/workspace
     command: celery -A app.tasks.celery_app worker --loglevel=info --concurrency=4
     restart: unless-stopped
 
@@ -88,6 +90,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app
+      - ./agent-workspace:/workspace
     command: celery -A app.tasks.celery_app beat --loglevel=info
     restart: unless-stopped
 

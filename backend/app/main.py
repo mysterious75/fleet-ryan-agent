@@ -1,6 +1,6 @@
 """
 Fleet-[Client] Backend — FastAPI Application
-Autonomous Fleet Management System for Fleet Management Company
+Autonomous Fleet Management System for Fleet Installation Company
 """
 
 from contextlib import asynccontextmanager
@@ -46,7 +46,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Fleet-[Client] API",
-    description="Autonomous Fleet Management System — Fleet Management Company",
+    description="Autonomous Fleet Management System — Fleet Installation Company",
     version=settings.APP_VERSION,
     lifespan=lifespan,
     docs_url="/docs",
@@ -117,7 +117,7 @@ async def root():
         "name": "Fleet-[Client] API",
         "version": settings.APP_VERSION,
         "description": "Autonomous Fleet Management System",
-        "company": "Fleet Management Company",
+        "company": "Fleet Installation Company",
         "docs": "/docs",
         "dashboard": "/static/index.html",
     }

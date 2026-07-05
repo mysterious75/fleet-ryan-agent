@@ -7,6 +7,7 @@ from datetime import datetime
 from app.tasks.celery_app import celery_app
 from app.services.samsara import SamsaraService
 from app.services.telegram import TelegramService
+from sqlalchemy import select
 from app.core.database import async_session, FaultCode, FuelTransaction, AuditLog
 
 logger = structlog.get_logger()

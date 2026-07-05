@@ -19,10 +19,12 @@ class FleetioService:
         self.api_token = settings.FLEETIO_API_TOKEN
         self.account_token = settings.FLEETIO_ACCOUNT_TOKEN
         self.headers = {
-            "Authorization": f"Token {self.api_token}",
-            "Account-Token": self.account_token,
             "Content-Type": "application/json",
         }
+        if self.api_token:
+            self.headers["Authorization"] = f"Token {self.api_token}"
+        if self.account_token:
+            self.headers["Account-Token"] = self.account_token
 
     async def _request(
         self,
