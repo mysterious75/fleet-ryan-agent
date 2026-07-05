@@ -9,15 +9,12 @@
 1. [Project Overview](#1-project-overview)
 2. [Architecture Deep Dive](#2-architecture-deep-dive)
 3. [What We Built](#3-what-we-built)
-4. [Cost Breakdown — EVERY Cost](#4-cost-breakdown)
-5. [Production Roadmap](#5-production-roadmap)
-6. [Technical Requirements](#6-technical-requirements)
-7. [How to Explain to Ryan](#7-how-to-explain-to-ryan)
-8. [Hidden Costs & Things You Didn't Think About](#8-hidden-costs)
-9. [Risk Assessment](#9-risk-assessment)
-10. [Pricing Strategy](#10-pricing-strategy)
-11. [Deployment Checklist](#11-deployment-checklist)
-12. [Maintenance Plan](#12-maintenance-plan)
+4. [Production Roadmap](#4-production-roadmap)
+5. [Technical Requirements](#5-technical-requirements)
+6. [Risk Assessment](#6-risk-assessment)
+7. [Pricing Strategy](#7-pricing-strategy)
+8. [Deployment Checklist](#8-deployment-checklist)
+9. [Maintenance Plan](#9-maintenance-plan)
 
 ---
 
@@ -240,83 +237,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 ---
 
-## 4. COST BREAKDOWN — EVERY COST
-
-### 🔴 INFRASTRUCTURE COSTS (Monthly Recurring)
-
-##### Hosting Options
-
-| Provider | Specs | Best For |
-|----------|-------|----------|
-| **Hetzner** | 4 vCPU, 8GB RAM, NVMe | Budget-friendly, Europe-based |
-| **DigitalOcean** | 4 vCPU, 8GB RAM, SSD | Easy setup, good docs |
-| **AWS** | t3.large + RDS + ElastiCache | Enterprise, scalability |
-
-### 🟡 FLEET API COSTS
-
-| API | Pricing | Monthly Cost | Notes |
-|-----|---------|-------------|-------|
-| **Samsara API** | Free with subscription | **$0** (API) | Client pays for Samsara hardware |
-| **Samsara Hardware** | $25-40/vehicle/mo | **Client pays** | GPS, dashcam, ELD |
-| **Motive API** | Free with subscription | **$0** (API) | Client pays for Motive |
-| **Fleetio API** | Free tier available | **$0-50/mo** | Depends on fleet size |
-| **Google Maps API** | $7/1000 requests | **~$20/mo** | Geocoding, routing |
-| **Total API** | | **~$20-70/mo** | Most paid by client |
-
-### 🟢 COMMUNICATION COSTS
-
-| Service | Pricing | Monthly Cost | Notes |
-|---------|---------|-------------|-------|
-| **Telegram Bot** | **FREE** | **$0** | No limits, no fees |
-| **WhatsApp Business** | $0.005-0.08/msg | **~$10-50/mo** | Depends on volume |
-| **Email (SMTP)** | Free tier available | **$0-20/mo** | SendGrid/Mailgun |
-| **SMS Alerts** (backup) | $0.01-0.05/msg | **~$5-20/mo** | Twilio |
-| **Total** | | **~$15-90/mo** | Telegram is free |
-
-### 🔵 MONITORING & TOOLS
-
-| Tool | Pricing | Monthly Cost | Notes |
-|------|---------|-------------|-------|
-| **Sentry** (error tracking) | Free tier (5K errors/mo) | **$0** | Sufficient for start |
-| **Grafana Cloud** (monitoring) | Free tier (10K metrics) | **$0** | Sufficient for start |
-| **UptimeRobot** (uptime) | Free (50 monitors) | **$0** | Sufficient for start |
-| **GitHub** (code hosting) | Free for public | **$0** | Private: $4/mo |
-| **Let's Encrypt** (SSL) | Free | **$0** | Auto-renewal |
-| **Cloudflare** (CDN/DNS) | Free tier | **$0** | DDoS protection |
-| **Total** | | **$0-4/mo** | All have free tiers |
-
-### 🟣 DEVELOPMENT COSTS (One-Time)
-
-| Item | Cost | Notes |
-|------|------|-------|
-| **Apple Developer** | $99/year | iOS app (if needed) |
-| **Google Play** | $25 one-time | Android app (if needed) |
-| **Domain (first year)** | $12 | .com domain |
-| **Code signing cert** | $70-200/year | For desktop apps (if needed) |
-| **Total** | **$36-336** | Depends on mobile app |
-
-### 📊 TOTAL COST SUMMARY
-
-| Scenario | Monthly | Yearly | Notes |
-|----------|---------|--------|-------|
-| **Minimum (Telegram only)** | Hetzner, no mobile app |
-| **Standard (with email)** | DigitalOcean, email alerts |
-| **Full (with mobile app)** | AWS, mobile app, SMS |
-
-### 💡 COST OPTIMIZATION TIPS
-
-1. **Start with Hetzner** — 3-4x cheaper than AWS, very reliable
-2. **Use free tiers** — Sentry, Grafana, UptimeRobot all have generous free tiers
-3. **Telegram is FREE** — No limits, no fees, use as primary channel
-4. **Let's Encrypt** — Free SSL, auto-renewal, no need to pay
-5. **Client pays for fleet API** — Samsara/Motive subscription is on client
-6. **Docker on single VPS** — No need for Kubernetes at this scale
-7. **Self-hosted PostgreSQL** — Save $15/mo by running on same VPS
-8. **Cloudflare free tier** — CDN, DDoS protection, DNS — all free
-
----
-
-## 5. PRODUCTION ROADMAP
+## 4. PRODUCTION ROADMAP
 
 ### Phase 1: Working Demo (NOW — 1-2 days)
 
@@ -396,7 +317,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 ---
 
-## 6. TECHNICAL REQUIREMENTS
+## 5. TECHNICAL REQUIREMENTS
 
 ### Server Requirements
 
@@ -439,94 +360,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 ---
 
-## 7. HOW TO EXPLAIN TO RYAN
-
-### 30-Second Elevator Pitch
-
-> "I built an autonomous fleet management agent on the OpenClaw framework that runs 24/7. It pulls data from Samsara, detects anomalies, and sends alerts via Telegram. When an expensive action is needed — like scheduling maintenance — it asks for human approval first. Every action has a full audit trail."
-
-### 2-Minute Technical Explanation
-
-> "The system works in 3 layers:
->
-> **Layer 1: OpenClaw Agent** — This is a Node.js daemon that runs on a heartbeat pattern. Every 30 minutes it checks fleet data. SOUL.md defines the agent's personality — FleetCommander. AGENTS.md contains operating rules — what it can auto-act on, what's forbidden. HEARTBEAT.md defines the monitoring tasks.
->
-> **Layer 2: Python Backend** — Built on FastAPI with 26 REST endpoints for fleet data, compliance, maintenance, and escalation. Celery workers run in the background — checking fault codes, monitoring compliance, detecting fuel anomalies.
->
-> **Layer 3: Data & Integration** — PostgreSQL stores all data — vehicles, drivers, fault codes, audit logs, escalations. Samsara API provides real-time data via webhooks. Telegram delivers alerts with approve/reject buttons.
->
-> Guardrails are 3-tier — auto-actions (read-only queries), require-approval (maintenance, routes), and forbidden (ELD modification, payments). Every action has an audit trail — FMCSA compliant."
-
-### Key Talking Points
-
-| Topic | What to Say |
-|-------|-------------|
-| **Why OpenClaw?** | "You specifically asked for OpenClaw in the job description. The heartbeat pattern is perfect for fleet monitoring — it runs 24/7 without manual triggers." |
-| **Why FastAPI?** | "Best async framework in Python. Pydantic provides automatic validation. OpenAPI docs are auto-generated — you can test all endpoints in Swagger UI." |
-| **Why Telegram?** | "It's free with no limits. Inline buttons enable approval workflows — approve/reject in one tap. Instant mobile notifications." |
-| **Why PostgreSQL?** | "JSON support for flexible fleet data storage. Built-in full-text search. Perfect for audit trails." |
-| **Why Celery?** | "Background tasks run without blocking. Built-in retry logic. Beat schedule runs periodic tasks automatically." |
-
----
-
-## 8. HIDDEN COSTS & THINGS YOU DIDN'T THINK ABOUT
-
-### 🔴 Hidden Costs
-
-| Cost | Amount | Frequency | Why |
-|------|--------|-----------|-----|
-| **Domain renewal** | $12/year | Yearly | .com domain |
-| **SSL renewal** | $0 | Auto | Let's Encrypt auto-renews |
-| **Server backup** | $2-5/mo | Monthly | Disaster recovery |
-| **Monitoring alerts** | $0-10/mo | Monthly | PagerDuty/OpsGenie |
-| **Email service** | $0-20/mo | Monthly | SendGrid/Mailgun |
-| **SMS backup** | $5-20/mo | Monthly | Twilio (critical alerts) |
-| **CDN** | $0-5/mo | Monthly | Cloudflare free tier |
-| **Error tracking** | $0 | Monthly | Sentry free tier |
-| **Log storage** | $0-10/mo | Monthly | Depends on volume |
-| **Apple Developer** | $99/year | Yearly | iOS app |
-| **Google Play** | $25 | One-time | Android app |
-| **Code signing** | $70-200/year | Yearly | Desktop apps |
-| **Legal (ToS, Privacy)** | $500-2000 | One-time | Legal documents |
-| **Insurance (E&O)** | $500-2000/year | Yearly | Professional liability |
-
-### 🟡 Things You Didn't Think About
-
-| Item | Why It Matters | Cost |
-|------|---------------|------|
-| **Data retention policy** | FMCSA requires 6 months of ELD data | Storage cost |
-| **GDPR/CCPA compliance** | If handling driver personal data | Legal cost |
-| **SOC 2 compliance** | Enterprise clients may require | Audit cost ($5K-20K) |
-| **Penetration testing** | Security audit before production | $1K-5K |
-| **Load testing** | Can system handle 100+ vehicles? | Time cost |
-| **Disaster recovery plan** | What if server crashes? | Planning time |
-| **On-call rotation** | Who gets paged at 3 AM? | Time/coverage |
-| **Documentation** | API docs, runbook, training | Time cost |
-| **Client training** | Teach [Client] how to use the system | Time cost |
-| **Support channel** | How does [Client] report bugs? | Tool cost |
-| **Version control** | Git branching strategy | Free (GitHub) |
-| **Dependency updates** | Security patches, breaking changes | Time cost |
-| **Database migrations** | Schema changes over time | Alembic (free) |
-| **Rate limiting** | Prevent abuse | Redis (already have) |
-| **Caching strategy** | Performance optimization | Redis (already have) |
-| **Logging strategy** | What to log, how long to keep | Storage cost |
-| **Backup strategy** | Daily? Weekly? How many copies? | Storage cost |
-| **Scaling strategy** | What if fleet grows to 500+ vehicles? | Architecture cost |
-
-### 🟢 Things [Client] Might Ask
-
-| Question | Answer |
-|----------|--------|
-| "How many vehicles can it handle?" | "A single server can handle 200-500 vehicles easily. 500+ requires scaling." |
-| "Is this FMCSA compliant?" | "Full audit trail is in place. ELD data is never modified. Complete compliance requires legal review." |
-| "Is this secure?" | "API keys are stored in environment variables. Guardrails are enforced. Full security audit in Phase 4." |
-| "Can this scale?" | "Yes — starts with Docker Compose, can migrate to Kubernetes later." |
-| "Is there backup?" | "Daily database backups. Weekly full backups. Restore procedure tested." |
-| "Does it work offline?" | "No — real-time fleet API data is required. However, cached data is available during brief outages." |
-
----
-
-## 9. RISK ASSESSMENT
+## 6. RISK ASSESSMENT
 
 | Risk | Probability | Impact | Mitigation |
 |------|-------------|--------|------------|
@@ -543,7 +377,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 ---
 
-## 10. PRICING STRATEGY
+## 7. PRICING STRATEGY
 
 ### For [Client] (Client)
 
@@ -576,7 +410,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 ---
 
-## 11. DEPLOYMENT CHECKLIST
+## 8. DEPLOYMENT CHECKLIST
 
 ### Pre-Deployment
 
@@ -639,7 +473,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 ---
 
-## 12. MAINTENANCE PLAN
+## 9. MAINTENANCE PLAN
 
 ### Daily (Automated)
 
