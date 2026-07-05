@@ -385,27 +385,6 @@ fleet-ryan-agent/
 
 ---
 
-## Cost Breakdown
-
-### Monthly Infrastructure
-| Scenario | Monthly | Yearly |
-|----------|---------|--------|
-| Minimum (Hetzner) | $51/mo | $612/yr |
-| Standard (DigitalOcean) | $84/mo | $1,008/yr |
-| Full (AWS) | $150/mo | $1,800/yr |
-
-### Development (360 hours)
-| Phase | Hours | Rate | Cost |
-|-------|-------|------|------|
-| MVP | 60 | $65 | $3,900 |
-| Foundation | 60 | $65 | $3,900 |
-| Hardening | 80 | $70 | $5,600 |
-| Deployment | 80 | $70 | $5,600 |
-| Scale | 80 | $65 | $5,200 |
-| **Total** | **360** | **~$67** | **$24,200** |
-
-See `docs/COMPLETE_PROJECT_GUIDE.md` for full cost breakdown.
-
 ---
 
 ## Production Roadmap

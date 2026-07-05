@@ -297,7 +297,6 @@ Evening:
 | Factor | Website + Telegram | Native App |
 |--------|-------------------|------------|
 | **Development Time** | 2-3 weeks | 2-3 months |
-| **Cost** | $3,900 | $15,000+ |
 | **Maintenance** | Easy (server-side) | Complex (app updates) |
 | **Platform** | All devices | iOS + Android separate |
 | **Updates** | Instant | App store review |

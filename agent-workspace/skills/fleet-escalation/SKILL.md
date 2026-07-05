@@ -112,7 +112,7 @@ Vehicle: Truck #842
 Issue: Oil change overdue (500mi)
 Current Mileage: 125,430 mi
 Last Service: 118,200 mi
-Estimated Cost: $150-200
+Estimated Cost: TBD
 Location: Indianapolis Terminal
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

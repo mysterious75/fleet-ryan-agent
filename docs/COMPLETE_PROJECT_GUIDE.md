@@ -244,42 +244,13 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 ### 🔴 INFRASTRUCTURE COSTS (Monthly Recurring)
 
-#### Option A: Budget (Hetzner — Recommended for Start)
+##### Hosting Options
 
-| Item | Specs | Monthly Cost | Notes |
-|------|-------|-------------|-------|
-| **VPS** | 4 vCPU, 8GB RAM, 160GB NVMe | **$16/mo** | Hetzner CX22 |
-| **Managed PostgreSQL** | 1 vCPU, 2GB RAM, 10GB storage | **$19/mo** | Hetzner Managed DB |
-| **Managed Redis** | 1 vCPU, 1GB RAM | **$13/mo** | Hetzner Managed DB |
-| **Domain** | fleetcommander.com | **$12/year ($1/mo)** | Namecheap/Cloudflare |
-| **SSL Certificate** | Let's Encrypt | **$0** | Free, auto-renewal |
-| **Backup Storage** | 50GB | **$2/mo** | Hetzner Storage Box |
-| **Total** | | **~$51/mo** | **~$612/year** |
-
-#### Option B: Standard (DigitalOcean)
-
-| Item | Specs | Monthly Cost | Notes |
-|------|-------|-------------|-------|
-| **Droplet** | 4 vCPU, 8GB RAM, 160GB SSD | **$48/mo** | DigitalOcean |
-| **Managed PostgreSQL** | 1 vCPU, 2GB RAM, 10GB | **$15/mo** | DO Managed DB |
-| **Managed Redis** | 1 vCPU, 1GB RAM | **$15/mo** | DO Managed DB |
-| **Domain** | fleetcommander.com | **$12/year ($1/mo)** | Namecheap |
-| **SSL** | Let's Encrypt | **$0** | Free |
-| **Spaces (S3)** | 250GB storage | **$5/mo** | Backups |
-| **Total** | | **~$84/mo** | **~$1,008/year** |
-
-#### Option C: Enterprise (AWS)
-
-| Item | Specs | Monthly Cost | Notes |
-|------|-------|-------------|-------|
-| **EC2** | t3.large (2 vCPU, 8GB) | **$60/mo** | us-east-1 |
-| **RDS PostgreSQL** | db.t3.micro, 20GB | **$15/mo** | Multi-AZ +$15 |
-| **ElastiCache Redis** | cache.t3.micro | **$12/mo** | |
-| **Route 53** | DNS hosting | **$1/mo** | |
-| **ACM** | SSL certificate | **$0** | Free |
-| **S3** | 50GB backups | **$1/mo** | |
-| **CloudWatch** | Monitoring | **$5/mo** | Basic |
-| **Total** | | **~$94/mo** | **~$1,128/year** |
+| Provider | Specs | Best For |
+|----------|-------|----------|
+| **Hetzner** | 4 vCPU, 8GB RAM, NVMe | Budget-friendly, Europe-based |
+| **DigitalOcean** | 4 vCPU, 8GB RAM, SSD | Easy setup, good docs |
+| **AWS** | t3.large + RDS + ElastiCache | Enterprise, scalability |
 
 ### 🟡 FLEET API COSTS
 
@@ -328,9 +299,9 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 | Scenario | Monthly | Yearly | Notes |
 |----------|---------|--------|-------|
-| **Minimum (Telegram only)** | **$51/mo** | **$612/yr** | Hetzner, no mobile app |
-| **Standard (with email)** | **$84/mo** | **$1,008/yr** | DigitalOcean, email alerts |
-| **Full (with mobile app)** | **$150/mo** | **$1,800/yr** | AWS, mobile app, SMS |
+| **Minimum (Telegram only)** | Hetzner, no mobile app |
+| **Standard (with email)** | DigitalOcean, email alerts |
+| **Full (with mobile app)** | AWS, mobile app, SMS |
 
 ### 💡 COST OPTIMIZATION TIPS
 
@@ -362,7 +333,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 **Status:** ✅ READY FOR DEMO
 
-### Phase 2: MVP (Week 1-2) — $3,900
+### Phase 2: MVP (Week 1-2)
 
 - [ ] Telegram bot commands (/status, /vehicles, /approve)
 - [ ] Real Samsara API integration (needs API key)
@@ -371,9 +342,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 - [ ] Logging improvements (structured logs)
 - [ ] Ryan demo preparation
 
-**Cost:** 60 hours × $65/hr = $3,900
-
-### Phase 3: Production Foundation (Week 3-4) — $3,900
+### Phase 3: Production Foundation (Week 3-4)
 
 - [ ] Authentication (API keys, JWT tokens)
 - [ ] Rate limiting (per-client)
@@ -383,9 +352,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 - [ ] Logging aggregation
 - [ ] Basic monitoring (health checks)
 
-**Cost:** 60 hours × $65/hr = $3,900
-
-### Phase 4: Hardening (Week 5-8) — $5,600
+### Phase 4: Hardening (Week 5-8)
 
 - [ ] Automated test suite (80%+ coverage)
 - [ ] Load testing (100+ concurrent requests)
@@ -395,9 +362,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 - [ ] Multi-fleet support
 - [ ] Web dashboard (basic)
 
-**Cost:** 80 hours × $70/hr = $5,600
-
-### Phase 5: Deployment (Week 9-12) — $5,600
+### Phase 5: Deployment (Week 9-12)
 
 - [ ] AWS/DigitalOcean deployment
 - [ ] SSL/TLS setup
@@ -408,9 +373,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 - [ ] SLA definition
 - [ ] Client onboarding flow
 
-**Cost:** 80 hours × $70/hr = $5,600
-
-### Phase 6: Scale & Optimize (Week 13-16) — $5,200
+### Phase 6: Scale & Optimize (Week 13-16)
 
 - [ ] Performance optimization
 - [ ] Database indexing
@@ -420,29 +383,16 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 - [ ] Advanced analytics
 - [ ] API rate limiting per tenant
 
-**Cost:** 80 hours × $65/hr = $5,200
+### Timeline Summary
 
-### 📊 TOTAL DEVELOPMENT COST
-
-| Phase | Hours | Rate | Cost |
-|-------|-------|------|------|
-| Phase 2 (MVP) | 60 | $65 | $3,900 |
-| Phase 3 (Foundation) | 60 | $65 | $3,900 |
-| Phase 4 (Hardening) | 80 | $70 | $5,600 |
-| Phase 5 (Deployment) | 80 | $70 | $5,600 |
-| Phase 6 (Scale) | 80 | $65 | $5,200 |
-| **Total** | **360 hrs** | **~$67/hr** | **$24,200** |
-
-### 📊 TOTAL COST (Development + Infrastructure Year 1)
-
-| Category | Cost |
-|----------|------|
-| Development (360 hours) | $24,200 |
-| Infrastructure (12 months) | $612-1,008 |
-| Domain + SSL | $12 |
-| Mobile app (if needed) | $124 |
-| **Total Year 1** | **$24,948-25,344** |
-| **Recurring (Year 2+)** | **$612-1,008/year** |
+| Phase | Timeline | Deliverable |
+|-------|----------|-------------|
+| Phase 2 | Week 1-2 | MVP with real data |
+| Phase 3 | Week 3-4 | Production foundation |
+| Phase 4 | Week 5-8 | Hardening + testing |
+| Phase 5 | Week 9-12 | Deployment + monitoring |
+| Phase 6 | Week 13-16 | Scale + optimize |
+| **Total** | **16 weeks** | **Full production system** |
 
 ---
 
@@ -600,18 +550,18 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 | Phase | Deliverable | Hours | Rate | Cost |
 |-------|-------------|-------|------|------|
 | **Phase 1** | Working demo | 0 | $0 | $0 (already done) |
-| **Phase 2** | MVP with real data | 60 | $65 | $3,900 |
-| **Phase 3** | Production foundation | 60 | $65 | $3,900 |
-| **Phase 4** | Hardening + testing | 80 | $70 | $5,600 |
-| **Phase 5** | Deployment + monitoring | 80 | $70 | $5,600 |
-| **Phase 6** | Scale + optimize | 80 | $65 | $5,200 |
-| **Total** | Full production system | 360 | ~$67 | **$24,200** |
+| **Phase 2** | MVP with real data | Week 1-2 |
+| **Phase 3** | Production foundation | Week 3-4 |
+| **Phase 4** | Hardening + testing | Week 5-8 |
+| **Phase 5** | Deployment + monitoring | Week 9-12 |
+| **Phase 6** | Scale + optimize | Week 13-16 |
+| **Total** | Full production system | 16 weeks |
 
 ### Monthly Recurring (After Launch)
 
 | Service | Cost | Who Pays |
 |---------|------|----------|
-| Server hosting | $51-84 | Ryan |
+| Server hosting | Ryan |
 | Fleet API (Samsara) | $0 (API) | Ryan (hardware subscription) |
 | Monitoring tools | $0-10 | You (included) |
 | Support & maintenance | $500-1000/mo | Ryan (optional retainer) |
