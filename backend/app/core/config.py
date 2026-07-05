@@ -27,8 +27,9 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite+aiosqlite:///./fleet_ryan.db"
     DATABASE_ECHO: bool = False
 
-    # Redis
+    # Redis (optional — works without it)
     REDIS_URL: str = "redis://localhost:6379/0"
+    REDIS_ENABLED: bool = False
 
     # Fleet APIs
     SAMSARA_API_TOKEN: Optional[str] = None

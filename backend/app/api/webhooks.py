@@ -10,7 +10,13 @@ import hashlib
 import hmac
 
 from app.core.config import settings
-from app.tasks.fleet_events import process_fleet_event
+# Import celery task lazily to avoid import errors when celery is not installed
+def _get_process_fleet_event():
+    try:
+        from app.tasks.fleet_events import process_fleet_event
+        return process_fleet_event
+    except ImportError:
+        return None
 
 logger = structlog.get_logger()
 router = APIRouter()
@@ -38,12 +44,16 @@ async def samsara_webhook(
         data = await request.json()
         logger.info("Samsara webhook received", event_type=data.get("eventType"))
 
-        # Process event asynchronously
-        process_fleet_event.delay(
-            platform="samsara",
-            event_type=data.get("eventType"),
-            payload=data,
-        )
+        # Process event asynchronously (if celery is available)
+        process_fn = _get_process_fleet_event()
+        if process_fn:
+            process_fn.delay(
+                platform="samsara",
+                event_type=data.get("eventType"),
+                payload=data,
+            )
+        else:
+            logger.info("Celery not available — event logged only")
 
         return {"status": "accepted"}
     except Exception as e:
@@ -58,12 +68,16 @@ async def motive_webhook(request: Request):
         data = await request.json()
         logger.info("Motive webhook received", event_type=data.get("event_type"))
 
-        # Process event asynchronously
-        process_fleet_event.delay(
-            platform="motive",
-            event_type=data.get("event_type"),
-            payload=data,
-        )
+        # Process event asynchronously (if celery is available)
+        process_fn = _get_process_fleet_event()
+        if process_fn:
+            process_fn.delay(
+                platform="motive",
+                event_type=data.get("event_type"),
+                payload=data,
+            )
+        else:
+            logger.info("Celery not available — event logged only")
 
         return {"status": "accepted"}
     except Exception as e:
@@ -78,12 +92,16 @@ async def fleetio_webhook(request: Request):
         data = await request.json()
         logger.info("Fleetio webhook received", event_type=data.get("event_type"))
 
-        # Process event asynchronously
-        process_fleet_event.delay(
-            platform="fleetio",
-            event_type=data.get("event_type"),
-            payload=data,
-        )
+        # Process event asynchronously (if celery is available)
+        process_fn = _get_process_fleet_event()
+        if process_fn:
+            process_fn.delay(
+                platform="fleetio",
+                event_type=data.get("event_type"),
+                payload=data,
+            )
+        else:
+            logger.info("Celery not available — event logged only")
 
         return {"status": "accepted"}
     except Exception as e:
