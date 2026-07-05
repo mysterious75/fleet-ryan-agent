@@ -22,15 +22,15 @@
 
 ## 1. AI & Models
 
-### Q: AI kahan hai? Kya model use hoga?
+### Q: Where is the AI? What model will be used?
 
-**Short Answer:** OpenClaw agent ka "brain" ek LLM (Large Language Model) hota hai. Bina LLM ke agent sirf ek script hai — intelligent decisions nahi le sakta.
+**Short Answer:** The OpenClaw agent's "brain" is an LLM (Large Language Model). Without an LLM, the agent is just a script — it cannot make intelligent decisions.
 
 **Detailed Answer:**
 
-OpenClaw ek **agent framework** hai — ye khud AI nahi hai. Ye ek "container" hai jo ek AI model ko fleet management ka kaam deta hai. Jaise ek employee ka desk hota hai, waise OpenClaw AI model ka "desk" hai.
+OpenClaw is an **agent framework** — it is not AI itself. It is a "container" that gives an AI model the task of fleet management. Think of it as the AI model's "desk" where it works.
 
-### LLM Options (Kya use karna chahiye):
+### LLM Options (What to use):
 
 | Model | Provider | Cost | Quality | Speed | Best For |
 |-------|----------|------|---------|-------|----------|
@@ -43,7 +43,7 @@ OpenClaw ek **agent framework** hai — ye khud AI nahi hai. Ye ek "container" h
 | **Mistral 7B** | Mistral (self-hosted) | $0 (hardware cost) | ⭐⭐⭐ | Fast | Free, runs on CPU |
 | **Ollama** | Local | $0 | ⭐⭐⭐ | Medium | Free, runs locally |
 
-### Recommended Setup for Ryan:
+### Recommended Setup for [Client]:
 
 **Option A: OpenAI GPT-4o-mini (Best for start)**
 - Cost: ~$10-30/month for fleet monitoring
@@ -93,20 +93,20 @@ OLLAMA_MODEL=llama3.1:70b
 
 ## 2. Security & Sandboxing
 
-### Q: OpenClaw mein security risk hai? Kya sandbox ya Kali mein chalana chahiye?
+### Q: Is there a security risk in OpenClaw? Should it run in a sandbox or Kali?
 
-**Short Answer:** Haan, security risk hai — lekin proper configuration se manageable hai. Kali zaroorat nahi hai, lekin Docker isolation zaroori hai.
+**Short Answer:** Yes, there is a security risk — but it is manageable with proper configuration. Kali is not needed, but Docker isolation is essential.
 
 ### Security Risks in OpenClaw:
 
 | Risk | Severity | Description | Mitigation |
 |------|----------|-------------|------------|
-| **Prompt Injection** | High | User fleet data mein malicious instructions daal sakta hai | Input sanitization, guardrails |
-| **API Key Exposure** | Critical | Agent API keys access kar sakta hai | Environment variables, never in code |
-| **File System Access** | High | Agent files read/write kar sakta hai | Docker sandboxing, workspace isolation |
-| **Network Access** | Medium | Agent external APIs call kar sakta hai | Firewall rules, allowlist |
-| **Data Leakage** | High | Agent sensitive data leak kar sakta hai | Guardrails, audit logging |
-| **Command Injection** | Critical | Agent shell commands execute kar sakta hai | Disable exec, use safe tools only |
+| **Prompt Injection** | High | Malicious instructions can be injected via fleet data | Input sanitization, guardrails |
+| **API Key Exposure** | Critical | Agent could access API keys | Environment variables, never in code |
+| **File System Access** | High | Agent can read/write files | Docker sandboxing, workspace isolation |
+| **Network Access** | Medium | Agent can call external APIs | Firewall rules, allowlist |
+| **Data Leakage** | High | Agent could leak sensitive data | Guardrails, audit logging |
+| **Command Injection** | Critical | Agent could execute shell commands | Disable exec, use safe tools only |
 
 ### Recommended Security Setup:
 
@@ -147,9 +147,9 @@ networks:
 # Or run in a dedicated VM on Hetzner/DigitalOcean
 ```
 
-### Kali Linux? Kya Zaroorat Hai?
+### Kali Linux? Why Would You Need It?
 
-**Nahi, Kali zaroorat nahi hai.** Kali penetration testing ke liye hai — fleet management ke liye nahi. Proper security ke liye:
+**No, Kali is not needed.** Kali is for penetration testing — not fleet management. For proper security:
 
 1. **Docker** — Container isolation
 2. **Firewall** — Only required ports open (80, 443, 18789)
@@ -177,9 +177,9 @@ networks:
 
 ## 3. Samsara Free Data
 
-### Q: Samsara ka free data hai? Bina law issue ke?
+### Q: Is Samsara data free? Without legal issues?
 
-**Short Answer:** Haan, Samsara ka **developer sandbox** free hai. Real fleet data nahi milega, lekin test data milega jo demo ke liye kaafi hai.
+**Short Answer:** Yes, Samsara's **developer sandbox** is free. You won't get real fleet data, but you get test data which is sufficient for demos.
 
 ### Samsara Free Options:
 
@@ -226,26 +226,26 @@ We already built a **mock data system** that generates realistic fleet data:
 | Using Samsara developer sandbox | ✅ Yes | Free, designed for development |
 | Using Samsara API with client's subscription | ✅ Yes | Client pays for hardware |
 | Using mock/fake data | ✅ Yes | Our data, no legal issues |
-| Scraping Samsara website | ❌ No | Violates ToS |
+| Scraping Samsara website | ❌ No | Violates Terms of Service |
 | Using leaked API keys | ❌ No | Illegal access |
 
 ---
 
 ## 4. [Client]'s Setup
 
-### Q: [Client] kya use krega? Windows PC, Linux, ya online server?
+### Q: What will [Client] use? Windows, Linux, or online server?
 
-**Short Answer:** [Client] ko **kuch nahi karna** — sab server pe hoga. [Client] sirf browser ya Telegram use karega.
+**Short Answer:** [Client] **doesn't need to do anything** — everything runs on the server. [Client] only uses a browser or Telegram.
 
 ### What [Client] Needs:
 
 | Item | What | Why |
 |------|------|-----|
-| **Computer** | Any (Windows/Mac/Linux) | Sirf browser ke liye |
+| **Computer** | Any (Windows/Mac/Linux) | Only for browser access |
 | **Browser** | Chrome/Firefox/Safari | Dashboard access |
 | **Telegram** | Mobile app | Alerts + approvals |
 | **Internet** | Normal broadband | Dashboard + Telegram |
-| **Nothing else** | — | Sab server pe hoga |
+| **Nothing else** | — | Everything runs on server |
 
 ### Server Setup (You Handle This):
 
@@ -262,35 +262,35 @@ We already built a **mock data system** that generates realistic fleet data:
 
 ```
 Morning:
-  → Telegram pe daily summary aata hai (8 AM)
+  → Daily summary arrives on Telegram (8 AM)
   → "52 active vehicles, 3 faults, 2 pending approvals"
 
 During Day:
-  → Telegram pe alerts aate hain (real-time)
+  → Alerts arrive on Telegram (real-time)
   → "🚨 Truck #842 — Engine fault P0340"
   → [Client] taps [✅ Approve] or [❌ Reject]
 
 Evening:
-  → Telegram pe evening summary
-  → Browser pe dashboard dekh sakta hai (optional)
+  → Evening summary on Telegram
+  → Can view dashboard in browser (optional)
 ```
 
-### [Client] Ko Kya Sikhna Padega:
+### What [Client] Needs to Learn:
 
 | Skill | Difficulty | Time |
 |-------|-----------|------|
-| Telegram use karna | Very Easy | 5 minutes |
-| Browser mein dashboard dekhna | Very Easy | 2 minutes |
-| Approve/Reject buttons tap karna | Very Easy | 1 minute |
-| Kuch nahi — agent sab khud karta hai | — | — |
+| Using Telegram | Very Easy | 5 minutes |
+| Viewing dashboard in browser | Very Easy | 2 minutes |
+| Tapping Approve/Reject buttons | Very Easy | 1 minute |
+| Nothing — agent does everything automatically | — | — |
 
 ---
 
 ## 5. App vs Website
 
-### Q: [Client] ko app chahiye ya website?
+### Q: Does [Client] need an app or a website?
 
-**Short Answer:** **Dono** — Website (dashboard) + Telegram Bot (mobile). App banane ki zaroorat nahi hai abhi.
+**Short Answer:** **Both** — Website (dashboard) + Telegram Bot (mobile). No need to build a native app yet.
 
 ### Why Website + Telegram (Not Native App):
 
@@ -332,9 +332,9 @@ If [Client] wants a native app later:
 
 ## 6. Real-time Tracking
 
-### Q: Har 5 second pe real-time tracking ho sakta hai?
+### Q: Can real-time tracking happen every 5 seconds?
 
-**Short Answer:** Haan, possible hai — lekin Samsara API ke limits hain. Best approach: **webhooks (instant) + polling (every 30 seconds)**.
+**Short Answer:** Yes, it is possible — but Samsara API has limits. Best approach: **webhooks (instant) + polling (every 30 seconds)**.
 
 ### Real-time Tracking Options:
 
@@ -407,9 +407,9 @@ If changed → Update database → Notify dashboard
 
 ## 7. Call & Communication
 
-### Q: Call ka option hai? Truck mein mic aur speaker chahiye?
+### Q: Is there a call option? Does the truck need a mic and speaker?
 
-**Short Answer:** Haan, call ka option hai — lekin truck mein hardware chahiye. Samsara/AI dashcam mein built-in hota hai.
+**Short Answer:** Yes, call option exists — but the truck needs hardware. Samsara/AI dashcams have it built-in.
 
 ### Call Options:
 
@@ -462,7 +462,7 @@ client = Client(account_sid, auth_token)
 call = client.calls.create(
     to="+13175551234",  # Driver's phone
     from_="+13175559999",  # Fleet number
-    url="http://server/twiml/connect"  # Connect to Ryan
+    url="http://server/twiml/connect"  # Connect to [Client]
 )
 ```
 - Cost: $0.01-0.05/minute
@@ -484,9 +484,9 @@ call = client.calls.create(
 
 ## 8. Dashcam Integration
 
-### Q: Dashcam se connect kaise hoga? Live footage kaise aayegi?
+### Q: How will the dashcam connect? How will live footage be accessed?
 
-**Short Answer:** Samsara AI dashcam mein built-in API hai. Live stream aur recorded clips dono access kar sakte hain.
+**Short Answer:** Samsara AI dashcam has a built-in API. Both live stream and recorded clips can be accessed.
 
 ### Dashcam Integration Architecture:
 
@@ -573,9 +573,9 @@ Telegram alert with video thumbnail:
 
 ## 9. Database Architecture
 
-### Q: Kaun sa database lagega? Kyun aur kaise?
+### Q: Which database will be used? Why and how?
 
-**Short Answer:** **3 databases** — PostgreSQL (main), Redis (cache), SQLite (testing). Har ek ka alag kaam hai.
+**Short Answer:** **3 databases** — PostgreSQL (main), Redis (cache), SQLite (testing). Each has a different purpose.
 
 ### Database Architecture:
 
@@ -711,38 +711,38 @@ CREATE TABLE audit_log (
 
 ## 10. AI Learning
 
-### Q: AI seekhega kaise? Database mein kya save hoga?
+### Q: How will the AI learn? What will be saved in the database?
 
-**Short Answer:** AI **MEMORY.md** aur **daily memory files** mein seekhta hai. Patterns yaad rakhta hai, mistakes repeat nahi karta.
+**Short Answer:** The AI learns through **MEMORY.md** and **daily memory files**. It remembers patterns and does not repeat mistakes.
 
 ### How AI Learns:
 
 ```
-Day 1: Truck #842 mein P0340 fault aaya
+Day 1: Truck #842 has P0340 fault
     │
     ▼
-AI ne alert bheja → [Client] ne approve kiya → Maintenance scheduled
+AI sends alert → [Client] approves → Maintenance scheduled
     │
     ▼
-AI ne MEMORY.md mein likha:
+AI writes to MEMORY.md:
     "Truck #842 has recurring P0340 fault (camshaft sensor)"
     "Last maintenance: July 5, 2026"
     "Cost: $450"
     │
     ▼
-Day 15: Phir se P0340 aaya
+Day 15: P0340 appears again
     │
     ▼
-AI ne yaad kiya: "Ye pehle bhi hua tha"
+AI remembers: "This happened before"
     │
     ▼
-AI ne pattern detect kiya:
+AI detects pattern:
     "Truck #842 has P0340 every 2 weeks — needs permanent fix"
     │
     ▼
-AI ne [Client] ko bola:
-    "⚠️ Truck #842 mein P0340 baar baar aa raha hai.
-     Pattern: Har 2 weeks. Recommend: Full camshaft system check.
+AI tells [Client]:
+    "⚠️ Truck #842 has recurring P0340 fault.
+     Pattern: Every 2 weeks. Recommend: Full camshaft system check.
      Estimated cost: $1,200 (one-time) vs $450 every 2 weeks ($1,170/6 months)"
 ```
 
@@ -753,7 +753,7 @@ AI ne [Client] ko bola:
 # memory/2026-07-05.md
 - 09:00 — Fleet health check: 52 vehicles, 30 active
 - 09:15 — Fault detected: P0340 on TRUCK-842
-- 09:16 — Escalation sent to Ryan
+- 09:16 — Escalation sent to [Client]
 - 09:18 — [Client] approved maintenance
 - 09:20 — Maintenance scheduled for July 6
 - 10:00 — Fuel anomaly: TRUCK-015 dropped 25% in 30 min
@@ -805,107 +805,104 @@ AI ne [Client] ko bola:
 
 ## 11. Technical Glossary
 
-### Sab Words Ka Meaning:
-
-| Word | Meaning | Hindi/Urdu |
-|------|---------|-----------|
-| **API** | Application Programming Interface — Do systems ke beech ka connection | Do software ka baatcheet ka raasta |
-| **Backend** | Server-side code — user ko nahi dikhta, kaam karta hai | Pardhe ke peeche ka kaam |
-| **Frontend** | User-facing website/app — jo user dekhta hai | Jo screen pe dikhta hai |
-| **Webhook** | Server se server push notification — jab kuch hota hai toh turant data aata hai | Jab kuch ho toh turant khabar aana |
-| **LLM** | Large Language Model — AI brain (GPT, Claude, Llama) | AI ka dimaag |
-| **Heartbeat** | Periodic check — agent har X minute pe check karta hai | Har thodi der mein check karna |
-| **HITL** | Human-in-the-Loop — AI insaan se poochta hai karne se pehle | Insaan se ijazat lena |
-| **Guardrails** | Safety rules — AI kya kar sakta hai, kya nahi | Suraksha niyam |
-| **Audit Trail** | Complete log — kaun kab kya kiya | Poora hisaab |
-| **Escalation** | Issue ko insaan tak pahunchana — jab AI khud nahi kar sakta | Insaan tak baat pahunchana |
-| **HOS** | Hours of Service — kitne ghante driver ne gaadi chalayi | Driving ka samay |
-| **DVIR** | Driver Vehicle Inspection Report — pre/post trip check | Gaadi ka check-up |
-| **IFTA** | International Fuel Tax Agreement — fuel tax reporting | Fuel ka tax hisaab |
-| **DTC** | Diagnostic Trouble Code — gaadi ka error code | Gaadi ki galti ka code |
-| **ELD** | Electronic Logging Device — automatic driving hours log | Automatic driving record |
-| **GPS** | Global Positioning System — location tracking | Location pata karna |
-| **OBD-II** | On-Board Diagnostics — gaadi ka diagnostic port | Gaadi ka check-up port |
-| **Telematics** | Remote vehicle data collection | Door se gaadi ka data lena |
-| **CSA** | Compliance, Safety, Accountability — FMCSA safety score | Suraksha score |
-| **FMCSA** | Federal Motor Carrier Safety Administration — US trucking regulator | US trucking ka niyamak |
-| **Geofence** | Virtual boundary — jab gaadi area mein enter/exit kare | Virtual seema |
-| **Idling** | Engine on but vehicle not moving — fuel waste | Engine chalana par gaadi na chalana |
-| **Fault Code** | Vehicle error code — P0340, P0300, etc. | Gaadi ka error |
-| **Celery** | Python task queue — background jobs | Background kaam ka queue |
-| **Redis** | In-memory database — fast cache + queue | Tez temporary storage |
-| **PostgreSQL** | Main database — permanent data storage | Permanent data ka ghar |
-| **Docker** | Containerization — app ko isolated box mein chalana | App ko alag box mein rakhna |
-| **Container** | Isolated environment — app apne box mein chalta hai | Alag box mein chalna |
-| **VPS** | Virtual Private Server — online computer | Online computer |
-| **SSL/TLS** | Encryption — data secure rehta hai | Data ki suraksha |
-| **HTTPS** | Secure HTTP — encrypted web connection | Surakshit web connection |
-| **REST API** | Web API standard — GET, POST, PUT, DELETE | Web ka baatcheet ka tareeka |
-| **JSON** | Data format — {"key": "value"} | Data ka format |
-| **Schema** | Database structure — table ka blueprint | Table ka naksha |
-| **Migration** | Database structure change — naya column add karna | Table mein badlav |
-| **ORM** | Object-Relational Mapping — Python se SQL | Python se database baat karna |
-| **Pydantic** | Python data validation — input check karna | Data ki jaanch |
-| **FastAPI** | Python web framework — REST API banane ke liye | Python ka web tool |
-| **Swagger** | API documentation — interactive API testing | API ka manual |
-| **OpenAPI** | API specification standard — Swagger ka standard | API ka standard |
-| **CDN** | Content Delivery Network — fast file delivery | Tez file delivery |
-| **DNS** | Domain Name System — website ka address system | Website ka pata system |
-| **SSH** | Secure Shell — server pe login | Server pe surakshit login |
-| **CI/CD** | Continuous Integration/Deployment — automatic code deploy | Automatic code daalna |
-| **Git** | Version control — code ka hisaab | Code ka version hisaab |
-| **GitHub** | Code hosting platform — code online rakhna | Code ka online ghar |
-| **Repository (Repo)** | Project folder on GitHub | Project ka folder |
-| **Commit** | Save changes to Git | Changes save karna |
-| **Push** | Upload to GitHub | GitHub pe daalna |
-| **Clone** | Download from GitHub | GitHub se lena |
-| **Branch** | Parallel version of code | Code ki alag copy |
-| **Merge** | Combine branches | Copies milana |
-| **Pull Request** | Request to merge code | Code milane ki request |
-| **Environment Variables** | Secret config values — API keys, passwords | Secret settings |
-| **.env** | Environment file — secrets store karna | Secret file |
-| **.gitignore** | Files Git should ignore — secrets, temp files | Git ko ignore karne wali files |
-| **Mock Data** | Fake data for testing — bina real API ke demo | Nakli data testing ke liye |
-| **Sandbox** | Isolated testing environment | Alag testing jagah |
-| **Rate Limiting** | Limit API calls per time — abuse rokna | API calls ki seema |
-| **Latency** | Delay — kitna time lagta hai response aane mein | Deri |
-| **Uptime** | Time server is running — 99.9% = almost always on | Server chalne ka samay |
-| **Downtime** | Time server is down — maintenance ya crash | Server band hone ka samay |
-| **SLA** | Service Level Agreement — guaranteed uptime | Seva ki guarantee |
-| **Backup** | Data copy — agar data loss ho toh recover karna | Data ki suraksha copy |
-| **Restore** | Recover from backup | Backup se wapas lana |
-| **Firewall** | Network security — unauthorized access rokna | Network ki suraksha |
-| **Encryption** | Data coding — sirf authorized log padh sakte hain | Data ko coding karna |
-| **Decryption** | Reverse encryption — coded data padhna | Coded data padhna |
-| **Token** | Authentication key — access ke liye | Access ki chabhi |
-| **JWT** | JSON Web Token — secure authentication | Surakshit authentication |
-| **OAuth** | Open Authorization — third-party login | Doosre se login |
-| **Webhook** | Server push notification (repeated for clarity) | Server se turant khabar |
-| **Polling** | Periodic checking — har X second pe check karna | Baar baar check karna |
-| **Streaming** | Real-time data flow — continuous data aata hai | Lagatar data aana |
-| **Dashboard** | Visual data display — charts, graphs, maps | Data ka visual display |
-| **Widget** | Small UI component — button, card, chart | Chhota UI hissa |
-| **Responsive** | Works on all screen sizes — desktop, tablet, mobile | Har screen pe chalna |
-| **Viewport** | Screen size — desktop = wide, mobile = narrow | Screen ka size |
-| **CSS** | Styling language — website ka design | Website ka design |
-| **HTML** | Structure language — website ka structure | Website ka structure |
-| **JavaScript** | Programming language — website ka behavior | Website ka behavior |
-| **DOM** | Document Object Model — HTML ka tree structure | HTML ka ped |
-| **Async** | Non-blocking — ek kaam karte hue doosra bhi ho raha hai | Ek saath kaam karna |
-| **Await** | Wait for async result — jab tak result na aaye wait karo | Result ka intezaar karna |
-| **Callback** | Function called after task complete — jab kaam ho toh ye karo | Kaam ke baad ye karo |
-| **Promise** | Async result container — result baad mein aayega | Result ka wada |
-| **Middleware** | Code that runs between request and response | Request aur response ke beech ka code |
-| **Endpoint** | API URL — jahan request jaati hai | API ka pata |
-| **Route** | URL pattern — kaun sa URL kaun sa code chalata hai | URL ka pattern |
-| **Handler** | Function that processes request — request ko handle karna | Request ko sambhalna |
-| **Payload** | Data sent in request/response | Bheja gaya data |
-| **Header** | Request metadata — auth token, content type | Request ki jaankaari |
-| **Body** | Request data — actual content | Request ka data |
-| **Status Code** | HTTP response code — 200 = OK, 404 = Not Found, 500 = Error | Response ka code |
-| **200 OK** | Success — request kaam kar gayi | Safalta |
-| **404 Not Found** | Resource nahi mila | Nahi mila |
-| **500 Internal Server Error** | Server mein error | Server mein galti |
-| **401 Unauthorized** | Authentication required | Login zaroori |
-| **403 Forbidden** | Access denied | Anumati nahi |
-| **429 Too Many Requests** | Rate limit exceeded | Bahut zyada requests |
+| Word | Meaning |
+|------|---------|
+| **API** | Application Programming Interface — connection between two systems |
+| **Backend** | Server-side code — not visible to the user, does the work |
+| **Frontend** | User-facing website/app — what the user sees |
+| **Webhook** | Server-to-server push notification — instant data when something happens |
+| **LLM** | Large Language Model — AI brain (GPT, Claude, Llama) |
+| **Heartbeat** | Periodic check — agent checks every X minutes |
+| **HITL** | Human-in-the-Loop — AI asks human before acting |
+| **Guardrails** | Safety rules — what AI can and cannot do |
+| **Audit Trail** | Complete log — who did what and when |
+| **Escalation** | Sending an issue to a human — when AI cannot handle it |
+| **HOS** | Hours of Service — how many hours a driver has driven |
+| **DVIR** | Driver Vehicle Inspection Report — pre/post trip check |
+| **IFTA** | International Fuel Tax Agreement — fuel tax reporting |
+| **DTC** | Diagnostic Trouble Code — vehicle error code |
+| **ELD** | Electronic Logging Device — automatic driving hours log |
+| **GPS** | Global Positioning System — location tracking |
+| **OBD-II** | On-Board Diagnostics — vehicle diagnostic port |
+| **Telematics** | Remote vehicle data collection |
+| **CSA** | Compliance, Safety, Accountability — FMCSA safety score |
+| **FMCSA** | Federal Motor Carrier Safety Administration — US trucking regulator |
+| **Geofence** | Virtual boundary — triggers when vehicle enters/exits area |
+| **Idling** | Engine on but vehicle not moving — wastes fuel |
+| **Fault Code** | Vehicle error code — P0340, P0300, etc. |
+| **Celery** | Python task queue — handles background jobs |
+| **Redis** | In-memory database — fast cache and queue |
+| **PostgreSQL** | Main database — permanent data storage |
+| **Docker** | Containerization — run apps in isolated boxes |
+| **Container** | Isolated environment — app runs in its own box |
+| **VPS** | Virtual Private Server — online computer |
+| **SSL/TLS** | Encryption — keeps data secure |
+| **HTTPS** | Secure HTTP — encrypted web connection |
+| **REST API** | Web API standard — GET, POST, PUT, DELETE |
+| **JSON** | Data format — {"key": "value"} |
+| **Schema** | Database structure — table blueprint |
+| **Migration** | Database structure change — adding new columns |
+| **ORM** | Object-Relational Mapping — Python talks to database |
+| **Pydantic** | Python data validation — input checking |
+| **FastAPI** | Python web framework — for building REST APIs |
+| **Swagger** | API documentation — interactive API testing |
+| **OpenAPI** | API specification standard |
+| **CDN** | Content Delivery Network — fast file delivery |
+| **DNS** | Domain Name System — website address system |
+| **SSH** | Secure Shell — secure server login |
+| **CI/CD** | Continuous Integration/Deployment — automatic code deployment |
+| **Git** | Version control — code history and tracking |
+| **GitHub** | Code hosting platform — store code online |
+| **Repository (Repo)** | Project folder on GitHub |
+| **Commit** | Save changes to Git |
+| **Push** | Upload to GitHub |
+| **Clone** | Download from GitHub |
+| **Branch** | Parallel version of code |
+| **Merge** | Combine branches |
+| **Pull Request** | Request to merge code changes |
+| **Environment Variables** | Secret config values — API keys, passwords |
+| **.env** | Environment file — stores secrets |
+| **.gitignore** | Files Git should ignore — secrets, temp files |
+| **Mock Data** | Fake data for testing — demo without real API |
+| **Sandbox** | Isolated testing environment |
+| **Rate Limiting** | Limit API calls per time — prevent abuse |
+| **Latency** | Delay — time taken for response |
+| **Uptime** | Time server is running (e.g., 99.9%) |
+| **Downtime** | Time server is down — maintenance or crash |
+| **SLA** | Service Level Agreement — guaranteed uptime |
+| **Backup** | Data copy — recover if data is lost |
+| **Restore** | Recover from backup |
+| **Firewall** | Network security — blocks unauthorized access |
+| **Encryption** | Data coding — only authorized people can read |
+| **Decryption** | Reverse encryption — decoding data |
+| **Token** | Authentication key — for access |
+| **JWT** | JSON Web Token — secure authentication |
+| **OAuth** | Open Authorization — third-party login |
+| **Polling** | Periodic checking — check every X seconds |
+| **Streaming** | Real-time data flow — continuous data |
+| **Dashboard** | Visual data display — charts, graphs, maps |
+| **Widget** | Small UI component — button, card, chart |
+| **Responsive** | Works on all screen sizes — desktop, tablet, mobile |
+| **Viewport** | Screen size — varies by device |
+| **CSS** | Styling language — website design |
+| **HTML** | Structure language — website structure |
+| **JavaScript** | Programming language — website behavior |
+| **DOM** | Document Object Model — HTML tree structure |
+| **Async** | Non-blocking — do multiple things simultaneously |
+| **Await** | Wait for async result |
+| **Callback** | Function called after task completes |
+| **Promise** | Async result container — result arrives later |
+| **Middleware** | Code that runs between request and response |
+| **Endpoint** | API URL — where requests go |
+| **Route** | URL pattern — which URL triggers which code |
+| **Handler** | Function that processes a request |
+| **Payload** | Data sent in request/response |
+| **Header** | Request metadata — auth token, content type |
+| **Body** | Request data — actual content |
+| **Status Code** | HTTP response code — 200 = OK, 404 = Not Found, 500 = Error |
+| **200 OK** | Success — request worked |
+| **404 Not Found** | Resource not found |
+| **500 Internal Server Error** | Server error |
+| **401 Unauthorized** | Authentication required |
+| **403 Forbidden** | Access denied |
+| **429 Too Many Requests** | Rate limit exceeded |

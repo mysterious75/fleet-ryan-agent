@@ -120,7 +120,7 @@ An **autonomous AI fleet management agent** that:
 ### Data Flow
 
 ```
-Fleet Platform (Samsara)                    Telegram (Ryan)
+Fleet Platform (Samsara)                    Telegram ([Client])
        │                                          ▲
        ▼                                          │
   Webhook POST ──► FastAPI ──► Celery Worker ──► Alert/Escalation
@@ -365,7 +365,6 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 | Risk | Probability | Impact | Mitigation |
 |------|-------------|--------|------------|
-| **[Client] picks another freelancer** | Medium | High | Apply ASAP, show working prototype |
 | **Samsara API changes** | Low | High | Abstract API layer, use versioning |
 | **Server downtime** | Low | Medium | Health checks, auto-restart, backups |
 | **Security breach** | Low | Critical | Security audit, guardrails, encryption |
@@ -415,7 +414,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 ### Pre-Deployment
 
-- [ ] Get Samsara API token from Ryan
+- [ ] Get Samsara API token from [Client]
 - [ ] Create Telegram bot via @BotFather
 - [ ] Get [Client]'s Telegram chat ID
 - [ ] Choose hosting provider (Hetzner recommended)
