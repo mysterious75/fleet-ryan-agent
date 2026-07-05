@@ -4,1150 +4,542 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FleetCommander — Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* ============================================================
-           FLEETCOMMANDER — NIXTIO-INSPIRED MANAGEMENT DASHBOARD
-           ============================================================ */
         :root {
-            --bg: #0b0d17;
-            --bg-sidebar: #0f1221;
-            --bg-card: #141829;
-            --bg-card-hover: #1a1f35;
-            --bg-input: #1a1f35;
-            --bg-tooltip: #1e2340;
-            --border: rgba(255, 255, 255, 0.06);
-            --border-light: rgba(255, 255, 255, 0.04);
-            --text: #e8eaf0;
-            --text-secondary: #8b8fa7;
-            --text-muted: #5a5e76;
-            --accent: #6c5ce7;
-            --accent-light: #a29bfe;
-            --blue: #4a9eff;
-            --blue-light: #74b9ff;
-            --green: #00d2a0;
-            --green-light: #55efc4;
-            --orange: #fdcb6e;
-            --orange-light: #ffeaa7;
-            --red: #ff6b6b;
-            --red-light: #fab1a0;
-            --purple: #a29bfe;
-            --cyan: #00cec9;
-            --pink: #fd79a8;
-            --yellow: #ffeaa7;
-            --shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
-            --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.2);
-            --radius: 16px;
+            --bg: #08090e;
+            --bg-sidebar: #0c0d14;
+            --bg-card: #111318;
+            --bg-card-hover: #161820;
+            --bg-input: #161820;
+            --border: rgba(255,255,255,0.06);
+            --border-hover: rgba(255,255,255,0.12);
+            --text: #e4e7ec;
+            --text-sec: #8b90a0;
+            --text-muted: #555a6e;
+            --accent: #635bff;
+            --accent-hover: #7a73ff;
+            --blue: #4c9aff;
+            --green: #22c55e;
+            --orange: #f59e0b;
+            --red: #ef4444;
+            --purple: #a78bfa;
+            --cyan: #06b6d4;
+            --pink: #ec4899;
+            --font: 'Inter', -apple-system, sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+            --sidebar: 260px;
+            --topbar: 64px;
+            --radius: 14px;
             --radius-sm: 10px;
             --radius-xs: 8px;
             --radius-full: 999px;
-            --font: 'Plus Jakarta Sans', 'DM Sans', -apple-system, sans-serif;
-            --mono: 'JetBrains Mono', monospace;
-            --sidebar-w: 260px;
-            --topbar-h: 72px;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ========== LAYOUT ========== */
-        .layout { display: flex; min-height: 100vh; }
-
-        /* ========== SIDEBAR ========== */
-        .sidebar {
-            width: var(--sidebar-w);
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border);
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            z-index: 100;
-            padding: 24px 16px;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 8px 28px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 24px;
-        }
-
-        .sidebar-logo {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent), var(--blue));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 4px 16px rgba(108, 92, 231, 0.3);
-        }
-
-        .sidebar-brand-text h1 {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text);
-            letter-spacing: -0.3px;
-        }
-
-        .sidebar-brand-text span {
-            font-size: 11px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-
-        .nav-label {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-muted);
-            padding: 16px 12px 8px;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border-radius: var(--radius-xs);
-            cursor: pointer;
-            transition: all 0.15s ease;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            border: none;
-            background: transparent;
-            width: 100%;
-            text-align: left;
-            font-family: var(--font);
-        }
-
-        .nav-link:hover { background: rgba(255, 255, 255, 0.04); color: var(--text); }
-
-        .nav-link.active {
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.15), rgba(74, 158, 255, 0.08));
-            color: var(--text);
-            border: 1px solid rgba(108, 92, 231, 0.2);
-        }
-
-        .nav-link .icon { font-size: 18px; width: 22px; text-align: center; }
-
-        .nav-link .badge {
-            margin-left: auto;
-            background: var(--red);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 7px;
-            border-radius: var(--radius-full);
-        }
-
-        .sidebar-bottom {
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-        }
-
-        .sidebar-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 8px;
-        }
-
-        .sidebar-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--green), var(--cyan));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-            color: #000;
-        }
-
-        .sidebar-user-info h4 { font-size: 13px; font-weight: 600; }
-        .sidebar-user-info span { font-size: 11px; color: var(--text-muted); }
-
-        /* ========== MAIN ========== */
-        .main { flex: 1; margin-left: var(--sidebar-w); min-height: 100vh; }
-
-        /* ========== TOPBAR ========== */
-        .topbar {
-            height: var(--topbar-h);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 32px;
-            background: var(--bg);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .topbar-left { display: flex; align-items: center; gap: 20px; }
-
-        .topbar-title h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
-        .topbar-title p { font-size: 13px; color: var(--text-muted); }
-
-        .topbar-search {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xs);
-            width: 280px;
-            transition: all 0.15s ease;
-        }
-
-        .topbar-search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1); }
-
-        .topbar-search input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--text);
-            font-size: 13px;
-            font-family: var(--font);
-        }
-
-        .topbar-search input::placeholder { color: var(--text-muted); }
-
-        .topbar-right { display: flex; align-items: center; gap: 10px; }
-
-        .topbar-clock {
-            font-family: var(--mono);
-            font-size: 13px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .topbar-btn {
-            padding: 8px 14px;
-            border-radius: var(--radius-xs);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            color: var(--text);
-            font-family: var(--font);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .topbar-btn:hover { border-color: var(--accent); background: var(--bg-card-hover); }
-
-        .topbar-btn.primary {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-        }
-
-        .topbar-btn.primary:hover { background: var(--accent-light); }
-
-        /* ========== CONTENT ========== */
-        .content { padding: 28px 32px; }
-
-        /* ========== STAT CARDS ========== */
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 22px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover { border-color: rgba(108, 92, 231, 0.3); transform: translateY(-2px); box-shadow: var(--shadow-card); }
-
-        .stat-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-
-        .stat-card-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .stat-card.purple .stat-card-icon { background: rgba(162, 155, 254, 0.12); }
-        .stat-card.blue .stat-card-icon { background: rgba(74, 158, 255, 0.12); }
-        .stat-card.green .stat-card-icon { background: rgba(0, 210, 160, 0.12); }
-        .stat-card.orange .stat-card-icon { background: rgba(253, 203, 110, 0.12); }
-        .stat-card.red .stat-card-icon { background: rgba(255, 107, 107, 0.12); }
-        .stat-card.cyan .stat-card-icon { background: rgba(0, 206, 201, 0.12); }
-
-        .stat-card-change {
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 8px;
-            border-radius: var(--radius-full);
-        }
-
-        .stat-card-change.up { background: rgba(0, 210, 160, 0.1); color: var(--green); }
-        .stat-card-change.down { background: rgba(255, 107, 107, 0.1); color: var(--red); }
-
-        .stat-card-value {
-            font-size: 30px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            font-family: var(--mono);
-            margin-bottom: 4px;
-        }
-
-        .stat-card-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
-
-        .stat-card-chart { margin-top: 14px; height: 40px; display: flex; align-items: flex-end; gap: 3px; }
-
-        .stat-card-chart .bar {
-            flex: 1;
-            border-radius: 3px 3px 0 0;
-            transition: height 0.5s ease;
-            min-height: 4px;
-        }
-
-        /* ========== PANELS ========== */
-        .panel-grid { display: grid; grid-template-columns: 1fr 380px; gap: 16px; margin-bottom: 24px; }
-
-        .panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-        }
-
-        .panel-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 22px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .panel-head h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
-
-        .panel-head-right { display: flex; align-items: center; gap: 8px; }
-
-        .panel-badge {
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 9px;
-            border-radius: var(--radius-full);
-            background: rgba(108, 92, 231, 0.12);
-            color: var(--accent-light);
-        }
-
-        .panel-badge.live { background: rgba(0, 210, 160, 0.12); color: var(--green); }
-
-        .panel-tabs {
-            display: inline-flex;
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: var(--radius-xs);
-            padding: 2px;
-        }
-
-        .panel-tab {
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            font-family: var(--font);
-        }
-
-        .panel-tab:hover { color: var(--text-secondary); }
-        .panel-tab.active { background: rgba(255, 255, 255, 0.08); color: var(--text); }
-
-        .panel-body { padding: 18px 22px; }
-        .panel-scroll { padding: 14px 18px; max-height: 440px; overflow-y: auto; }
-
-        /* ========== MAP ========== */
-        .map-wrap {
-            width: 100%;
-            height: 280px;
-            border-radius: var(--radius-sm);
-            background: linear-gradient(160deg, #0d1020 0%, #141830 50%, #0f1628 100%);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .map-grid {
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(rgba(108, 92, 231, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(108, 92, 231, 0.04) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-
-        .map-pin {
-            position: absolute;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .map-pin:hover { transform: scale(1.3); z-index: 10; }
-
-        .map-pin-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            position: relative;
-        }
-
-        .map-pin-dot::after {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid currentColor;
-            opacity: 0;
-            animation: pingMap 2s ease-out infinite;
-        }
-
-        @keyframes pingMap {
-            0% { transform: scale(0.5); opacity: 0.4; }
-            100% { transform: scale(2); opacity: 0; }
-        }
-
-        .map-pin.active .map-pin-dot { background: var(--green); color: var(--green); }
-        .map-pin.idle .map-pin-dot { background: var(--orange); color: var(--orange); }
-        .map-pin.alert .map-pin-dot { background: var(--red); color: var(--red); }
-
-        .map-pin.active .map-pin-dot::after { animation-delay: 0s; }
-        .map-pin.idle .map-pin-dot::after { animation-delay: 0.5s; }
-        .map-pin.alert .map-pin-dot::after { animation-delay: 0s; animation-duration: 1s; }
-
-        .map-legend {
-            position: absolute;
-            bottom: 12px;
-            left: 12px;
-            display: flex;
-            gap: 14px;
-        }
-
-        .map-legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .map-legend-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-        }
-
-        .map-stats {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .map-stat-pill {
-            font-family: var(--mono);
-            font-size: 11px;
-            color: var(--text-secondary);
-            padding: 5px 10px;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            border-radius: 6px;
-            font-weight: 500;
-        }
-
-        /* ========== CHART ========== */
-        .chart-wrap {
-            width: 100%;
-            height: 180px;
-            position: relative;
-            margin-top: 12px;
-        }
-
-        .chart-bars {
-            display: flex;
-            align-items: flex-end;
-            gap: 6px;
-            height: 100%;
-            padding-bottom: 24px;
-        }
-
-        .chart-bar-group {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .chart-bar {
-            width: 100%;
-            border-radius: 4px 4px 0 0;
-            transition: height 0.6s ease;
-            min-height: 4px;
-            cursor: pointer;
-        }
-
-        .chart-bar:hover { opacity: 0.8; }
-
-        .chart-bar-label {
-            font-size: 10px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .chart-legend {
-            display: flex;
-            gap: 16px;
-            margin-top: 12px;
-        }
-
-        .chart-legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .chart-legend-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 3px;
-        }
-
-        /* ========== VEHICLE TABLE ========== */
-        .v-table { width: 100%; border-collapse: collapse; }
-
-        .v-table th {
-            text-align: left;
-            padding: 10px 12px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .v-table td {
-            padding: 12px 12px;
-            font-size: 13px;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .v-table tr { cursor: pointer; transition: background 0.1s ease; }
-        .v-table tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
-
-        .v-table .v-name { font-weight: 600; }
-        .v-table .v-mono { font-family: var(--mono); font-size: 12px; }
-
-        .v-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 3px 10px;
-            border-radius: var(--radius-full);
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .v-status.active { background: rgba(0, 210, 160, 0.1); color: var(--green); }
-        .v-status.idle { background: rgba(253, 203, 110, 0.1); color: var(--orange); }
-        .v-status.offline { background: rgba(90, 94, 118, 0.15); color: var(--text-muted); }
-        .v-status.maintenance { background: rgba(255, 107, 107, 0.1); color: var(--red); }
-
-        .v-status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor;
-        }
-
-        .fuel-bar {
-            width: 60px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 2px;
-            overflow: hidden;
-            display: inline-block;
-            vertical-align: middle;
-            margin-left: 6px;
-        }
-
-        .fuel-fill { height: 100%; border-radius: 2px; }
-        .fuel-fill.high { background: var(--green); }
-        .fuel-fill.medium { background: var(--orange); }
-        .fuel-fill.low { background: var(--red); }
-
-        /* ========== ALERT LIST ========== */
-        .alert-row {
-            display: flex;
-            gap: 12px;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .alert-row:last-child { border-bottom: none; }
-
-        .alert-sev {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-
-        .alert-sev.critical { background: rgba(255, 107, 107, 0.12); }
-        .alert-sev.high { background: rgba(253, 203, 110, 0.12); }
-        .alert-sev.medium { background: rgba(74, 158, 255, 0.12); }
-
-        .alert-body { flex: 1; min-width: 0; }
-        .alert-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
-        .alert-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-
-        .alert-actions { display: flex; gap: 6px; }
-
-        /* ========== DRIVER LIST ========== */
-        .driver-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .driver-row:last-child { border-bottom: none; }
-
-        .driver-av {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 700;
-            color: white;
-            flex-shrink: 0;
-        }
-
-        .driver-info { flex: 1; }
-        .driver-info h4 { font-size: 13px; font-weight: 600; }
-        .driver-info p { font-size: 11px; color: var(--text-muted); }
-
-        .driver-hos-wrap { text-align: right; }
-
-        .driver-hos-bar {
-            width: 56px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 2px;
-            overflow: hidden;
-            margin-bottom: 3px;
-            margin-left: auto;
-        }
-
-        .driver-hos-fill { height: 100%; border-radius: 2px; }
-        .driver-hos-text { font-family: var(--mono); font-size: 10px; color: var(--text-muted); }
-
-        /* ========== INFO ROWS ========== */
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .info-row:last-child { border-bottom: none; }
-        .info-label { font-size: 13px; color: var(--text-secondary); }
-        .info-val { font-family: var(--mono); font-size: 13px; font-weight: 600; }
-
-        /* ========== BOTTOM GRID ========== */
-        .bottom-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-
-        /* ========== MAINT ROW ========== */
-        .maint-row {
-            display: flex;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-light);
-            align-items: center;
-        }
-
-        .maint-row:last-child { border-bottom: none; }
-        .maint-icon { font-size: 14px; flex-shrink: 0; }
-        .maint-info { flex: 1; }
-        .maint-title { font-size: 13px; font-weight: 600; }
-        .maint-desc { font-size: 11px; color: var(--text-muted); }
-
-        /* ========== BUTTONS ========== */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            padding: 6px 12px;
-            border-radius: var(--radius-xs);
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            border: 1px solid transparent;
-            font-family: var(--font);
-        }
-
-        .btn:active { transform: scale(0.97); }
-        .btn-green { background: rgba(0, 210, 160, 0.12); color: var(--green); border-color: rgba(0, 210, 160, 0.2); }
-        .btn-green:hover { background: var(--green); color: #000; }
-        .btn-red { background: rgba(255, 107, 107, 0.12); color: var(--red); border-color: rgba(255, 107, 107, 0.2); }
-        .btn-red:hover { background: var(--red); color: white; }
-        .btn-blue { background: rgba(74, 158, 255, 0.12); color: var(--blue); border-color: rgba(74, 158, 255, 0.2); }
-        .btn-blue:hover { background: var(--blue); color: white; }
-        .btn-ghost { background: transparent; color: var(--text-secondary); border-color: var(--border); }
-        .btn-ghost:hover { border-color: var(--accent); color: var(--text); }
-
-        /* ========== SLIDE PANEL ========== */
-        .slide-bg {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 200;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
-        }
-
-        .slide-bg.show { opacity: 1; pointer-events: all; }
-
-        .slide {
-            position: fixed;
-            top: 0;
-            right: -440px;
-            width: 440px;
-            height: 100vh;
-            background: var(--bg-sidebar);
-            border-left: 1px solid var(--border);
-            z-index: 210;
-            transition: right 0.25s ease;
-            overflow-y: auto;
-        }
-
-        .slide.open { right: 0; }
-
-        .slide-head {
-            padding: 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            background: var(--bg-sidebar);
-            z-index: 1;
-        }
-
-        .slide-head h2 { font-size: 18px; font-weight: 700; }
-
-        .slide-close {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.15s ease;
-        }
-
-        .slide-close:hover { background: rgba(255, 107, 107, 0.12); border-color: rgba(255, 107, 107, 0.3); color: var(--red); }
-
-        .slide-body { padding: 24px; }
-
-        .slide-stat {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 13px 0;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .slide-stat:last-child { border-bottom: none; }
-        .slide-stat-label { font-size: 14px; color: var(--text-secondary); }
-        .slide-stat-val { font-family: var(--mono); font-size: 14px; font-weight: 600; }
-        .slide-stat-val.running { color: var(--green); }
-        .slide-stat-val.stopped { color: var(--red); }
-
-        .slide-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 28px;
-        }
-
-        .slide-act {
-            padding: 14px;
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-family: var(--font);
-        }
-
-        .slide-act:hover { background: rgba(255, 255, 255, 0.06); border-color: var(--border); }
-        .slide-act:active { transform: scale(0.97); }
-
-        .slide-act.call { background: rgba(0, 210, 160, 0.06); border-color: rgba(0, 210, 160, 0.2); color: var(--green); }
-        .slide-act.call:hover { background: var(--green); color: #000; }
-        .slide-act.emergency { background: rgba(255, 107, 107, 0.06); border-color: rgba(255, 107, 107, 0.2); color: var(--red); }
-        .slide-act.emergency:hover { background: var(--red); color: white; }
-
-        /* ========== TOAST ========== */
-        .toast-wrap {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 300;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .toast {
-            padding: 12px 20px;
-            border-radius: var(--radius-sm);
-            font-size: 13px;
-            font-weight: 600;
-            color: white;
-            animation: toastIn 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: var(--shadow);
-        }
-
-        .toast.success { background: #1a8a5a; }
-        .toast.error { background: #c0392b; }
-        .toast.info { background: #2d6bcf; }
-
-        @keyframes toastIn { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        /* ========== MOBILE ========== */
-        .mobile-toggle { display: none; position: fixed; top: 18px; left: 18px; z-index: 60; width: 36px; height: 36px; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text); cursor: pointer; align-items: center; justify-content: center; font-size: 16px; }
-
-        @media (max-width: 1200px) {
-            .stat-grid { grid-template-columns: repeat(2, 1fr); }
-            .panel-grid { grid-template-columns: 1fr; }
-            .bottom-grid { grid-template-columns: 1fr 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            .mobile-toggle { display: flex; }
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
-            .main { margin-left: 0; }
-            .topbar { padding: 0 16px; height: 60px; }
-            .topbar-search { display: none; }
-            .topbar-title h2 { font-size: 18px; }
-            .content { padding: 20px 16px; }
-            .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .stat-card { padding: 16px; }
-            .stat-card-value { font-size: 22px; }
-            .bottom-grid { grid-template-columns: 1fr; }
-            .slide { width: 100%; right: -100%; }
-            .slide-actions { grid-template-columns: 1fr; }
-            .v-table-wrap { overflow-x: auto; }
-        }
-
-        /* ========== SCROLLBAR ========== */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.15); }
-
-        /* ========== SKELETON ========== */
-        .skel {
-            background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card-hover) 50%, var(--bg-card) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: var(--radius-xs);
-        }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:var(--font); background:var(--bg); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; }
+        svg { display:inline-block; vertical-align:middle; }
+
+        /* SIDEBAR */
+        .sidebar { position:fixed; top:0; left:0; width:var(--sidebar); height:100vh; background:var(--bg-sidebar); border-right:1px solid var(--border); z-index:100; display:flex; flex-direction:column; padding:20px 14px; transition:transform .3s; }
+        .sb-brand { display:flex; align-items:center; gap:10px; padding:0 8px 22px; border-bottom:1px solid var(--border); margin-bottom:20px; }
+        .sb-logo { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--blue)); display:flex; align-items:center; justify-content:center; }
+        .sb-brand h1 { font-size:15px; font-weight:700; }
+        .sb-brand span { font-size:11px; color:var(--text-muted); display:block; }
+        .sb-nav { flex:1; display:flex; flex-direction:column; gap:2px; }
+        .sb-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); padding:14px 10px 6px; }
+        .sb-link { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:var(--radius-xs); cursor:pointer; transition:all .15s; font-size:13px; font-weight:500; color:var(--text-sec); border:none; background:0; width:100%; text-align:left; font-family:var(--font); }
+        .sb-link:hover { background:rgba(255,255,255,.04); color:var(--text); }
+        .sb-link.active { background:rgba(99,91,255,.12); color:var(--text); border:1px solid rgba(99,91,255,.2); }
+        .sb-link svg { width:18px; height:18px; flex-shrink:0; }
+        .sb-link .badge { margin-left:auto; background:var(--red); color:#fff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:var(--radius-full); }
+        .sb-bottom { padding-top:14px; border-top:1px solid var(--border); }
+        .sb-user { display:flex; align-items:center; gap:10px; padding:8px; }
+        .sb-av { width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--green),var(--cyan)); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#000; }
+        .sb-user h4 { font-size:13px; font-weight:600; }
+        .sb-user span { font-size:11px; color:var(--text-muted); }
+
+        /* MAIN */
+        .main { margin-left:var(--sidebar); min-height:100vh; }
+
+        /* TOPBAR */
+        .topbar { height:var(--topbar); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 28px; position:sticky; top:0; background:var(--bg); z-index:50; }
+        .tb-left h2 { font-size:20px; font-weight:700; }
+        .tb-left p { font-size:12px; color:var(--text-muted); }
+        .tb-search { display:flex; align-items:center; gap:8px; padding:7px 14px; background:var(--bg-input); border:1px solid var(--border); border-radius:var(--radius-xs); width:260px; transition:all .15s; }
+        .tb-search:focus-within { border-color:var(--accent); box-shadow:0 0 0 3px rgba(99,91,255,.1); }
+        .tb-search input { flex:1; background:0; border:0; outline:0; color:var(--text); font-size:13px; font-family:var(--font); }
+        .tb-search input::placeholder { color:var(--text-muted); }
+        .tb-search svg { color:var(--text-muted); }
+        .tb-right { display:flex; align-items:center; gap:10px; }
+        .tb-clock { font-family:var(--mono); font-size:12px; color:var(--text-muted); }
+
+        /* BUTTONS */
+        .btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:7px 14px; border-radius:var(--radius-xs); font-size:13px; font-weight:600; cursor:pointer; transition:all .15s; border:1px solid transparent; font-family:var(--font); }
+        .btn:active { transform:scale(.97); }
+        .btn-p { background:var(--accent); color:#fff; }
+        .btn-p:hover { background:var(--accent-hover); }
+        .btn-s { background:rgba(255,255,255,.06); color:var(--text); border-color:var(--border); }
+        .btn-s:hover { border-color:var(--border-hover); background:rgba(255,255,255,.08); }
+        .btn-g { background:rgba(34,197,94,.1); color:var(--green); border-color:rgba(34,197,94,.2); }
+        .btn-g:hover { background:var(--green); color:#000; }
+        .btn-r { background:rgba(239,68,68,.1); color:var(--red); border-color:rgba(239,68,68,.2); }
+        .btn-r:hover { background:var(--red); color:#fff; }
+        .btn-b { background:rgba(76,154,255,.1); color:var(--blue); border-color:rgba(76,154,255,.2); }
+        .btn-b:hover { background:var(--blue); color:#fff; }
+        .btn-sm { padding:5px 10px; font-size:11px; border-radius:6px; }
+
+        /* CONTENT */
+        .content { padding:24px 28px; }
+
+        /* PAGES */
+        .page { display:none; }
+        .page.active { display:block; }
+
+        /* STAT CARDS */
+        .stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+        .stat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:18px; transition:all .2s; cursor:pointer; }
+        .stat-card:hover { border-color:rgba(99,91,255,.3); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.3); }
+        .stat-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+        .stat-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
+        .stat-icon svg { width:20px; height:20px; }
+        .stat-icon.blue { background:rgba(76,154,255,.12); color:var(--blue); }
+        .stat-icon.green { background:rgba(34,197,94,.12); color:var(--green); }
+        .stat-icon.orange { background:rgba(245,158,11,.12); color:var(--orange); }
+        .stat-icon.red { background:rgba(239,68,68,.12); color:var(--red); }
+        .stat-icon.purple { background:rgba(167,139,250,.12); color:var(--purple); }
+        .stat-icon.cyan { background:rgba(6,182,212,.12); color:var(--cyan); }
+        .stat-change { font-size:11px; font-weight:600; padding:2px 7px; border-radius:var(--radius-full); }
+        .stat-change.up { background:rgba(34,197,94,.1); color:var(--green); }
+        .stat-val { font-size:28px; font-weight:800; font-family:var(--mono); letter-spacing:-1px; margin-bottom:3px; }
+        .stat-label { font-size:12px; color:var(--text-muted); font-weight:500; }
+        .stat-bar { margin-top:10px; height:3px; background:rgba(255,255,255,.04); border-radius:2px; overflow:hidden; }
+        .stat-bar-fill { height:100%; border-radius:2px; transition:width .8s; }
+
+        /* PANELS */
+        .panel-grid { display:grid; grid-template-columns:1fr 360px; gap:14px; margin-bottom:22px; }
+        .panel { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+        .panel-head { display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--border); }
+        .panel-head h3 { font-size:14px; font-weight:700; }
+        .panel-badge { font-size:11px; font-weight:600; padding:3px 8px; border-radius:var(--radius-full); }
+        .panel-badge.live { background:rgba(34,197,94,.1); color:var(--green); }
+        .panel-badge.count { background:rgba(99,91,255,.1); color:var(--purple); }
+        .panel-tabs { display:inline-flex; background:rgba(255,255,255,.04); border-radius:6px; padding:2px; }
+        .panel-tab { padding:4px 10px; border-radius:5px; font-size:11px; font-weight:500; cursor:pointer; transition:all .15s; border:none; background:0; color:var(--text-muted); font-family:var(--font); }
+        .panel-tab:hover { color:var(--text-sec); }
+        .panel-tab.active { background:rgba(255,255,255,.08); color:var(--text); }
+        .panel-body { padding:14px 18px; }
+        .panel-scroll { padding:12px 14px; max-height:420px; overflow-y:auto; }
+
+        /* MAP */
+        .map-wrap { width:100%; height:260px; border-radius:var(--radius-sm); background:linear-gradient(160deg,#0a0c18 0%,#111827 50%,#0f172a 100%); position:relative; overflow:hidden; border:1px solid var(--border); }
+        .map-grid { position:absolute; inset:0; background:linear-gradient(rgba(99,91,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(99,91,255,.03) 1px,transparent 1px); background-size:36px 36px; }
+        .map-pin { position:absolute; cursor:pointer; transition:all .2s; }
+        .map-pin:hover { transform:scale(1.4); z-index:10; }
+        .map-dot { width:8px; height:8px; border-radius:50%; position:relative; }
+        .map-dot::after { content:''; position:absolute; top:-4px; left:-4px; width:16px; height:16px; border-radius:50%; border:1.5px solid currentColor; opacity:0; animation:ping 2s ease-out infinite; }
+        @keyframes ping { 0% { transform:scale(.5); opacity:.4; } 100% { transform:scale(2.5); opacity:0; } }
+        .map-pin.active .map-dot { background:var(--green); color:var(--green); }
+        .map-pin.idle .map-dot { background:var(--orange); color:var(--orange); }
+        .map-pin.alert .map-dot { background:var(--red); color:var(--red); animation-duration:1s; }
+        .map-legend { position:absolute; bottom:10px; left:10px; display:flex; gap:12px; }
+        .map-legend-item { display:flex; align-items:center; gap:4px; font-size:10px; color:var(--text-muted); font-weight:500; }
+        .map-legend-dot { width:6px; height:6px; border-radius:50%; }
+        .map-stats { position:absolute; top:10px; right:10px; display:flex; flex-direction:column; gap:4px; }
+        .map-stat-pill { font-family:var(--mono); font-size:10px; color:var(--text-sec); padding:4px 8px; background:rgba(0,0,0,.5); border-radius:5px; }
+
+        /* CHART */
+        .chart-wrap { height:160px; display:flex; align-items:flex-end; gap:8px; padding-bottom:20px; position:relative; }
+        .chart-group { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+        .chart-bars { display:flex; gap:3px; align-items:flex-end; width:100%; height:100%; }
+        .chart-bar { flex:1; border-radius:3px 3px 0 0; transition:height .6s; cursor:pointer; }
+        .chart-bar:hover { opacity:.8; }
+        .chart-label { font-size:9px; color:var(--text-muted); font-weight:500; }
+        .chart-legend { display:flex; gap:14px; margin-top:10px; }
+        .chart-legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--text-sec); }
+        .chart-legend-dot { width:7px; height:7px; border-radius:2px; }
+
+        /* TABLE */
+        .v-table { width:100%; border-collapse:collapse; }
+        .v-table th { text-align:left; padding:8px 10px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--text-muted); border-bottom:1px solid var(--border); }
+        .v-table td { padding:10px; font-size:12px; border-bottom:1px solid rgba(255,255,255,.03); }
+        .v-table tr { cursor:pointer; transition:background .1s; }
+        .v-table tbody tr:hover { background:rgba(255,255,255,.02); }
+        .v-name { font-weight:600; }
+        .v-mono { font-family:var(--mono); font-size:11px; }
+        .v-status { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:var(--radius-full); font-size:10px; font-weight:600; }
+        .v-status .dot { width:5px; height:5px; border-radius:50%; background:currentColor; }
+        .v-status.active { background:rgba(34,197,94,.1); color:var(--green); }
+        .v-status.idle { background:rgba(245,158,11,.1); color:var(--orange); }
+        .v-status.offline { background:rgba(85,90,110,.15); color:var(--text-muted); }
+        .v-status.maintenance { background:rgba(239,68,68,.1); color:var(--red); }
+        .fuel-bar { width:50px; height:3px; background:rgba(255,255,255,.06); border-radius:2px; overflow:hidden; display:inline-block; vertical-align:middle; margin-left:4px; }
+        .fuel-fill { height:100%; border-radius:2px; }
+        .fuel-fill.high { background:var(--green); }
+        .fuel-fill.med { background:var(--orange); }
+        .fuel-fill.low { background:var(--red); }
+
+        /* VEHICLE LIST */
+        .v-row { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:var(--radius-xs); cursor:pointer; transition:all .15s; }
+        .v-row:hover { background:rgba(255,255,255,.03); }
+        .v-row-icon { width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .v-row-icon svg { width:16px; height:16px; }
+        .v-row-icon.active { background:rgba(34,197,94,.1); color:var(--green); }
+        .v-row-icon.idle { background:rgba(245,158,11,.1); color:var(--orange); }
+        .v-row-icon.offline { background:rgba(85,90,110,.15); color:var(--text-muted); }
+        .v-row-icon.maintenance { background:rgba(239,68,68,.1); color:var(--red); }
+        .v-row-info { flex:1; min-width:0; }
+        .v-row-name { font-size:13px; font-weight:600; }
+        .v-row-meta { font-size:11px; color:var(--text-muted); display:flex; gap:8px; }
+        .v-row-right { text-align:right; flex-shrink:0; }
+        .v-row-speed { font-family:var(--mono); font-size:15px; font-weight:700; }
+        .v-row-speed-unit { font-size:9px; color:var(--text-muted); }
+        .v-row-status { font-size:10px; font-weight:600; text-transform:uppercase; margin-top:2px; }
+        .v-row-status.active { color:var(--green); }
+        .v-row-status.idle { color:var(--orange); }
+        .v-row-status.offline { color:var(--text-muted); }
+        .v-row-status.maintenance { color:var(--red); }
+        .v-row-fuel { margin-top:3px; width:44px; height:3px; background:rgba(255,255,255,.06); border-radius:2px; overflow:hidden; margin-left:auto; }
+
+        /* ALERT ROW */
+        .a-row { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,.03); }
+        .a-row:last-child { border-bottom:0; }
+        .a-sev { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .a-sev svg { width:14px; height:14px; }
+        .a-sev.critical { background:rgba(239,68,68,.12); color:var(--red); }
+        .a-sev.high { background:rgba(245,158,11,.12); color:var(--orange); }
+        .a-sev.medium { background:rgba(76,154,255,.12); color:var(--blue); }
+        .a-body { flex:1; min-width:0; }
+        .a-title { font-size:12px; font-weight:600; margin-bottom:2px; }
+        .a-desc { font-size:11px; color:var(--text-muted); margin-bottom:6px; }
+        .a-actions { display:flex; gap:4px; }
+
+        /* DRIVER ROW */
+        .d-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid rgba(255,255,255,.03); }
+        .d-row:last-child { border-bottom:0; }
+        .d-av { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; flex-shrink:0; }
+        .d-info { flex:1; }
+        .d-info h4 { font-size:12px; font-weight:600; }
+        .d-info p { font-size:10px; color:var(--text-muted); }
+        .d-hos { text-align:right; }
+        .d-hos-bar { width:48px; height:3px; background:rgba(255,255,255,.06); border-radius:2px; overflow:hidden; margin-left:auto; margin-bottom:2px; }
+        .d-hos-fill { height:100%; border-radius:2px; }
+        .d-hos-text { font-family:var(--mono); font-size:9px; color:var(--text-muted); }
+
+        /* INFO ROW */
+        .i-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid rgba(255,255,255,.03); }
+        .i-row:last-child { border-bottom:0; }
+        .i-label { font-size:12px; color:var(--text-sec); }
+        .i-val { font-family:var(--mono); font-size:12px; font-weight:600; }
+
+        /* MAINT ROW */
+        .m-row { display:flex; gap:8px; padding:7px 0; border-bottom:1px solid rgba(255,255,255,.03); align-items:center; }
+        .m-row:last-child { border-bottom:0; }
+        .m-icon { font-size:12px; flex-shrink:0; }
+        .m-info { flex:1; }
+        .m-title { font-size:12px; font-weight:600; }
+        .m-desc { font-size:10px; color:var(--text-muted); }
+
+        /* BOTTOM GRID */
+        .bottom-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+
+        /* SLIDE */
+        .slide-bg { position:fixed; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(4px); z-index:200; opacity:0; pointer-events:none; transition:opacity .2s; }
+        .slide-bg.show { opacity:1; pointer-events:all; }
+        .slide { position:fixed; top:0; right:-420px; width:420px; height:100vh; background:var(--bg-sidebar); border-left:1px solid var(--border); z-index:210; transition:right .25s; overflow-y:auto; }
+        .slide.open { right:0; }
+        .slide-head { padding:20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; background:var(--bg-sidebar); z-index:1; }
+        .slide-head h2 { font-size:16px; font-weight:700; }
+        .slide-close { width:26px; height:26px; border-radius:50%; border:1px solid var(--border); background:0; color:var(--text-sec); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:13px; transition:all .15s; }
+        .slide-close:hover { background:rgba(239,68,68,.12); border-color:rgba(239,68,68,.3); color:var(--red); }
+        .slide-body { padding:20px; }
+        .slide-stat { display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid rgba(255,255,255,.03); }
+        .slide-stat:last-child { border-bottom:0; }
+        .slide-stat-label { font-size:13px; color:var(--text-sec); }
+        .slide-stat-val { font-family:var(--mono); font-size:13px; font-weight:600; }
+        .slide-stat-val.running { color:var(--green); }
+        .slide-stat-val.stopped { color:var(--red); }
+        .slide-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:20px; }
+        .slide-act { padding:12px; border-radius:var(--radius-sm); font-size:13px; font-weight:600; cursor:pointer; transition:all .15s; border:1px solid var(--border); background:rgba(255,255,255,.02); color:var(--text); display:flex; align-items:center; justify-content:center; gap:7px; font-family:var(--font); }
+        .slide-act:hover { background:rgba(255,255,255,.05); }
+        .slide-act:active { transform:scale(.97); }
+        .slide-act.call { background:rgba(34,197,94,.06); border-color:rgba(34,197,94,.2); color:var(--green); }
+        .slide-act.call:hover { background:var(--green); color:#000; }
+        .slide-act.emergency { background:rgba(239,68,68,.06); border-color:rgba(239,68,68,.2); color:var(--red); }
+        .slide-act.emergency:hover { background:var(--red); color:#fff; }
+        .slide-act svg { width:16px; height:16px; }
+
+        /* TOAST */
+        .toast-wrap { position:fixed; bottom:20px; right:20px; z-index:300; display:flex; flex-direction:column; gap:6px; }
+        .toast { padding:10px 16px; border-radius:var(--radius-sm); font-size:12px; font-weight:600; color:#fff; animation:toastIn .3s; display:flex; align-items:center; gap:7px; box-shadow:0 4px 20px rgba(0,0,0,.4); }
+        .toast.success { background:#166534; }
+        .toast.error { background:#991b1b; }
+        .toast.info { background:#1e40af; }
+        @keyframes toastIn { from { transform:translateY(12px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+
+        /* SKELETON */
+        .skel { background:linear-gradient(90deg,var(--bg-card) 25%,var(--bg-card-hover) 50%,var(--bg-card) 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:var(--radius-xs); }
+        @keyframes shimmer { 0% { background-position:200% 0; } 100% { background-position:-200% 0; } }
+
+        /* MOBILE */
+        .mobile-btn { display:none; position:fixed; top:14px; left:14px; z-index:60; width:34px; height:34px; border-radius:8px; background:var(--bg-card); border:1px solid var(--border); color:var(--text); cursor:pointer; align-items:center; justify-content:center; }
+        @media(max-width:1200px) { .stat-grid { grid-template-columns:repeat(2,1fr); } .panel-grid { grid-template-columns:1fr; } .bottom-grid { grid-template-columns:1fr 1fr; } }
+        @media(max-width:768px) { .mobile-btn { display:flex; } .sidebar { transform:translateX(-100%); } .sidebar.open { transform:translateX(0); } .main { margin-left:0; } .topbar { padding:0 14px; height:56px; } .tb-search { display:none; } .content { padding:16px 14px; } .stat-grid { grid-template-columns:repeat(2,1fr); gap:8px; } .stat-card { padding:14px; } .stat-val { font-size:22px; } .bottom-grid { grid-template-columns:1fr; } .slide { width:100%; right:-100%; } .slide-actions { grid-template-columns:1fr; } }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width:5px; }
+        ::-webkit-scrollbar-track { background:0; }
+        ::-webkit-scrollbar-thumb { background:rgba(255,255,255,.08); border-radius:3px; }
     </style>
 </head>
 <body>
-    <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+    <button class="mobile-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
 
-    <div class="layout">
+    <div style="display:flex;min-height:100vh;">
         <!-- SIDEBAR -->
         <aside class="sidebar">
-            <div class="sidebar-brand">
-                <div class="sidebar-logo">🚛</div>
-                <div class="sidebar-brand-text">
-                    <h1>FleetCommander</h1>
-                    <span>Orbital Technologies</span>
+            <div class="sb-brand">
+                <div class="sb-logo">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
                 </div>
+                <div><h1>FleetCommander</h1><span>Orbital Technologies</span></div>
             </div>
-            <nav class="sidebar-nav">
-                <div class="nav-label">Main</div>
-                <button class="nav-link active"><span class="icon">📊</span> Dashboard</button>
-                <button class="nav-link"><span class="icon">🚛</span> Vehicles <span class="badge" id="navV">--</span></button>
-                <button class="nav-link"><span class="icon">👤</span> Drivers</button>
-                <div class="nav-label">Operations</div>
-                <button class="nav-link"><span class="icon">🚨</span> Alerts <span class="badge" id="navA">--</span></button>
-                <button class="nav-link"><span class="icon">🔧</span> Maintenance</button>
-                <button class="nav-link"><span class="icon">📋</span> Compliance</button>
-                <div class="nav-label">Media</div>
-                <button class="nav-link"><span class="icon">📹</span> Dashcam</button>
-                <button class="nav-link"><span class="icon">🗺️</span> Live Map</button>
+            <nav class="sb-nav">
+                <div class="sb-label">Main</div>
+                <button class="sb-link active" onclick="navTo('dashboard',this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                    Dashboard
+                </button>
+                <button class="sb-link" onclick="navTo('vehicles',this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    Vehicles
+                    <span class="badge" id="navV">--</span>
+                </button>
+                <button class="sb-link" onclick="navTo('drivers',this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Drivers
+                </button>
+                <div class="sb-label">Operations</div>
+                <button class="sb-link" onclick="navTo('alerts',this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Alerts
+                    <span class="badge" id="navA">--</span>
+                </button>
+                <button class="sb-link" onclick="navTo('maintenance',this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    Maintenance
+                </button>
+                <button class="sb-link" onclick="navTo('compliance',this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Compliance
+                </button>
+                <div class="sb-label">Media</div>
+                <button class="sb-link" onclick="navTo('dashcam',this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    Dashcam
+                </button>
+                <button class="sb-link" onclick="navTo('livemap',this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                    Live Map
+                </button>
             </nav>
-            <div class="sidebar-bottom">
-                <div class="sidebar-user">
-                    <div class="sidebar-avatar">RS</div>
-                    <div class="sidebar-user-info">
-                        <h4>Ryan Scharnowske</h4>
-                        <span>Fleet Manager</span>
-                    </div>
+            <div class="sb-bottom">
+                <div class="sb-user">
+                    <div class="sb-av">RS</div>
+                    <div><h4>Ryan Scharnowske</h4><span>Fleet Manager</span></div>
                 </div>
             </div>
         </aside>
 
         <!-- MAIN -->
         <main class="main">
-            <!-- TOPBAR -->
             <header class="topbar">
-                <div class="topbar-left">
-                    <div class="topbar-title">
-                        <h2>Dashboard</h2>
-                        <p>Real-time fleet monitoring</p>
-                    </div>
-                </div>
-                <div class="topbar-search">
-                    <span>🔍</span>
+                <div class="tb-left"><h2 id="pageTitle">Dashboard</h2><p id="pageDesc">Real-time fleet monitoring</p></div>
+                <div class="tb-search">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                     <input type="text" placeholder="Search vehicles, drivers..." oninput="searchAll(this.value)">
                 </div>
-                <div class="topbar-right">
-                    <span class="topbar-clock" id="clock">--:--:--</span>
-                    <button class="topbar-btn" onclick="loadAll()">↻ Refresh</button>
-                    <button class="topbar-btn primary" onclick="toast('Generating report...', 'info')">📊 Report</button>
+                <div class="tb-right">
+                    <span class="tb-clock" id="clock">--:--:--</span>
+                    <button class="btn btn-s" onclick="loadAll()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                        Refresh
+                    </button>
+                    <button class="btn btn-p" onclick="toast('Generating report...','info')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Report
+                    </button>
                 </div>
             </header>
 
-            <div class="content">
-                <!-- STATS -->
+            <!-- ===== DASHBOARD PAGE ===== -->
+            <div class="content page active" id="page-dashboard">
                 <div class="stat-grid">
-                    <div class="stat-card purple" onclick="filterV('all')">
+                    <div class="stat-card" onclick="filterV('all')">
                         <div class="stat-card-top">
-                            <div class="stat-card-icon">🚛</div>
-                            <span class="stat-card-change up">↑ 3%</span>
+                            <div class="stat-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+                            <span class="stat-change up">+3%</span>
                         </div>
-                        <div class="stat-card-value" id="sTotal">--</div>
-                        <div class="stat-card-label">Total Vehicles</div>
-                        <div class="stat-card-chart" id="chartTotal"></div>
+                        <div class="stat-val" id="sTotal">--</div>
+                        <div class="stat-label">Total Vehicles</div>
+                        <div class="stat-bar"><div class="stat-bar-fill" style="width:100%;background:var(--blue)"></div></div>
                     </div>
-                    <div class="stat-card green" onclick="filterV('active')">
+                    <div class="stat-card" onclick="filterV('active')">
                         <div class="stat-card-top">
-                            <div class="stat-card-icon">✓</div>
-                            <span class="stat-card-change up">Active</span>
+                            <div class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span class="stat-change up">Active</span>
                         </div>
-                        <div class="stat-card-value" id="sActive">--</div>
-                        <div class="stat-card-label">Moving</div>
-                        <div class="stat-card-chart" id="chartActive"></div>
+                        <div class="stat-val" id="sActive">--</div>
+                        <div class="stat-label">Moving</div>
+                        <div class="stat-bar"><div class="stat-bar-fill" id="sActiveBar" style="width:0%;background:var(--green)"></div></div>
                     </div>
-                    <div class="stat-card orange" onclick="filterV('idle')">
+                    <div class="stat-card" onclick="filterV('idle')">
                         <div class="stat-card-top">
-                            <div class="stat-card-icon">⏸</div>
+                            <div class="stat-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
                         </div>
-                        <div class="stat-card-value" id="sIdle">--</div>
-                        <div class="stat-card-label">Idling</div>
-                        <div class="stat-card-chart" id="chartIdle"></div>
+                        <div class="stat-val" id="sIdle">--</div>
+                        <div class="stat-label">Idling</div>
+                        <div class="stat-bar"><div class="stat-bar-fill" id="sIdleBar" style="width:0%;background:var(--orange)"></div></div>
                     </div>
-                    <div class="stat-card red">
+                    <div class="stat-card">
                         <div class="stat-card-top">
-                            <div class="stat-card-icon">⚠</div>
+                            <div class="stat-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
                         </div>
-                        <div class="stat-card-value" id="sFaults">--</div>
-                        <div class="stat-card-label">Active Faults</div>
-                        <div class="stat-card-chart" id="chartFaults"></div>
+                        <div class="stat-val" id="sFaults">--</div>
+                        <div class="stat-label">Active Faults</div>
+                        <div class="stat-bar"><div class="stat-bar-fill" id="sFaultsBar" style="width:0%;background:var(--red)"></div></div>
                     </div>
                 </div>
 
-                <!-- PANELS -->
                 <div class="panel-grid">
-                    <!-- MAP + TABLE -->
                     <div class="panel">
                         <div class="panel-head">
                             <h3>Fleet Overview</h3>
-                            <div class="panel-head-right">
-                                <span class="panel-badge live">● Live</span>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <span class="panel-badge live">Live</span>
                                 <div class="panel-tabs">
-                                    <button class="panel-tab active" onclick="showSection('map')">Map</button>
-                                    <button class="panel-tab" onclick="showSection('table')">Table</button>
+                                    <button class="panel-tab active" onclick="showSection('map',this)">Map</button>
+                                    <button class="panel-tab" onclick="showSection('table',this)">Table</button>
                                 </div>
                             </div>
                         </div>
                         <div class="panel-body">
-                            <!-- MAP -->
                             <div id="secMap">
                                 <div class="map-wrap" id="fleetMap">
                                     <div class="map-grid"></div>
                                     <div class="map-legend">
-                                        <div class="map-legend-item"><div class="map-legend-dot" style="background: var(--green)"></div> Active</div>
-                                        <div class="map-legend-item"><div class="map-legend-dot" style="background: var(--orange)"></div> Idle</div>
-                                        <div class="map-legend-item"><div class="map-legend-dot" style="background: var(--red)"></div> Alert</div>
+                                        <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--green)"></div>Active</div>
+                                        <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--orange)"></div>Idle</div>
+                                        <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--red)"></div>Alert</div>
                                     </div>
                                     <div class="map-stats">
-                                        <div class="map-stat-pill" id="mapActive">-- active</div>
-                                        <div class="map-stat-pill" id="mapMiles">-- mi today</div>
+                                        <div class="map-stat-pill" id="mapActive">--</div>
+                                        <div class="map-stat-pill" id="mapMiles">--</div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- TABLE -->
-                            <div id="secTable" style="display: none;">
-                                <div class="v-table-wrap">
-                                    <table class="v-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Vehicle</th>
-                                                <th>Status</th>
-                                                <th>Location</th>
-                                                <th>Speed</th>
-                                                <th>Fuel</th>
-                                                <th>Odometer</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="vTableBody"></tbody>
-                                    </table>
-                                </div>
+                            <div id="secTable" style="display:none;">
+                                <table class="v-table">
+                                    <thead><tr><th>Vehicle</th><th>Status</th><th>Location</th><th>Speed</th><th>Fuel</th><th>Odometer</th></tr></thead>
+                                    <tbody id="vTable"></tbody>
+                                </table>
                             </div>
-                            <!-- CHART -->
-                            <div style="margin-top: 24px;">
-                                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">Fleet Activity (7 Days)</h4>
-                                <div class="chart-wrap">
-                                    <div class="chart-bars" id="fleetChart"></div>
-                                </div>
+                            <div style="margin-top:20px;">
+                                <h4 style="font-size:13px;font-weight:600;margin-bottom:10px;">Fleet Activity (7 Days)</h4>
+                                <div class="chart-wrap" id="fleetChart"></div>
                                 <div class="chart-legend">
-                                    <div class="chart-legend-item"><div class="chart-legend-dot" style="background: var(--accent)"></div> Active</div>
-                                    <div class="chart-legend-item"><div class="chart-legend-dot" style="background: var(--green)"></div> Moving</div>
-                                    <div class="chart-legend-item"><div class="chart-legend-dot" style="background: var(--orange)"></div> Idle</div>
+                                    <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--accent)"></div>Active</div>
+                                    <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--green)"></div>Moving</div>
+                                    <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--orange)"></div>Idle</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- ALERTS -->
                     <div class="panel">
-                        <div class="panel-head">
-                            <h3>Active Alerts</h3>
-                            <span class="panel-badge" id="aCount">--</span>
-                        </div>
-                        <div class="panel-scroll" id="aList">
-                            <div class="skel" style="height: 48px; margin-bottom: 6px;"></div>
-                            <div class="skel" style="height: 48px; margin-bottom: 6px;"></div>
-                            <div class="skel" style="height: 48px;"></div>
-                        </div>
+                        <div class="panel-head"><h3>Active Alerts</h3><span class="panel-badge count" id="aCount">--</span></div>
+                        <div class="panel-scroll" id="aList"><div class="skel" style="height:44px;margin-bottom:4px;"></div><div class="skel" style="height:44px;margin-bottom:4px;"></div><div class="skel" style="height:44px;"></div></div>
                     </div>
                 </div>
 
-                <!-- BOTTOM -->
                 <div class="bottom-grid">
-                    <!-- DRIVERS -->
                     <div class="panel">
-                        <div class="panel-head">
-                            <h3>Drivers</h3>
-                            <span class="panel-badge" id="dCount">--</span>
-                        </div>
-                        <div class="panel-scroll" id="dList">
-                            <div class="skel" style="height: 40px; margin-bottom: 4px;"></div>
-                            <div class="skel" style="height: 40px; margin-bottom: 4px;"></div>
-                            <div class="skel" style="height: 40px;"></div>
-                        </div>
+                        <div class="panel-head"><h3>Drivers</h3><span class="panel-badge count" id="dCount">--</span></div>
+                        <div class="panel-scroll" id="dList"><div class="skel" style="height:36px;margin-bottom:4px;"></div><div class="skel" style="height:36px;margin-bottom:4px;"></div><div class="skel" style="height:36px;"></div></div>
                     </div>
-
-                    <!-- COMPLIANCE -->
                     <div class="panel">
                         <div class="panel-head"><h3>Compliance</h3></div>
-                        <div class="panel-body" id="compBody">
-                            <div class="skel" style="height: 28px; margin-bottom: 6px;"></div>
-                            <div class="skel" style="height: 28px; margin-bottom: 6px;"></div>
-                            <div class="skel" style="height: 28px;"></div>
-                        </div>
+                        <div class="panel-body" id="compBody"><div class="skel" style="height:24px;margin-bottom:4px;"></div><div class="skel" style="height:24px;margin-bottom:4px;"></div><div class="skel" style="height:24px;"></div></div>
                     </div>
-
-                    <!-- MAINTENANCE -->
                     <div class="panel">
                         <div class="panel-head"><h3>Maintenance</h3></div>
-                        <div class="panel-body" id="mntBody">
-                            <div class="skel" style="height: 36px; margin-bottom: 4px;"></div>
-                            <div class="skel" style="height: 36px;"></div>
+                        <div class="panel-body" id="mntBody"><div class="skel" style="height:32px;margin-bottom:4px;"></div><div class="skel" style="height:32px;"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== VEHICLES PAGE ===== -->
+            <div class="content page" id="page-vehicles">
+                <div class="panel">
+                    <div class="panel-head"><h3>All Vehicles</h3><span class="panel-badge count" id="vpCount">--</span></div>
+                    <div class="panel-body">
+                        <div class="tb-search" style="width:100%;margin-bottom:14px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" placeholder="Search vehicles..." oninput="searchVehicles(this.value)">
                         </div>
+                        <table class="v-table"><thead><tr><th>Vehicle</th><th>Status</th><th>Location</th><th>Speed</th><th>Fuel</th><th>Odometer</th><th>Engine</th></tr></thead><tbody id="vpTable"></tbody></table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== DRIVERS PAGE ===== -->
+            <div class="content page" id="page-drivers">
+                <div class="panel">
+                    <div class="panel-head"><h3>All Drivers</h3><span class="panel-badge count" id="dpCount">--</span></div>
+                    <div class="panel-body"><div id="dpList"></div></div>
+                </div>
+            </div>
+
+            <!-- ===== ALERTS PAGE ===== -->
+            <div class="content page" id="page-alerts">
+                <div class="panel">
+                    <div class="panel-head"><h3>All Active Alerts</h3><span class="panel-badge count" id="apCount">--</span></div>
+                    <div class="panel-body"><div id="apList"></div></div>
+                </div>
+            </div>
+
+            <!-- ===== MAINTENANCE PAGE ===== -->
+            <div class="content page" id="page-maintenance">
+                <div class="panel">
+                    <div class="panel-head"><h3>Maintenance Schedule</h3><span class="panel-badge count" id="mpCount">--</span></div>
+                    <div class="panel-body"><div id="mpList"></div></div>
+                </div>
+            </div>
+
+            <!-- ===== COMPLIANCE PAGE ===== -->
+            <div class="content page" id="page-compliance">
+                <div class="panel">
+                    <div class="panel-head"><h3>Compliance Overview</h3></div>
+                    <div class="panel-body"><div id="cpBody"></div></div>
+                </div>
+            </div>
+
+            <!-- ===== DASHCAM PAGE ===== -->
+            <div class="content page" id="page-dashcam">
+                <div class="panel">
+                    <div class="panel-head"><h3>Dashcam Feeds</h3><span class="panel-badge live">Live</span></div>
+                    <div class="panel-body">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;" id="dashcamGrid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== LIVE MAP PAGE ===== -->
+            <div class="content page" id="page-livemap">
+                <div class="panel">
+                    <div class="panel-head"><h3>Live Fleet Map</h3><span class="panel-badge live">Live</span></div>
+                    <div class="panel-body">
+                        <div class="map-wrap" id="liveMapFull" style="height:500px;"></div>
                     </div>
                 </div>
             </div>
@@ -1157,300 +549,180 @@
     <!-- SLIDE PANEL -->
     <div class="slide-bg" id="slideBg" onclick="closeSlide()"></div>
     <aside class="slide" id="slidePanel">
-        <div class="slide-head">
-            <h2 id="slideTitle">🚛 Truck #--</h2>
-            <button class="slide-close" onclick="closeSlide()">✕</button>
-        </div>
+        <div class="slide-head"><h2 id="slideTitle">--</h2><button class="slide-close" onclick="closeSlide()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
         <div class="slide-body">
             <div class="slide-stat"><span class="slide-stat-label">Status</span><span class="slide-stat-val" id="spStatus">--</span></div>
-            <div class="slide-stat"><span class="slide-stat-label">Speed</span><span class="slide-stat-val" id="spSpeed">-- mph</span></div>
+            <div class="slide-stat"><span class="slide-stat-label">Speed</span><span class="slide-stat-val" id="spSpeed">--</span></div>
             <div class="slide-stat"><span class="slide-stat-label">Location</span><span class="slide-stat-val" id="spLoc">--</span></div>
-            <div class="slide-stat"><span class="slide-stat-label">Fuel</span><span class="slide-stat-val" id="spFuel">--%</span></div>
-            <div class="slide-stat"><span class="slide-stat-label">Odometer</span><span class="slide-stat-val" id="spOdo">-- mi</span></div>
+            <div class="slide-stat"><span class="slide-stat-label">Fuel</span><span class="slide-stat-val" id="spFuel">--</span></div>
+            <div class="slide-stat"><span class="slide-stat-label">Odometer</span><span class="slide-stat-val" id="spOdo">--</span></div>
             <div class="slide-stat"><span class="slide-stat-label">Engine</span><span class="slide-stat-val" id="spEngine">--</span></div>
-            <div class="slide-stat"><span class="slide-stat-label">Battery</span><span class="slide-stat-val" id="spBat">--V</span></div>
-            <div class="slide-stat"><span class="slide-stat-label">Coolant</span><span class="slide-stat-val" id="spCool">--°F</span></div>
+            <div class="slide-stat"><span class="slide-stat-label">Battery</span><span class="slide-stat-val" id="spBat">--</span></div>
+            <div class="slide-stat"><span class="slide-stat-label">Coolant</span><span class="slide-stat-val" id="spCool">--</span></div>
             <div class="slide-stat"><span class="slide-stat-label">Driver</span><span class="slide-stat-val" id="spDriver">--</span></div>
             <div class="slide-actions">
-                <button class="slide-act call" onclick="toast('Calling driver...', 'info')">📞 Call Driver</button>
-                <button class="slide-act" onclick="toast('Opening dashcam...', 'info')">📹 Dashcam</button>
-                <button class="slide-act" onclick="toast('Loading history...', 'info')">📊 History</button>
-                <button class="slide-act emergency" onclick="toast('EMERGENCY SENT!', 'error')">🚨 Emergency</button>
+                <button class="slide-act call" onclick="toast('Calling driver...','info')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call Driver</button>
+                <button class="slide-act" onclick="toast('Opening dashcam...','info')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Dashcam</button>
+                <button class="slide-act" onclick="toast('Loading history...','info')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>History</button>
+                <button class="slide-act emergency" onclick="toast('EMERGENCY SENT!','error')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Emergency</button>
             </div>
         </div>
     </aside>
 
-    <!-- TOAST -->
     <div class="toast-wrap" id="toasts"></div>
 
     <script>
         const API = window.location.origin;
-        let allV = [];
+        let allV = [], allD = [], allF = [], allM = [], allC = {};
         let vFilter = 'all';
 
-        // Clock
-        setInterval(() => {
-            document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
-        }, 1000);
+        setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour12: false }); }, 1000);
 
-        // API helper
         async function api(p) { try { const r = await fetch(`${API}${p}`); return r.ok ? await r.json() : null; } catch { return null; } }
 
-        // Load all
         async function loadAll() {
             const [ov, vd, hos, flt, comp, mnt] = await Promise.all([
-                api('/api/v1/fleet/overview'),
-                api('/api/v1/fleet/vehicles'),
-                api('/api/v1/compliance/hos'),
-                api('/api/v1/maintenance/faults'),
-                api('/api/v1/compliance/summary'),
-                api('/api/v1/maintenance/schedule')
+                api('/api/v1/fleet/overview'), api('/api/v1/fleet/vehicles'), api('/api/v1/compliance/hos'),
+                api('/api/v1/maintenance/faults'), api('/api/v1/compliance/summary'), api('/api/v1/maintenance/schedule')
             ]);
-
             if (ov) {
-                set('sTotal', ov.total_vehicles);
-                set('sActive', ov.active_vehicles);
-                set('sIdle', ov.idling_vehicles);
-                set('sFaults', ov.vehicles_with_faults);
-                set('navV', ov.total_vehicles);
-                set('mapActive', `${ov.active_vehicles || 0} active`);
-                set('mapMiles', `${(ov.total_miles_today || 0).toLocaleString()} mi`);
-                buildMiniChart('chartTotal', [65, 58, 72, 68, 75, 70, ov.total_vehicles || 0], 'var(--accent)');
-                buildMiniChart('chartActive', [35, 32, 40, 38, 42, 39, ov.active_vehicles || 0], 'var(--green)');
-                buildMiniChart('chartIdle', [8, 10, 7, 9, 6, 8, ov.idling_vehicles || 0], 'var(--orange)');
-                buildMiniChart('chartFaults', [5, 8, 6, 10, 7, 12, ov.vehicles_with_faults || 0], 'var(--red)');
+                set('sTotal', ov.total_vehicles); set('sActive', ov.active_vehicles); set('sIdle', ov.idling_vehicles); set('sFaults', ov.vehicles_with_faults);
+                set('navV', ov.total_vehicles); set('mapActive', `${ov.active_vehicles||0} active`); set('mapMiles', `${(ov.total_miles_today||0).toLocaleString()} mi`);
+                const t = ov.total_vehicles || 1;
+                bar('sActiveBar', (ov.active_vehicles||0)/t*100); bar('sIdleBar', (ov.idling_vehicles||0)/t*100); bar('sFaultsBar', Math.min(100,(ov.vehicles_with_faults||0)/t*300));
             }
-
-            if (vd?.vehicles) { allV = vd.vehicles; renderV(allV); renderMap(allV); renderTable(allV); }
-            if (flt?.faults) renderAlerts(flt.faults);
-            if (hos?.drivers) renderDrivers(hos.drivers);
-            if (comp?.summary) renderComp(comp.summary);
-            if (mnt?.schedule) renderMnt(mnt.schedule);
-
+            if (vd?.vehicles) { allV = vd.vehicles; renderV(allV); renderMap(allV, 'fleetMap'); renderTable(allV, 'vTable'); renderTable(allV, 'vpTable'); renderDashcam(allV); renderMap(allV, 'liveMapFull'); }
+            if (flt?.faults) { allF = flt.faults; renderAlerts(allF, 'aList'); renderAlerts(allF, 'apList'); set('navA', allF.length); }
+            if (hos?.drivers) { allD = hos.drivers; renderDrivers(allD, 'dList'); renderDrivers(allD, 'dpList'); }
+            if (comp?.summary) { allC = comp.summary; renderComp(allC, 'compBody'); renderComp(allC, 'cpBody'); }
+            if (mnt?.schedule) { allM = mnt.schedule; renderMnt(allM, 'mntBody'); renderMnt(allM, 'mpList'); }
             buildChart();
             toast('Data loaded', 'success');
         }
 
-        // Mini chart
-        function buildMiniChart(id, data, color) {
-            const el = document.getElementById(id);
-            if (!el) return;
-            const max = Math.max(...data, 1);
-            el.innerHTML = data.map(v => `<div class="bar" style="height:${(v / max * 100).toFixed(0)}%; background:${color}; opacity:${0.3 + (v / max * 0.7)}"></div>`).join('');
-        }
-
-        // Big chart
-        function buildChart() {
-            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            const active = [38, 42, 40, 45, 43, 35, 30];
-            const moving = [25, 30, 28, 32, 30, 22, 18];
-            const idle = [8, 7, 9, 6, 8, 10, 12];
-            const max = Math.max(...active, 1);
-            const el = document.getElementById('fleetChart');
-            if (!el) return;
-            el.innerHTML = days.map((d, i) => `
-                <div class="chart-bar-group">
-                    <div style="display:flex; gap:3px; align-items:flex-end; height:100%; width:100%;">
-                        <div class="chart-bar" style="height:${(active[i] / max * 100).toFixed(0)}%; background: var(--accent); flex:1;" title="Active: ${active[i]}"></div>
-                        <div class="chart-bar" style="height:${(moving[i] / max * 100).toFixed(0)}%; background: var(--green); flex:1;" title="Moving: ${moving[i]}"></div>
-                        <div class="chart-bar" style="height:${(idle[i] / max * 100).toFixed(0)}%; background: var(--orange); flex:1;" title="Idle: ${idle[i]}"></div>
-                    </div>
-                    <span class="chart-bar-label">${d}</span>
-                </div>
-            `).join('');
-        }
-
-        // Render vehicles
         function renderV(list) {
             const f = vFilter === 'all' ? list : list.filter(v => v.status === vFilter);
             const el = document.getElementById('vList');
             if (!el) return;
             el.innerHTML = f.slice(0, 15).map(v => {
-                const fuel = v.fuel_level || 0;
-                const fc = fuel > 50 ? 'high' : fuel > 20 ? 'medium' : 'low';
-                const s = v.status || 'active';
-                return `<div class="vehicle-row" onclick="openSlide('${v.vehicle_id}')">
-                    <div class="vehicle-row-icon ${s}">🚛</div>
-                    <div class="vehicle-row-info">
-                        <div class="vehicle-row-name">${v.name || v.vehicle_id}</div>
-                        <div class="vehicle-row-meta"><span>📍 ${v.location?.address || '--'}</span><span>⛽ ${fuel.toFixed(0)}%</span></div>
-                    </div>
-                    <div class="vehicle-row-right">
-                        <div class="vehicle-row-speed">${(v.speed || 0).toFixed(0)} <span class="vehicle-row-speed-unit">mph</span></div>
-                        <div class="vehicle-row-fuel"><div class="vehicle-row-fuel-fill ${fc}" style="width:${fuel}%"></div></div>
-                        <div class="vehicle-row-status ${s}">${s}</div>
-                    </div>
-                </div>`;
+                const fuel = v.fuel_level||0, fc = fuel>50?'high':fuel>20?'med':'low', s = v.status||'active';
+                return `<div class="v-row" onclick="openSlide('${v.vehicle_id}')"><div class="v-row-icon ${s}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div class="v-row-info"><div class="v-row-name">${v.name||v.vehicle_id}</div><div class="v-row-meta"><span>${v.location?.address||'--'}</span><span>${fuel.toFixed(0)}% fuel</span></div><div class="v-row-fuel"><div class="fuel-fill ${fc}" style="width:${fuel}%"></div></div></div><div class="v-row-right"><div class="v-row-speed">${(v.speed||0).toFixed(0)} <span class="v-row-speed-unit">mph</span></div><div class="v-row-status ${s}">${s}</div></div></div>`;
             }).join('');
         }
 
-        // Render table
-        function renderTable(list) {
-            const el = document.getElementById('vTableBody');
-            if (!el) return;
-            el.innerHTML = list.slice(0, 20).map(v => {
-                const fuel = v.fuel_level || 0;
-                const fc = fuel > 50 ? 'high' : fuel > 20 ? 'medium' : 'low';
-                const s = v.status || 'active';
-                return `<tr onclick="openSlide('${v.vehicle_id}')">
-                    <td class="v-name">${v.name || v.vehicle_id}</td>
-                    <td><span class="v-status ${s}"><span class="v-status-dot"></span>${s}</span></td>
-                    <td>${v.location?.address || '--'}</td>
-                    <td class="v-mono">${(v.speed || 0).toFixed(0)} mph</td>
-                    <td>${fuel.toFixed(0)}% <span class="fuel-bar"><span class="fuel-fill ${fc}" style="width:${fuel}%"></span></span></td>
-                    <td class="v-mono">${(v.odometer || 0).toLocaleString()} mi</td>
-                </tr>`;
-            }).join('');
-        }
-
-        // Render map
-        function renderMap(list) {
-            const map = document.getElementById('fleetMap');
-            if (!map) return;
+        function renderMap(list, id) {
+            const map = document.getElementById(id); if (!map) return;
             map.querySelectorAll('.map-pin').forEach(p => p.remove());
             list.forEach((v, i) => {
                 const pin = document.createElement('div');
-                pin.className = `map-pin ${v.status || 'active'}`;
-                pin.style.left = `${10 + (i * 19) % 80}%`;
-                pin.style.top = `${8 + (i * 31) % 80}%`;
+                pin.className = `map-pin ${v.status||'active'}`;
+                pin.style.left = `${10+(i*19)%80}%`; pin.style.top = `${8+(i*31)%80}%`;
                 pin.onclick = () => openSlide(v.vehicle_id);
-                pin.innerHTML = '<div class="map-pin-dot"></div>';
+                pin.innerHTML = '<div class="map-dot"></div>';
                 map.appendChild(pin);
             });
         }
 
-        // Render alerts
-        function renderAlerts(faults) {
-            set('aCount', faults.length);
-            set('navA', faults.length);
-            const el = document.getElementById('aList');
-            if (!el) return;
-            el.innerHTML = faults.slice(0, 10).map(f => {
-                const s = f.severity || 'medium';
-                const e = s === 'critical' ? '🔴' : s === 'warning' ? '🟡' : '🔵';
-                return `<div class="alert-row">
-                    <div class="alert-sev ${s}">${e}</div>
-                    <div class="alert-body">
-                        <div class="alert-title">${f.fault_code} — ${f.vehicle_name || f.vehicle_id}</div>
-                        <div class="alert-desc">${f.description || 'Unknown'} • ${f.system} • ${f.occurrence_count}x</div>
-                        <div class="alert-actions">
-                            <button class="btn btn-green" onclick="event.stopPropagation(); toast('Acknowledged', 'success')">✓ Ack</button>
-                            <button class="btn btn-blue" onclick="event.stopPropagation(); toast('Calling...', 'info')">📞 Call</button>
-                        </div>
-                    </div>
-                </div>`;
+        function renderTable(list, id) {
+            const el = document.getElementById(id); if (!el) return;
+            el.innerHTML = list.slice(0, 25).map(v => {
+                const fuel = v.fuel_level||0, fc = fuel>50?'high':fuel>20?'med':'low', s = v.status||'active';
+                return `<tr onclick="openSlide('${v.vehicle_id}')"><td class="v-name">${v.name||v.vehicle_id}</td><td><span class="v-status ${s}"><span class="dot"></span>${s}</span></td><td>${v.location?.address||'--'}</td><td class="v-mono">${(v.speed||0).toFixed(0)} mph</td><td>${fuel.toFixed(0)}% <span class="fuel-bar"><span class="fuel-fill ${fc}" style="width:${fuel}%"></span></span></td><td class="v-mono">${(v.odometer||0).toLocaleString()} mi</td>${id==='vpTable'?`<td>${v.engine_status||'--'}</td>`:''}</tr>`;
             }).join('');
         }
 
-        // Render drivers
-        function renderDrivers(drivers) {
-            set('dCount', drivers.length);
-            const colors = ['#6c5ce7', '#a29bfe', '#00cec9', '#00d2a0', '#fdcb6e', '#ff6b6b', '#fd79a8', '#4a9eff'];
-            const el = document.getElementById('dList');
-            if (!el) return;
-            el.innerHTML = drivers.slice(0, 10).map((d, i) => {
-                const pct = ((d.hos_driving_minutes || 0) / 660 * 100).toFixed(0);
-                const c = pct > 80 ? 'var(--red)' : pct > 60 ? 'var(--orange)' : 'var(--green)';
-                const ini = (d.name || 'U').split(' ').map(n => n[0]).join('');
-                return `<div class="driver-row">
-                    <div class="driver-av" style="background:${colors[i % 8]}">${ini}</div>
-                    <div class="driver-info"><h4>${d.name || 'Unknown'}</h4><p>${d.current_vehicle_id || '--'} • ${d.status || '--'}</p></div>
-                    <div class="driver-hos-wrap"><div class="driver-hos-bar"><div class="driver-hos-fill" style="width:${pct}%; background:${c}"></div></div><div class="driver-hos-text">${(d.hos_remaining_minutes || 0).toFixed(0)}m</div></div>
-                </div>`;
+        function renderAlerts(faults, id) {
+            const el = document.getElementById(id); if (!el) return;
+            if (id === 'aCount' || id === 'apCount') return;
+            set(id === 'aList' ? 'aCount' : 'apCount', faults.length);
+            el.innerHTML = faults.slice(0, 15).map(f => {
+                const s = f.severity||'medium', icon = s==='critical'?'red':s==='warning'?'orange':'blue';
+                return `<div class="a-row"><div class="a-sev ${s}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="a-body"><div class="a-title">${f.fault_code} — ${f.vehicle_name||f.vehicle_id}</div><div class="a-desc">${f.description||'Unknown'} • ${f.system} • ${f.occurrence_count}x</div><div class="a-actions"><button class="btn btn-g btn-sm" onclick="event.stopPropagation();toast('Acknowledged','success')">Acknowledge</button><button class="btn btn-b btn-sm" onclick="event.stopPropagation();toast('Calling...','info')">Call</button></div></div></div>`;
             }).join('');
         }
 
-        // Render compliance
-        function renderComp(s) {
-            const el = document.getElementById('compBody');
-            if (!el) return;
-            el.innerHTML = [
-                ['Total Drivers', s.total_drivers || 0],
-                ['Near HOS Limit', s.drivers_near_limit || 0, (s.drivers_near_limit || 0) > 0 ? 'var(--orange)' : 'var(--green)'],
-                ['In Violation', s.drivers_in_violation || 0, (s.drivers_in_violation || 0) > 0 ? 'var(--red)' : 'var(--green)'],
-                ['DVIR Compliance', `${s.dvir_compliance || 0}%`],
-                ['IFTA Status', s.ifta_status || '--', 'var(--green)']
-            ].map(([l, v, c]) => `<div class="info-row"><span class="info-label">${l}</span><span class="info-val" ${c ? `style="color:${c}"` : ''}>${v}</span></div>`).join('');
-        }
-
-        // Render maintenance
-        function renderMnt(list) {
-            const el = document.getElementById('mntBody');
-            if (!el) return;
-            el.innerHTML = list.slice(0, 5).map(m => {
-                const e = m.overdue ? '🔴' : m.due_soon ? '🟡' : '🟢';
-                return `<div class="maint-row"><span class="maint-icon">${e}</span><div class="maint-info"><div class="maint-title">${m.vehicle_name || m.vehicle_id} — ${m.service_type}</div><div class="maint-desc">${(m.current_miles || 0).toLocaleString()} mi • $${m.estimated_cost || 0}</div></div></div>`;
+        function renderDrivers(drivers, id) {
+            const el = document.getElementById(id); if (!el) return;
+            if (id === 'dList') set('dCount', drivers.length);
+            if (id === 'dpList') set('dpCount', drivers.length);
+            const colors = ['#635bff','#a78bfa','#06b6d4','#22c55e','#f59e0b','#ef4444','#ec4899','#4c9aff'];
+            el.innerHTML = drivers.map((d, i) => {
+                const pct = ((d.hos_driving_minutes||0)/660*100).toFixed(0), c = pct>80?'var(--red)':pct>60?'var(--orange)':'var(--green)';
+                const ini = (d.name||'U').split(' ').map(n=>n[0]).join('');
+                return `<div class="d-row"><div class="d-av" style="background:${colors[i%8]}">${ini}</div><div class="d-info"><h4>${d.name||'Unknown'}</h4><p>${d.current_vehicle_id||'--'} • ${d.status||'--'}</p></div><div class="d-hos"><div class="d-hos-bar"><div class="d-hos-fill" style="width:${pct}%;background:${c}"></div></div><div class="d-hos-text">${(d.hos_remaining_minutes||0).toFixed(0)}m</div></div></div>`;
             }).join('');
         }
 
-        // Slide panel
+        function renderComp(s, id) {
+            const el = document.getElementById(id); if (!el) return;
+            el.innerHTML = [['Total Drivers',s.total_drivers||0],['Near HOS Limit',s.drivers_near_limit||0,(s.drivers_near_limit||0)>0?'var(--orange)':'var(--green)'],['In Violation',s.drivers_in_violation||0,(s.drivers_in_violation||0)>0?'var(--red)':'var(--green)'],['DVIR Compliance',`${s.dvir_compliance||0}%`],['IFTA Status',s.ifta_status||'--','var(--green)']].map(([l,v,c])=>`<div class="i-row"><span class="i-label">${l}</span><span class="i-val" ${c?`style="color:${c}"`:''}>${v}</span></div>`).join('');
+        }
+
+        function renderMnt(list, id) {
+            const el = document.getElementById(id); if (!el) return;
+            if (id === 'mntBody') { el.innerHTML = list.slice(0,5).map(m=>{ const e=m.overdue?'red':m.due_soon?'orange':'green'; return `<div class="m-row"><span class="m-icon" style="color:var(--${e})">●</span><div class="m-info"><div class="m-title">${m.vehicle_name||m.vehicle_id} — ${m.service_type}</div><div class="m-desc">${(m.current_miles||0).toLocaleString()} mi • $${m.estimated_cost||0}</div></div></div>`; }).join(''); }
+            if (id === 'mpList') { set('mpCount', list.length); el.innerHTML = list.map(m=>{ const e=m.overdue?'red':m.due_soon?'orange':'green'; return `<div class="m-row"><span class="m-icon" style="color:var(--${e})">●</span><div class="m-info"><div class="m-title">${m.vehicle_name||m.vehicle_id} — ${m.service_type}</div><div class="m-desc">${(m.current_miles||0).toLocaleString()} mi • $${m.estimated_cost||0} • ${m.overdue?'OVERDUE':m.due_soon?'Due Soon':'OK'}</div></div></div>`; }).join(''); }
+        }
+
+        function renderDashcam(list) {
+            const el = document.getElementById('dashcamGrid'); if (!el) return;
+            el.innerHTML = list.slice(0,6).map(v=>`<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;"><div style="width:100%;height:160px;background:#000;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px;position:relative;"><span style="position:absolute;top:8px;right:8px;background:var(--red);color:#fff;padding:2px 6px;border-radius:4px;font-size:9px;font-weight:700;">LIVE</span>Camera Feed — ${v.name||v.vehicle_id}</div><div style="padding:10px;"><div style="font-size:12px;font-weight:600;">${v.name||v.vehicle_id} — Front</div><div style="font-size:10px;color:var(--text-muted);">${v.location?.address||'--'} • ${(v.speed||0).toFixed(0)} mph</div></div></div>`).join('');
+        }
+
+        function buildChart() {
+            const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+            const active = [38,42,40,45,43,35,30], moving = [25,30,28,32,30,22,18], idle = [8,7,9,6,8,10,12];
+            const max = Math.max(...active, 1);
+            const el = document.getElementById('fleetChart'); if (!el) return;
+            el.innerHTML = days.map((d,i)=>`<div class="chart-group"><div class="chart-bars"><div class="chart-bar" style="height:${(active[i]/max*100).toFixed(0)}%;background:var(--accent)"></div><div class="chart-bar" style="height:${(moving[i]/max*100).toFixed(0)}%;background:var(--green)"></div><div class="chart-bar" style="height:${(idle[i]/max*100).toFixed(0)}%;background:var(--orange)"></div></div><span class="chart-label">${d}</span></div>`).join('');
+        }
+
         async function openSlide(id) {
             const [v, s] = await Promise.all([api(`/api/v1/fleet/vehicles/${id}`), api(`/api/v1/fleet/vehicles/${id}/stats`)]);
             if (v) {
-                document.getElementById('slideTitle').textContent = `🚛 ${v.name || id}`;
+                document.getElementById('slideTitle').textContent = v.name || id;
                 document.getElementById('spStatus').textContent = v.status || '--';
-                document.getElementById('spStatus').className = `slide-stat-val ${v.status === 'active' ? 'running' : 'stopped'}`;
-                document.getElementById('spSpeed').textContent = `${(v.speed || 0).toFixed(0)} mph`;
+                document.getElementById('spStatus').className = `slide-stat-val ${v.status==='active'?'running':'stopped'}`;
+                document.getElementById('spSpeed').textContent = `${(v.speed||0).toFixed(0)} mph`;
                 document.getElementById('spLoc').textContent = v.location?.address || '--';
-                document.getElementById('spFuel').textContent = `${(v.fuel_level || 0).toFixed(0)}%`;
-                document.getElementById('spOdo').textContent = `${(v.odometer || 0).toLocaleString()} mi`;
+                document.getElementById('spFuel').textContent = `${(v.fuel_level||0).toFixed(0)}%`;
+                document.getElementById('spOdo').textContent = `${(v.odometer||0).toLocaleString()} mi`;
                 document.getElementById('spEngine').textContent = v.engine_status || '--';
             }
-            if (s) {
-                document.getElementById('spBat').textContent = `${s.battery_voltage || '--'}V`;
-                document.getElementById('spCool').textContent = `${s.coolant_temperature || '--'}°F`;
-            }
+            if (s) { document.getElementById('spBat').textContent = `${s.battery_voltage||'--'}V`; document.getElementById('spCool').textContent = `${s.coolant_temperature||'--'}°F`; }
             const hos = await api('/api/v1/compliance/hos');
-            if (hos?.drivers) {
-                const d = hos.drivers.find(d => d.current_vehicle_id === id);
-                document.getElementById('spDriver').textContent = d ? d.name : 'Unassigned';
-            }
-            document.getElementById('slidePanel').classList.add('open');
-            document.getElementById('slideBg').classList.add('show');
+            if (hos?.drivers) { const d = hos.drivers.find(d=>d.current_vehicle_id===id); document.getElementById('spDriver').textContent = d?d.name:'Unassigned'; }
+            document.getElementById('slidePanel').classList.add('open'); document.getElementById('slideBg').classList.add('show');
         }
 
-        function closeSlide() {
-            document.getElementById('slidePanel').classList.remove('open');
-            document.getElementById('slideBg').classList.remove('show');
+        function closeSlide() { document.getElementById('slidePanel').classList.remove('open'); document.getElementById('slideBg').classList.remove('show'); }
+
+        function navTo(page, btn) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(`page-${page}`).classList.add('active');
+            document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+            btn.classList.add('active');
+            const titles = { dashboard:'Dashboard', vehicles:'Vehicles', drivers:'Drivers', alerts:'Alerts', maintenance:'Maintenance', compliance:'Compliance', dashcam:'Dashcam', livemap:'Live Map' };
+            document.getElementById('pageTitle').textContent = titles[page] || page;
+            document.querySelector('.sidebar').classList.remove('open');
         }
 
-        // Section toggle
-        function showSection(sec) {
-            document.getElementById('secMap').style.display = sec === 'map' ? 'block' : 'none';
-            document.getElementById('secTable').style.display = sec === 'table' ? 'block' : 'none';
-            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+        function showSection(sec, btn) {
+            document.getElementById('secMap').style.display = sec==='map'?'block':'none';
+            document.getElementById('secTable').style.display = sec==='table'?'block':'none';
+            btn.parentElement.querySelectorAll('.panel-tab').forEach(t=>t.classList.remove('active'));
+            btn.classList.add('active');
         }
 
-        // Filter
         function filterV(f) { vFilter = f; renderV(allV); }
+        function searchAll(q) { const filtered = q ? allV.filter(v => (v.name||'').toLowerCase().includes(q.toLowerCase()) || (v.vehicle_id||'').toLowerCase().includes(q.toLowerCase()) || (v.location?.address||'').toLowerCase().includes(q.toLowerCase())) : allV; renderV(filtered); renderTable(filtered, 'vTable'); }
+        function searchVehicles(q) { const filtered = q ? allV.filter(v => (v.name||'').toLowerCase().includes(q.toLowerCase()) || (v.vehicle_id||'').toLowerCase().includes(q.toLowerCase())) : allV; renderTable(filtered, 'vpTable'); set('vpCount', filtered.length); }
 
-        // Search
-        function searchAll(q) {
-            const filtered = q ? allV.filter(v =>
-                (v.name || '').toLowerCase().includes(q.toLowerCase()) ||
-                (v.vehicle_id || '').toLowerCase().includes(q.toLowerCase()) ||
-                (v.location?.address || '').toLowerCase().includes(q.toLowerCase())
-            ) : allV;
-            renderV(filtered);
-            renderTable(filtered);
-        }
-
-        // Helpers
         function set(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
-        function toast(msg, type = 'info') {
-            const c = document.getElementById('toasts');
-            const t = document.createElement('div');
-            t.className = `toast ${type}`;
-            t.innerHTML = `${type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ'} ${msg}`;
-            c.appendChild(t);
-            setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 200); }, 2500);
-        }
+        function bar(id, pct) { const el = document.getElementById(id); if (el) el.style.width = `${pct}%`; }
+        function toast(msg, type='info') { const c = document.getElementById('toasts'), t = document.createElement('div'); t.className = `toast ${type}`; t.innerHTML = `${type==='success'?'✓':type==='error'?'✕':'ℹ'} ${msg}`; c.appendChild(t); setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),200);},2500); }
 
-        // Auto refresh
         setInterval(loadAll, 30000);
-
-        // Init
         document.addEventListener('DOMContentLoaded', loadAll);
     </script>
 </body>
