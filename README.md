@@ -10,6 +10,14 @@
 
 ---
 
+<p align="center">
+  <img src="media/demo.gif" alt="FleetCommander Demo" width="100%">
+  <br>
+  <em>Live demo — Dashboard, real-time fleet monitoring, alerts, search & detailed vehicle panel</em>
+</p>
+
+---
+
 ## What Is This?
 
 An **autonomous fleet management agent** that runs 24/7 using OpenClaw's heartbeat pattern. It monitors fleet vehicles, detects anomalies, takes safe actions, and escalates to humans when needed.
