@@ -6,7 +6,9 @@ Autonomous Fleet Management System for Orbital Installation Technologies
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 import structlog
 import time
 
@@ -99,12 +101,32 @@ app.include_router(escalation.router, prefix="/api/v1/escalation", tags=["Escala
 app.include_router(webhooks.router, prefix="/api/v1/webhooks", tags=["Webhooks"])
 
 
+# Static files
+static_dir = Path(__file__).parent / "static"
+if static_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+
+
 @app.get("/")
 async def root():
+    """Serve dashboard or API info."""
+    index_file = static_dir / "index.html"
+    if index_file.exists():
+        return FileResponse(str(index_file))
     return {
         "name": "Fleet-Ryan API",
         "version": settings.APP_VERSION,
         "description": "Autonomous Fleet Management System",
         "company": "Orbital Installation Technologies, LLC",
         "docs": "/docs",
+        "dashboard": "/static/index.html",
     }
+
+
+@app.get("/dashboard")
+async def dashboard():
+    """Serve the fleet dashboard."""
+    index_file = static_dir / "index.html"
+    if index_file.exists():
+        return FileResponse(str(index_file))
+    return {"error": "Dashboard not found"}

@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FleetCommander — Autonomous Fleet Management</title>
+    <style>
+        /* ========== CSS RESET & VARIABLES ========== */
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #1557b0;
+            --success: #0d9488;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #6366f1;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #0f172a 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 28px;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--info));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-title p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-online {
+            background: rgba(13, 148, 136, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(13, 148, 136, 0.3);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .refresh-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .refresh-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary);
+        }
+
+        /* ========== MAIN LAYOUT ========== */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* ========== STATS CARDS ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .stat-card .stat-icon {
+            font-size: 24px;
+        }
+
+        .stat-card .stat-change {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .stat-change.positive {
+            background: rgba(13, 148, 136, 0.2);
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .stat-card .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ========== SECTIONS ========== */
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-body {
+            padding: 16px 20px;
+        }
+
+        /* ========== TABS ========== */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .tab:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ========== VEHICLE LIST ========== */
+        .vehicle-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .vehicle-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 16px;
+            align-items: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .vehicle-card:hover {
+            border-color: var(--primary);
+            background: var(--bg-card-hover);
+        }
+
+        .vehicle-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .vehicle-icon.active {
+            background: rgba(13, 148, 136, 0.2);
+        }
+
+        .vehicle-icon.idle {
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .vehicle-icon.offline {
+            background: rgba(100, 116, 139, 0.2);
+        }
+
+        .vehicle-icon.maintenance {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .vehicle-info h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .vehicle-info .vehicle-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .vehicle-info .vehicle-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .vehicle-status {
+            text-align: right;
+        }
+
+        .vehicle-status .status-label {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .status-label.active {
+            background: rgba(13, 148, 136, 0.2);
+            color: var(--success);
+        }
+
+        .status-label.idle {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .status-label.offline {
+            background: rgba(100, 116, 139, 0.2);
+            color: var(--text-muted);
+        }
+
+        .status-label.maintenance {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .vehicle-status .speed {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .vehicle-status .speed-unit {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* ========== FUEL BAR ========== */
+        .fuel-bar-container {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-dark);
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .fuel-bar {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .fuel-bar.high {
+            background: linear-gradient(90deg, var(--success), #10b981);
+        }
+
+        .fuel-bar.medium {
+            background: linear-gradient(90deg, var(--warning), #fbbf24);
+        }
+
+        .fuel-bar.low {
+            background: linear-gradient(90deg, var(--danger), #f87171);
+        }
+
+        /* ========== ALERTS ========== */
+        .alert-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .alert-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            align-items: flex-start;
+        }
+
+        .alert-item.critical {
+            border-left: 3px solid var(--danger);
+        }
+
+        .alert-item.high {
+            border-left: 3px solid var(--warning);
+        }
+
+        .alert-item.medium {
+            border-left: 3px solid var(--info);
+        }
+
+        .alert-item.low {
+            border-left: 3px solid var(--text-muted);
+        }
+
+        .alert-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .alert-content p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .alert-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .alert-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-approve {
+            background: rgba(13, 148, 136, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(13, 148, 136, 0.3);
+        }
+
+        .btn-approve:hover {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-reject {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-reject:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-call {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--info);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-call:hover {
+            background: var(--info);
+            color: white;
+        }
+
+        /* ========== DRIVER LIST ========== */
+        .driver-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .driver-card {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            align-items: center;
+        }
+
+        .driver-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .driver-info {
+            flex: 1;
+        }
+
+        .driver-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .driver-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .driver-hos {
+            text-align: right;
+        }
+
+        .hos-bar {
+            width: 100px;
+            height: 6px;
+            background: var(--bg-card);
+            border-radius: 3px;
+            margin-bottom: 4px;
+            overflow: hidden;
+        }
+
+        .hos-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .driver-hos .hos-text {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* ========== MAP PLACEHOLDER ========== */
+        .map-container {
+            width: 100%;
+            height: 400px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-placeholder {
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .map-placeholder .map-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .map-placeholder p {
+            font-size: 14px;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .map-filter {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .map-filter.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* ========== LIVE TRACKING PANEL ========== */
+        .live-panel {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: var(--bg-card);
+            border-left: 1px solid var(--border);
+            z-index: 200;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .live-panel.open {
+            right: 0;
+        }
+
+        .live-panel-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            z-index: 1;
+        }
+
+        .live-panel-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .live-panel-body {
+            padding: 20px;
+        }
+
+        .live-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .live-stat:last-child {
+            border-bottom: none;
+        }
+
+        .live-stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .live-stat-value {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .live-stat-value.running {
+            color: var(--success);
+        }
+
+        .live-stat-value.stopped {
+            color: var(--danger);
+        }
+
+        .live-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .live-action-btn {
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .live-action-btn:hover {
+            border-color: var(--primary);
+            background: rgba(26, 115, 232, 0.1);
+        }
+
+        .live-action-btn.call {
+            border-color: var(--success);
+            background: rgba(13, 148, 136, 0.1);
+        }
+
+        .live-action-btn.call:hover {
+            background: var(--success);
+            color: white;
+        }
+
+        .live-action-btn.emergency {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .live-action-btn.emergency:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* ========== DASHCAM PLACEHOLDER ========== */
+        .dashcam-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .dashcam-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .dashcam-feed {
+            width: 100%;
+            height: 180px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            position: relative;
+        }
+
+        .dashcam-feed .live-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--danger);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            animation: pulse 1.5s infinite;
+        }
+
+        .dashcam-info {
+            padding: 12px;
+        }
+
+        .dashcam-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .dashcam-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* ========== RESPONSIVE: TABLET ========== */
+        @media (max-width: 1024px) {
+            .main-container {
+                padding: 16px;
+                gap: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .vehicle-card {
+                grid-template-columns: auto 1fr;
+            }
+
+            .vehicle-status {
+                grid-column: 1 / -1;
+                text-align: left;
+                display: flex;
+                gap: 12px;
+                align-items: center;
+            }
+
+            .live-panel {
+                width: 350px;
+            }
+        }
+
+        /* ========== RESPONSIVE: MOBILE ========== */
+        @media (max-width: 640px) {
+            .header {
+                padding: 12px 16px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .header-title h1 {
+                font-size: 16px;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .main-container {
+                padding: 12px;
+                gap: 12px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .stat-card .stat-value {
+                font-size: 24px;
+            }
+
+            .vehicle-card {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .vehicle-icon {
+                display: none;
+            }
+
+            .vehicle-status {
+                text-align: left;
+                display: flex;
+                gap: 12px;
+                align-items: center;
+            }
+
+            .tabs {
+                padding: 8px 12px;
+            }
+
+            .tab {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .section-body {
+                padding: 12px;
+            }
+
+            .map-container {
+                height: 250px;
+            }
+
+            .live-panel {
+                width: 100%;
+                right: -100%;
+            }
+
+            .live-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .dashcam-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .alert-actions {
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* ========== LOADING ========== */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========== OVERLAY ========== */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 150;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* ========== TOAST ========== */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: white;
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.success {
+            background: var(--success);
+        }
+
+        .toast.error {
+            background: var(--danger);
+        }
+
+        .toast.info {
+            background: var(--info);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+        <div class="header-left">
+            <span class="logo">🚛</span>
+            <div class="header-title">
+                <h1>FleetCommander</h1>
+                <p>Orbital Installation Technologies</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-badge status-online">
+                <span class="status-dot"></span>
+                <span>System Online</span>
+            </div>
+            <button class="refresh-btn" onclick="refreshData()">↻ Refresh</button>
+        </div>
+    </header>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main class="main-container">
+
+        <!-- STATS CARDS -->
+        <section class="stats-grid" id="statsGrid">
+            <div class="stat-card" onclick="filterVehicles('all')">
+                <div class="stat-header">
+                    <span class="stat-icon">🚛</span>
+                    <span class="stat-change positive">+3%</span>
+                </div>
+                <div class="stat-value" id="totalVehicles">--</div>
+                <div class="stat-label">Total Vehicles</div>
+            </div>
+            <div class="stat-card" onclick="filterVehicles('active')">
+                <div class="stat-header">
+                    <span class="stat-icon">✅</span>
+                    <span class="stat-change positive">Active</span>
+                </div>
+                <div class="stat-value" id="activeVehicles">--</div>
+                <div class="stat-label">Active / Moving</div>
+            </div>
+            <div class="stat-card" onclick="filterVehicles('idle')">
+                <div class="stat-header">
+                    <span class="stat-icon">⏸️</span>
+                </div>
+                <div class="stat-value" id="idleVehicles">--</div>
+                <div class="stat-label">Idling</div>
+            </div>
+            <div class="stat-card" onclick="filterVehicles('offline')">
+                <div class="stat-header">
+                    <span class="stat-icon">🔴</span>
+                </div>
+                <div class="stat-value" id="offlineVehicles">--</div>
+                <div class="stat-label">Offline</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-icon">⚠️</span>
+                </div>
+                <div class="stat-value" id="activeFaults">--</div>
+                <div class="stat-label">Active Faults</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-icon">🔧</span>
+                </div>
+                <div class="stat-value" id="overdueMaint">--</div>
+                <div class="stat-label">Overdue Maintenance</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-icon">📏</span>
+                </div>
+                <div class="stat-value" id="totalMiles">--</div>
+                <div class="stat-label">Miles Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-icon">⛽</span>
+                </div>
+                <div class="stat-value" id="totalFuel">--</div>
+                <div class="stat-label">Fuel Used (gal)</div>
+            </div>
+        </section>
+
+        <!-- MAP -->
+        <section class="section">
+            <div class="section-header">
+                <h2>📍 Fleet Map</h2>
+                <div class="map-overlay">
+                    <button class="map-filter active" onclick="mapFilter(this, 'all')">All</button>
+                    <button class="map-filter" onclick="mapFilter(this, 'active')">Active</button>
+                    <button class="map-filter" onclick="mapFilter(this, 'idle')">Idle</button>
+                    <button class="map-filter" onclick="mapFilter(this, 'alert')">Alerts</button>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="map-container">
+                    <div class="map-placeholder">
+                        <div class="map-icon">🗺️</div>
+                        <p>Interactive Fleet Map</p>
+                        <p style="font-size:12px; margin-top:4px;">Connect Samsara API for live GPS data</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VEHICLES + ALERTS -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+
+            <!-- VEHICLES -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>🚛 Fleet Vehicles</h2>
+                    <span style="font-size:12px; color:var(--text-muted);" id="vehicleCount">-- vehicles</span>
+                </div>
+                <div class="tabs">
+                    <button class="tab active" onclick="tabSwitch(this, 'all')">All</button>
+                    <button class="tab" onclick="tabSwitch(this, 'active')">Active</button>
+                    <button class="tab" onclick="tabSwitch(this, 'idle')">Idle</button>
+                    <button class="tab" onclick="tabSwitch(this, 'maintenance')">Maintenance</button>
+                    <button class="tab" onclick="tabSwitch(this, 'offline')">Offline</button>
+                </div>
+                <div class="section-body">
+                    <div class="vehicle-list" id="vehicleList">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            Loading vehicles...
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ALERTS -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>🚨 Active Alerts</h2>
+                    <span style="font-size:12px; color:var(--text-muted);" id="alertCount">-- alerts</span>
+                </div>
+                <div class="section-body">
+                    <div class="alert-list" id="alertList">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            Loading alerts...
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- DRIVERS + COMPLIANCE -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+
+            <!-- DRIVERS -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>👤 Driver HOS Status</h2>
+                    <span style="font-size:12px; color:var(--text-muted);" id="driverCount">-- drivers</span>
+                </div>
+                <div class="section-body">
+                    <div class="driver-list" id="driverList">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            Loading drivers...
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COMPLIANCE -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>📋 Compliance Summary</h2>
+                </div>
+                <div class="section-body" id="complianceSummary">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading compliance data...
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- MAINTENANCE -->
+        <section class="section">
+            <div class="section-header">
+                <h2>🔧 Maintenance Schedule</h2>
+                <span style="font-size:12px; color:var(--text-muted);" id="maintCount">-- items</span>
+            </div>
+            <div class="section-body">
+                <div class="alert-list" id="maintenanceList">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading maintenance schedule...
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DASHCAM -->
+        <section class="section">
+            <div class="section-header">
+                <h2>📹 Dashcam Feeds</h2>
+                <span style="font-size:12px; color:var(--text-muted);">Connect Samsara for live feeds</span>
+            </div>
+            <div class="section-body">
+                <div class="dashcam-grid" id="dashcamGrid">
+                    <div class="dashcam-card">
+                        <div class="dashcam-feed">
+                            <span class="live-badge">LIVE</span>
+                            📹 Camera Feed — Truck #1
+                        </div>
+                        <div class="dashcam-info">
+                            <h4>Truck #1 — Front Camera</h4>
+                            <p>Indianapolis, IN • 67 mph</p>
+                        </div>
+                    </div>
+                    <div class="dashcam-card">
+                        <div class="dashcam-feed">
+                            <span class="live-badge">LIVE</span>
+                            📹 Camera Feed — Truck #42
+                        </div>
+                        <div class="dashcam-info">
+                            <h4>Truck #42 — Front Camera</h4>
+                            <p>Chicago, IL • 0 mph (Idle)</p>
+                        </div>
+                    </div>
+                    <div class="dashcam-card">
+                        <div class="dashcam-feed">
+                            <span class="live-badge">LIVE</span>
+                            📹 Camera Feed — Truck #15
+                        </div>
+                        <div class="dashcam-info">
+                            <h4>Truck #15 — Front Camera</h4>
+                            <p>Columbus, OH • 72 mph</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========== LIVE TRACKING PANEL ========== -->
+    <div class="overlay" id="overlay" onclick="closePanel()"></div>
+    <aside class="live-panel" id="livePanel">
+        <div class="live-panel-header">
+            <h2 id="panelTitle">🚛 Truck #--</h2>
+            <button class="close-btn" onclick="closePanel()">✕</button>
+        </div>
+        <div class="live-panel-body">
+            <div class="live-stat">
+                <span class="live-stat-label">Status</span>
+                <span class="live-stat-value" id="panelStatus">--</span>
+            </div>
+            <div class="live-stat">
+                <span class="live-stat-label">Speed</span>
+                <span class="live-stat-value" id="panelSpeed">-- mph</span>
+            </div>
+            <div class="live-stat">
+                <span class="live-stat-label">Location</span>
+                <span class="live-stat-value" id="panelLocation">--</span>
+            </div>
+            <div class="live-stat">
+                <span class="live-stat-label">Fuel Level</span>
+                <span class="live-stat-value" id="panelFuel">--%</span>
+            </div>
+            <div class="live-stat">
+                <span class="live-stat-label">Odometer</span>
+                <span class="live-stat-value" id="panelOdometer">-- mi</span>
+            </div>
+            <div class="live-stat">
+                <span class="live-stat-label">Engine</span>
+                <span class="live-stat-value" id="panelEngine">--</span>
+            </div>
+            <div class="live-stat">
+                <span class="live-stat-label">Battery</span>
+                <span class="live-stat-value" id="panelBattery">--V</span>
+            </div>
+            <div class="live-stat">
+                <span class="live-stat-label">Coolant Temp</span>
+                <span class="live-stat-value" id="panelCoolant">--°F</span>
+            </div>
+            <div class="live-stat">
+                <span class="live-stat-label">Driver</span>
+                <span class="live-stat-value" id="panelDriver">--</span>
+            </div>
+
+            <div class="live-actions">
+                <button class="live-action-btn call" onclick="callDriver()">📞 Call Driver</button>
+                <button class="live-action-btn" onclick="viewDashcam()">📹 Dashcam</button>
+                <button class="live-action-btn" onclick="viewHistory()">📊 History</button>
+                <button class="live-action-btn emergency" onclick="emergencyAlert()">🚨 Emergency</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ========== TOAST CONTAINER ========== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+        // API Base URL
+        const API_BASE = window.location.origin;
+
+        // State
+        let vehicles = [];
+        let currentFilter = 'all';
+
+        // ========== FETCH DATA ==========
+        async function fetchData(endpoint) {
+            try {
+                const response = await fetch(`${API_BASE}${endpoint}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error(`Failed to fetch ${endpoint}:`, error);
+                return null;
+            }
+        }
+
+        // ========== LOAD ALL DATA ==========
+        async function loadAllData() {
+            showToast('Loading fleet data...', 'info');
+
+            // Load in parallel
+            const [overview, vehiclesData, hosData, faultsData, complianceData, scheduleData] = await Promise.all([
+                fetchData('/api/v1/fleet/overview'),
+                fetchData('/api/v1/fleet/vehicles'),
+                fetchData('/api/v1/compliance/hos'),
+                fetchData('/api/v1/maintenance/faults'),
+                fetchData('/api/v1/compliance/summary'),
+                fetchData('/api/v1/maintenance/schedule')
+            ]);
+
+            // Update stats
+            if (overview) {
+                document.getElementById('totalVehicles').textContent = overview.total_vehicles || 0;
+                document.getElementById('activeVehicles').textContent = overview.active_vehicles || 0;
+                document.getElementById('idleVehicles').textContent = overview.idling_vehicles || 0;
+                document.getElementById('offlineVehicles').textContent = overview.offline_vehicles || 0;
+                document.getElementById('activeFaults').textContent = overview.vehicles_with_faults || 0;
+                document.getElementById('overdueMaint').textContent = overview.overdue_maintenance || 0;
+                document.getElementById('totalMiles').textContent = (overview.total_miles_today || 0).toLocaleString();
+                document.getElementById('totalFuel').textContent = (overview.total_fuel_today || 0).toLocaleString();
+            }
+
+            // Update vehicles
+            if (vehiclesData && vehiclesData.vehicles) {
+                vehicles = vehiclesData.vehicles;
+                renderVehicles(vehicles);
+            }
+
+            // Update alerts (faults)
+            if (faultsData && faultsData.faults) {
+                renderAlerts(faultsData.faults);
+            }
+
+            // Update drivers
+            if (hosData && hosData.drivers) {
+                renderDrivers(hosData.drivers);
+            }
+
+            // Update compliance
+            if (complianceData && complianceData.summary) {
+                renderCompliance(complianceData.summary);
+            }
+
+            // Update maintenance
+            if (scheduleData && scheduleData.schedule) {
+                renderMaintenance(scheduleData.schedule);
+            }
+
+            showToast('Fleet data loaded successfully', 'success');
+        }
+
+        // ========== RENDER VEHICLES ==========
+        function renderVehicles(vehicleList) {
+            const container = document.getElementById('vehicleList');
+            const filtered = currentFilter === 'all'
+                ? vehicleList
+                : vehicleList.filter(v => v.status === currentFilter);
+
+            document.getElementById('vehicleCount').textContent = `${filtered.length} vehicles`;
+
+            container.innerHTML = filtered.map(v => {
+                const fuelClass = v.fuel_level > 50 ? 'high' : v.fuel_level > 20 ? 'medium' : 'low';
+                const statusClass = v.status || 'active';
+
+                return `
+                    <div class="vehicle-card" onclick="openVehiclePanel('${v.vehicle_id}')">
+                        <div class="vehicle-icon ${statusClass}">
+                            🚛
+                        </div>
+                        <div class="vehicle-info">
+                            <h3>${v.name || v.vehicle_id}</h3>
+                            <div class="vehicle-meta">
+                                <span>📍 ${v.location?.address || 'Unknown'}</span>
+                                <span>⛽ ${(v.fuel_level || 0).toFixed(0)}%</span>
+                                <span>📏 ${(v.odometer || 0).toLocaleString()} mi</span>
+                            </div>
+                            <div class="fuel-bar-container">
+                                <div class="fuel-bar ${fuelClass}" style="width:${v.fuel_level || 0}%"></div>
+                            </div>
+                        </div>
+                        <div class="vehicle-status">
+                            <span class="status-label ${statusClass}">${statusClass}</span>
+                            <div class="speed">${(v.speed || 0).toFixed(0)} <span class="speed-unit">mph</span></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========== RENDER ALERTS ==========
+        function renderAlerts(faults) {
+            const container = document.getElementById('alertList');
+            document.getElementById('alertCount').textContent = `${faults.length} alerts`;
+
+            container.innerHTML = faults.map(f => {
+                const severity = f.severity || 'medium';
+                const emoji = severity === 'critical' ? '🔴' : severity === 'warning' ? '🟡' : '🔵';
+
+                return `
+                    <div class="alert-item ${severity}">
+                        <span class="alert-icon">${emoji}</span>
+                        <div class="alert-content">
+                            <h4>${f.fault_code} — ${f.vehicle_name || f.vehicle_id}</h4>
+                            <p>${f.description || 'Unknown fault'}</p>
+                            <p>System: ${f.system} • Occurrences: ${f.occurrence_count}x</p>
+                            <div class="alert-actions">
+                                <button class="btn btn-approve" onclick="acknowledgeFault('${f.fault_code}', '${f.vehicle_id}')">✓ Acknowledge</button>
+                                <button class="btn btn-call" onclick="callDriverForVehicle('${f.vehicle_id}')">📞 Call Driver</button>
+                            </div>
+                        </div>
+                        <span class="alert-time">${f.severity}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========== RENDER DRIVERS ==========
+        function renderDrivers(drivers) {
+            const container = document.getElementById('driverList');
+            document.getElementById('driverCount').textContent = `${drivers.length} drivers`;
+
+            container.innerHTML = drivers.slice(0, 10).map(d => {
+                const hosPercent = ((d.hos_driving_minutes || 0) / 660 * 100).toFixed(0);
+                const hosColor = hosPercent > 80 ? 'var(--danger)' : hosPercent > 60 ? 'var(--warning)' : 'var(--success)';
+                const initials = (d.name || 'U').split(' ').map(n => n[0]).join('');
+
+                return `
+                    <div class="driver-card">
+                        <div class="driver-avatar">${initials}</div>
+                        <div class="driver-info">
+                            <h4>${d.name || 'Unknown'}</h4>
+                            <p>${d.current_vehicle_id || 'Unassigned'} • ${d.status || 'unknown'}</p>
+                        </div>
+                        <div class="driver-hos">
+                            <div class="hos-bar">
+                                <div class="hos-bar-fill" style="width:${hosPercent}%; background:${hosColor}"></div>
+                            </div>
+                            <span class="hos-text">${(d.hos_remaining_minutes || 0).toFixed(0)} min left</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========== RENDER COMPLIANCE ==========
+        function renderCompliance(summary) {
+            const container = document.getElementById('complianceSummary');
+            container.innerHTML = `
+                <div class="live-stat">
+                    <span class="live-stat-label">Total Drivers</span>
+                    <span class="live-stat-value">${summary.total_drivers || 0}</span>
+                </div>
+                <div class="live-stat">
+                    <span class="live-stat-label">Near HOS Limit</span>
+                    <span class="live-stat-value" style="color:${summary.drivers_near_limit > 0 ? 'var(--warning)' : 'var(--success)'}">${summary.drivers_near_limit || 0}</span>
+                </div>
+                <div class="live-stat">
+                    <span class="live-stat-label">In Violation</span>
+                    <span class="live-stat-value" style="color:${summary.drivers_in_violation > 0 ? 'var(--danger)' : 'var(--success)'}">${summary.drivers_in_violation || 0}</span>
+                </div>
+                <div class="live-stat">
+                    <span class="live-stat-label">DVIR Compliance</span>
+                    <span class="live-stat-value">${summary.dvir_compliance || 0}%</span>
+                </div>
+                <div class="live-stat">
+                    <span class="live-stat-label">IFTA Status</span>
+                    <span class="live-stat-value">${summary.ifta_status || 'Unknown'}</span>
+                </div>
+            `;
+        }
+
+        // ========== RENDER MAINTENANCE ==========
+        function renderMaintenance(schedule) {
+            const container = document.getElementById('maintenanceList');
+            document.getElementById('maintCount').textContent = `${schedule.length} items`;
+
+            container.innerHTML = schedule.map(m => {
+                const severity = m.overdue ? 'critical' : m.due_soon ? 'high' : 'low';
+                const emoji = m.overdue ? '🔴' : m.due_soon ? '🟡' : '🟢';
+
+                return `
+                    <div class="alert-item ${severity}">
+                        <span class="alert-icon">${emoji}</span>
+                        <div class="alert-content">
+                            <h4>${m.vehicle_name || m.vehicle_id} — ${m.service_type}</h4>
+                            <p>Current: ${(m.current_miles || 0).toLocaleString()} mi • Due: ${(m.due_miles || 0).toLocaleString()} mi</p>
+                            <p>Est. Cost: $${m.estimated_cost || 0}</p>
+                            <div class="alert-actions">
+                                <button class="btn btn-approve" onclick="scheduleMaintenance('${m.vehicle_id}', '${m.service_type}')">🔧 Schedule</button>
+                                <button class="btn btn-call" onclick="callDriverForVehicle('${m.vehicle_id}')">📞 Call</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========== VEHICLE PANEL ==========
+        async function openVehiclePanel(vehicleId) {
+            const panel = document.getElementById('livePanel');
+            const overlay = document.getElementById('overlay');
+
+            // Fetch vehicle details
+            const vehicle = await fetchData(`/api/v1/fleet/vehicles/${vehicleId}`);
+            const stats = await fetchData(`/api/v1/fleet/vehicles/${vehicleId}/stats`);
+
+            if (vehicle) {
+                document.getElementById('panelTitle').textContent = `🚛 ${vehicle.name || vehicleId}`;
+                document.getElementById('panelStatus').textContent = vehicle.status || 'Unknown';
+                document.getElementById('panelStatus').className = `live-stat-value ${vehicle.status === 'active' ? 'running' : 'stopped'}`;
+                document.getElementById('panelSpeed').textContent = `${(vehicle.speed || 0).toFixed(0)} mph`;
+                document.getElementById('panelLocation').textContent = vehicle.location?.address || 'Unknown';
+                document.getElementById('panelFuel').textContent = `${(vehicle.fuel_level || 0).toFixed(0)}%`;
+                document.getElementById('panelOdometer').textContent = `${(vehicle.odometer || 0).toLocaleString()} mi`;
+                document.getElementById('panelEngine').textContent = vehicle.engine_status || 'Unknown';
+            }
+
+            if (stats) {
+                document.getElementById('panelBattery').textContent = `${stats.battery_voltage || '--'}V`;
+                document.getElementById('panelCoolant').textContent = `${stats.coolant_temperature || '--'}°F`;
+            }
+
+            // Find driver
+            document.getElementById('panelDriver').textContent = 'Loading...';
+            const hosData = await fetchData('/api/v1/compliance/hos');
+            if (hosData && hosData.drivers) {
+                const driver = hosData.drivers.find(d => d.current_vehicle_id === vehicleId);
+                document.getElementById('panelDriver').textContent = driver ? driver.name : 'Unassigned';
+            }
+
+            panel.classList.add('open');
+            overlay.classList.add('show');
+        }
+
+        function closePanel() {
+            document.getElementById('livePanel').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // ========== ACTIONS ==========
+        function filterVehicles(filter) {
+            currentFilter = filter;
+            renderVehicles(vehicles);
+        }
+
+        function tabSwitch(btn, filter) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = filter;
+            renderVehicles(vehicles);
+        }
+
+        function mapFilter(btn, filter) {
+            document.querySelectorAll('.map-filter').forEach(f => f.classList.remove('active'));
+            btn.classList.add('active');
+            showToast(`Map filter: ${filter}`, 'info');
+        }
+
+        function acknowledgeFault(faultCode, vehicleId) {
+            showToast(`Fault ${faultCode} acknowledged for ${vehicleId}`, 'success');
+        }
+
+        function callDriverForVehicle(vehicleId) {
+            showToast(`Initiating call for ${vehicleId}...`, 'info');
+        }
+
+        function callDriver() {
+            showToast('Initiating driver call...', 'info');
+        }
+
+        function viewDashcam() {
+            showToast('Opening dashcam feed...', 'info');
+        }
+
+        function viewHistory() {
+            showToast('Loading vehicle history...', 'info');
+        }
+
+        function emergencyAlert() {
+            showToast('EMERGENCY ALERT SENT!', 'error');
+        }
+
+        function scheduleMaintenance(vehicleId, serviceType) {
+            showToast(`Scheduling ${serviceType} for ${vehicleId}...`, 'info');
+        }
+
+        function refreshData() {
+            loadAllData();
+        }
+
+        // ========== TOAST ==========
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'} ${message}`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ========== AUTO REFRESH ==========
+        setInterval(loadAllData, 30000); // Refresh every 30 seconds
+
+        // ========== INITIAL LOAD ==========
+        document.addEventListener('DOMContentLoaded', loadAllData);
+    </script>
+
+</body>
+</html>
