@@ -1,0 +1,126 @@
+# Fleet Configuration
+# Orbital Installation Technologies — Fleet Management
+
+company:
+  name: "Orbital Installation Technologies, LLC"
+  id: "orbital-installs"
+  contact: "ryan@orbitalinstalls.com"
+  phone: "(317) 774-3668"
+
+# Fleet Platform API Configuration
+platforms:
+  samsara:
+    enabled: true
+    base_url: "https://api.samsara.com"
+    api_token_env: "SAMSARA_API_TOKEN"
+    rate_limit_rps: 5
+    endpoints:
+      vehicles: "/v1/fleet/vehicles"
+      vehicle_stats: "/v1/fleet/vehicles/stats"
+      drivers: "/v1/fleet/drivers"
+      driver_hos: "/v1/fleet/drivers/{id}/hos"
+      maintenance: "/v1/faults"
+      dvir: "/v1/compliance/dvir"
+
+  motive:
+    enabled: false
+    base_url: "https://api.gomotive.com/v1"
+    api_key_env: "MOTIVE_API_KEY"
+    endpoints:
+      vehicles: "/vehicles"
+      drivers: "/drivers"
+      hos_logs: "/drivers/{id}/hos_logs"
+      dvir_reports: "/inspection_reports"
+      fault_codes: "/fault_codes"
+
+  fleetio:
+    enabled: false
+    base_url: "https://secure.fleetio.com/api/v1"
+    api_token_env: "FLEETIO_API_TOKEN"
+    account_token_env: "FLEETIO_ACCOUNT_TOKEN"
+    endpoints:
+      vehicles: "/vehicles"
+      work_orders: "/work_orders"
+      service_entries: "/service_entries"
+      fuel_entries: "/fuel_entries"
+
+# Vehicle Groups
+vehicle_groups:
+  - id: "all"
+    name: "All Vehicles"
+    description: "All vehicles in fleet"
+
+  - id: "indiana"
+    name: "Indiana Fleet"
+    description: "Vehicles operating in Indiana"
+    states: ["IN"]
+
+  - id: "midwest"
+    name: "Midwest Fleet"
+    description: "Vehicles operating in Midwest region"
+    states: ["IN", "OH", "IL", "MI", "WI"]
+
+# Monitoring Thresholds
+thresholds:
+  # Fuel
+  fuel_low_warning: 20          # % fuel level
+  fuel_theft_drop: 15           # % sudden drop
+  idling_warning_minutes: 120   # minutes of idling
+
+  # Maintenance
+  oil_change_miles: 25000       # miles between oil changes
+  tire_rotation_miles: 25000    # miles between tire rotations
+  brake_inspection_miles: 50000 # miles between brake inspections
+  maintenance_overdue_miles: 500 # miles past due before alert
+
+  # Compliance
+  hos_driving_limit_hours: 11   # max driving hours
+  hos_window_hours: 14          # on-duty window
+  hos_break_hours: 8            # hours before break required
+  dvir_overdue_hours: 2         # hours past due
+
+  # Speeding
+  speeding_threshold_mph: 5     # mph over limit
+  severe_speeding_mph: 15       # mph over limit = severe
+
+# Alert Configuration
+alerts:
+  # Rate limiting
+  max_alerts_per_vehicle_per_hour: 3
+  max_escalations_per_hour: 10
+
+  # Quiet hours (no non-critical alerts)
+  quiet_hours:
+    enabled: true
+    start: "23:00"
+    end: "06:00"
+    timezone: "America/Indiana/Indianapolis"
+    allow_critical: true
+
+  # Notification channels
+  channels:
+    telegram:
+      enabled: true
+      bot_token_env: "TELEGRAM_BOT_TOKEN"
+      chat_id_env: "FLEET_MANAGER_CHAT_ID"
+    email:
+      enabled: false
+      smtp_host_env: "SMTP_HOST"
+      smtp_port: 587
+      from: "fleetcommander@orbitalinstalls.com"
+      to: "ryan@orbitalinstalls.com"
+
+# Reporting
+reports:
+  daily_summary:
+    enabled: true
+    time: "08:00"
+    timezone: "America/Indiana/Indianapolis"
+    channel: "telegram"
+
+  weekly_report:
+    enabled: true
+    day: "monday"
+    time: "09:00"
+    timezone: "America/Indiana/Indianapolis"
+    channel: "email"

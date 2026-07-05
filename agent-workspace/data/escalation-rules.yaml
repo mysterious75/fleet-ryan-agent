@@ -1,0 +1,211 @@
+# Escalation Rules Configuration
+# FleetCommander — Orbital Installation Technologies
+
+# Severity levels:
+#   critical: Immediate human alert, 15-min timeout
+#   high: Alert within 30 min, 1-hour timeout
+#   medium: Include in next heartbeat report
+#   low: Include in daily summary
+
+rules:
+  # ========== CRITICAL SEVERITY ==========
+  - name: "engine_fault_critical"
+    description: "Critical engine fault code detected"
+    condition:
+      type: "fault_code"
+      severity: ["critical"]
+      systems: ["engine", "brake", "transmission"]
+    severity: "critical"
+    action: "immediate_alert"
+    timeout_minutes: 15
+    escalate_on_timeout: true
+
+  - name: "hos_violation_active"
+    description: "Driver currently in HOS violation"
+    condition:
+      type: "hos"
+      driving_time_remaining: "< 0"
+    severity: "critical"
+    action: "immediate_alert"
+    timeout_minutes: 15
+    escalate_on_timeout: true
+
+  - name: "hos_approaching_limit"
+    description: "Driver approaching HOS driving limit"
+    condition:
+      type: "hos"
+      driving_time_remaining: "< 30"  # minutes
+    severity: "critical"
+    action: "immediate_alert"
+    timeout_minutes: 15
+
+  - name: "crash_detected"
+    description: "Vehicle crash or severe impact detected"
+    condition:
+      type: "event"
+      event_type: "crash"
+    severity: "critical"
+    action: "immediate_alert"
+    timeout_minutes: 5
+    escalate_on_timeout: true
+    call_on_timeout: true
+
+  - name: "fuel_theft_confirmed"
+    description: "Confirmed fuel theft event"
+    condition:
+      type: "fuel"
+      drop_percentage: "> 25"
+      vehicle_stationary: true
+    severity: "critical"
+    action: "immediate_alert"
+    timeout_minutes: 15
+
+  # ========== HIGH SEVERITY ==========
+  - name: "dvir_overdue"
+    description: "DVIR submission overdue"
+    condition:
+      type: "compliance"
+      dvir_age_hours: "> 2"
+    severity: "high"
+    action: "alert_with_approval"
+    timeout_minutes: 60
+
+  - name: "maintenance_overdue_significant"
+    description: "Maintenance significantly overdue"
+    condition:
+      type: "maintenance"
+      overdue_miles: "> 500"
+    severity: "high"
+    action: "alert_with_approval"
+    timeout_minutes: 60
+
+  - name: "fuel_anomaly_unconfirmed"
+    description: "Possible fuel theft or leak"
+    condition:
+      type: "fuel"
+      drop_percentage: "> 15"
+      drop_percentage: "< 25"
+    severity: "high"
+    action: "alert_with_approval"
+    timeout_minutes: 60
+
+  - name: "severe_speeding"
+    description: "Vehicle exceeding speed limit by >15mph"
+    condition:
+      type: "speeding"
+      over_limit_mph: "> 15"
+    severity: "high"
+    action: "alert_with_approval"
+    timeout_minutes: 30
+
+  - name: "fault_code_recurring"
+    description: "Same fault code appearing 3+ times"
+    condition:
+      type: "fault_pattern"
+      occurrences: ">= 3"
+      period_days: 30
+    severity: "high"
+    action: "alert_with_approval"
+    timeout_minutes: 60
+
+  # ========== MEDIUM SEVERITY ==========
+  - name: "hos_near_limit"
+    description: "Driver approaching HOS limit (>1hr remaining)"
+    condition:
+      type: "hos"
+      driving_time_remaining: "< 60"  # minutes
+    severity: "medium"
+    action: "include_in_heartbeat"
+
+  - name: "maintenance_approaching"
+    description: "Maintenance due within 500 miles"
+    condition:
+      type: "maintenance"
+      miles_until_due: "< 500"
+    severity: "medium"
+    action: "include_in_heartbeat"
+
+  - name: "fuel_level_low"
+    description: "Vehicle fuel level below 20%"
+    condition:
+      type: "fuel"
+      level_percentage: "< 20"
+    severity: "medium"
+    action: "include_in_heartbeat"
+
+  - name: "minor_fault_code"
+    description: "Non-critical fault code detected"
+    condition:
+      type: "fault_code"
+      severity: ["warning", "info"]
+    severity: "medium"
+    action: "include_in_heartbeat"
+
+  - name: "excessive_idling"
+    description: "Vehicle idling for extended period"
+    condition:
+      type: "idling"
+      duration_minutes: "> 120"
+    severity: "medium"
+    action: "include_in_heartbeat"
+
+  # ========== LOW SEVERITY ==========
+  - name: "minor_idling"
+    description: "Vehicle idling > 1 hour"
+    condition:
+      type: "idling"
+      duration_minutes: "> 60"
+    severity: "low"
+    action: "include_in_daily"
+
+  - name: "route_efficiency"
+    description: "Route could be optimized"
+    condition:
+      type: "route"
+      efficiency_score: "< 80"
+    severity: "low"
+    action: "include_in_daily"
+
+  - name: "fuel_efficiency_trend"
+    description: "Fuel efficiency declining"
+    condition:
+      type: "fuel"
+      efficiency_change: "< -10"  # percent
+    severity: "low"
+    action: "include_in_daily"
+
+  - name: "compliance_status"
+    description: "Regular compliance status update"
+    condition:
+      type: "compliance"
+      update_type: "routine"
+    severity: "low"
+    action: "include_in_daily"
+
+# Guardrails
+guardrails:
+  # What requires human approval
+  require_approval:
+    - "schedule_maintenance"
+    - "modify_route"
+    - "file_compliance_report"
+    - "update_driver_status"
+    - "modify_vehicle_assignments"
+    - "contact_external_service"
+
+  # What is forbidden entirely
+  forbidden:
+    - "disable_safety_systems"
+    - "modify_eld_data"
+    - "override_driver_logs"
+    - "approve_payments"
+    - "terminate_employment"
+
+  # Auto-actions (no approval needed)
+  auto_actions:
+    - "query_fleet_status"
+    - "check_compliance_status"
+    - "send_notifications"
+    - "flag_for_review"
+    - "generate_reports"
+    - "log_events"
