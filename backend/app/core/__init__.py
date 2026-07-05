@@ -1,1 +1,1 @@
-"""Fleet-Ryan Core"""
+"""Fleet-[Client] Core"""

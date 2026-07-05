@@ -44,7 +44,7 @@
 ### Email (Daily Reports)
 - Use for: detailed daily/weekly reports
 - Send via: SMTP or email API
-- Recipients: ryan@orbitalinstalls.com
+- Recipients: [Client Email]
 
 ## Data Storage
 

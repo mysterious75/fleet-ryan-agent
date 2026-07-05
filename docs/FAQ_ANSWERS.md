@@ -1,4 +1,4 @@
-# Fleet-Ryan — Frequently Asked Questions (FAQ)
+# Fleet-[Client] — Frequently Asked Questions (FAQ)
 
 > Every question answered — AI, Security, Samsara, Databases, Real-time Tracking, Dashcam, and more
 
@@ -9,7 +9,7 @@
 1. [AI & Models](#1-ai--models)
 2. [Security & Sandboxing](#2-security--sandboxing)
 3. [Samsara Free Data](#3-samsara-free-data)
-4. [Ryan's Setup](#4-ryans-setup)
+4. [[Client]'s Setup](#4-ryans-setup)
 5. [App vs Website](#5-app-vs-website)
 6. [Real-time Tracking](#6-real-time-tracking)
 7. [Call & Communication](#7-call--communication)
@@ -231,13 +231,13 @@ We already built a **mock data system** that generates realistic fleet data:
 
 ---
 
-## 4. Ryan's Setup
+## 4. [Client]'s Setup
 
-### Q: Ryan kya use krega? Windows PC, Linux, ya online server?
+### Q: [Client] kya use krega? Windows PC, Linux, ya online server?
 
-**Short Answer:** Ryan ko **kuch nahi karna** — sab server pe hoga. Ryan sirf browser ya Telegram use karega.
+**Short Answer:** [Client] ko **kuch nahi karna** — sab server pe hoga. [Client] sirf browser ya Telegram use karega.
 
-### What Ryan Needs:
+### What [Client] Needs:
 
 | Item | What | Why |
 |------|------|-----|
@@ -249,16 +249,16 @@ We already built a **mock data system** that generates realistic fleet data:
 
 ### Server Setup (You Handle This):
 
-| Component | Where | Ryan's Involvement |
+| Component | Where | [Client]'s Involvement |
 |-----------|-------|-------------------|
 | OpenClaw Gateway | Cloud server | None — you deploy |
 | FastAPI Backend | Cloud server | None — you deploy |
 | PostgreSQL Database | Cloud server | None — you deploy |
 | Redis Cache | Cloud server | None — you deploy |
 | Telegram Bot | Telegram servers | None — you create |
-| Samsara API | Samsara servers | Ryan gives API key |
+| Samsara API | Samsara servers | [Client] gives API key |
 
-### Ryan's Daily Workflow:
+### [Client]'s Daily Workflow:
 
 ```
 Morning:
@@ -268,14 +268,14 @@ Morning:
 During Day:
   → Telegram pe alerts aate hain (real-time)
   → "🚨 Truck #842 — Engine fault P0340"
-  → Ryan taps [✅ Approve] or [❌ Reject]
+  → [Client] taps [✅ Approve] or [❌ Reject]
 
 Evening:
   → Telegram pe evening summary
   → Browser pe dashboard dekh sakta hai (optional)
 ```
 
-### Ryan Ko Kya Sikhna Padega:
+### [Client] Ko Kya Sikhna Padega:
 
 | Skill | Difficulty | Time |
 |-------|-----------|------|
@@ -288,7 +288,7 @@ Evening:
 
 ## 5. App vs Website
 
-### Q: Ryan ko app chahiye ya website?
+### Q: [Client] ko app chahiye ya website?
 
 **Short Answer:** **Dono** — Website (dashboard) + Telegram Bot (mobile). App banane ki zaroorat nahi hai abhi.
 
@@ -300,7 +300,7 @@ Evening:
 | **Maintenance** | Easy (server-side) | Complex (app updates) |
 | **Platform** | All devices | iOS + Android separate |
 | **Updates** | Instant | App store review |
-| **Ryan's Learning** | Zero (browser + Telegram) | Install app, learn UI |
+| **[Client]'s Learning** | Zero (browser + Telegram) | Install app, learn UI |
 | **Offline** | Limited | Better offline support |
 | **Push Notifications** | Telegram handles it | Native push |
 
@@ -322,7 +322,7 @@ Evening:
 
 ### Future: Native App (Phase 5+)
 
-If Ryan wants a native app later:
+If [Client] wants a native app later:
 - **React Native** — Cross-platform (iOS + Android)
 - **Cost:** $15,000-25,000
 - **Timeline:** 2-3 months
@@ -368,7 +368,7 @@ FastAPI receives event
 Celery processes event
     │
     ▼
-Telegram alert sent to Ryan (< 2 seconds total)
+Telegram alert sent to [Client] (< 2 seconds total)
 ```
 
 ### Polling Flow (Backup):
@@ -423,7 +423,7 @@ If changed → Update database → Notify dashboard
 ### How Call Works in Our System:
 
 ```
-Ryan taps [📞 Call Driver] in dashboard/Telegram
+[Client] taps [📞 Call Driver] in dashboard/Telegram
     │
     ▼
 System finds driver's phone number
@@ -437,7 +437,7 @@ Option C: WhatsApp/Telegram voice call
 Driver answers (on phone or dashcam speaker)
     │
     ▼
-Ryan speaks to driver
+[Client] speaks to driver
 ```
 
 ### Hardware in Truck:
@@ -447,7 +447,7 @@ Ryan speaks to driver
 | **GPS Tracker** | ✅ Already installed | Location tracking |
 | **AI Dashcam** | ✅ Already installed | Video + audio |
 | **Microphone** | ✅ Built into dashcam | Driver communication |
-| **Speaker** | ✅ Built into dashcam | Ryan's voice to driver |
+| **Speaker** | ✅ Built into dashcam | [Client]'s voice to driver |
 | **ELD Device** | ✅ Already installed | Compliance logging |
 | **OBD-II Port** | ✅ Already installed | Engine diagnostics |
 
@@ -511,7 +511,7 @@ Samsara AI Dashcam (in truck)
          └── Webhook: CameraEvent → Motion/crash detected
          │
          ▼
-    Our Fleet-Ryan Backend
+    Our Fleet-[Client] Backend
          │
          ▼
     Dashboard (live feed) + Telegram (alert clips)
@@ -668,7 +668,7 @@ CREATE TABLE audit_log (
     details JSON,                       -- Full context (JSON)
     agent_decision VARCHAR(50),         -- "auto_act", "escalated", "logged"
     human_response VARCHAR(50),         -- "approved", "rejected", "timeout"
-    human_responder VARCHAR(100),       -- "Ryan Scharnowske"
+    human_responder VARCHAR(100),       -- "[Client Name]"
     outcome VARCHAR(100),               -- "maintenance_scheduled"
     cost FLOAT                          -- 450.00
 );
@@ -721,7 +721,7 @@ CREATE TABLE audit_log (
 Day 1: Truck #842 mein P0340 fault aaya
     │
     ▼
-AI ne alert bheja → Ryan ne approve kiya → Maintenance scheduled
+AI ne alert bheja → [Client] ne approve kiya → Maintenance scheduled
     │
     ▼
 AI ne MEMORY.md mein likha:
@@ -740,7 +740,7 @@ AI ne pattern detect kiya:
     "Truck #842 has P0340 every 2 weeks — needs permanent fix"
     │
     ▼
-AI ne Ryan ko bola:
+AI ne [Client] ko bola:
     "⚠️ Truck #842 mein P0340 baar baar aa raha hai.
      Pattern: Har 2 weeks. Recommend: Full camshaft system check.
      Estimated cost: $1,200 (one-time) vs $450 every 2 weeks ($1,170/6 months)"
@@ -754,7 +754,7 @@ AI ne Ryan ko bola:
 - 09:00 — Fleet health check: 52 vehicles, 30 active
 - 09:15 — Fault detected: P0340 on TRUCK-842
 - 09:16 — Escalation sent to Ryan
-- 09:18 — Ryan approved maintenance
+- 09:18 — [Client] approved maintenance
 - 09:20 — Maintenance scheduled for July 6
 - 10:00 — Fuel anomaly: TRUCK-015 dropped 25% in 30 min
 - 10:01 — Alert sent, investigating

@@ -1,5 +1,5 @@
 """
-Fleet-Ryan Backend — Configuration
+Fleet-[Client] Backend — Configuration
 """
 
 from pydantic_settings import BaseSettings
@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
     # App
-    APP_NAME: str = "Fleet-Ryan API"
+    APP_NAME: str = "Fleet-[Client] API"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
     ENVIRONMENT: str = "production"

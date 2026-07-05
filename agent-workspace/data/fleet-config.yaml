@@ -1,11 +1,11 @@
 # Fleet Configuration
-# Orbital Installation Technologies — Fleet Management
+# Fleet Management Company — Fleet Management
 
 company:
-  name: "Orbital Installation Technologies, LLC"
+  name: "Fleet Management Company"
   id: "orbital-installs"
-  contact: "ryan@orbitalinstalls.com"
-  phone: "(317) 774-3668"
+  contact: "[client@email.com]"
+  phone: "[Phone Number]"
 
 # Fleet Platform API Configuration
 platforms:
@@ -107,8 +107,8 @@ alerts:
       enabled: false
       smtp_host_env: "SMTP_HOST"
       smtp_port: 587
-      from: "fleetcommander@orbitalinstalls.com"
-      to: "ryan@orbitalinstalls.com"
+      from: "fleetcommander@[company].com"
+      to: "[client@email.com]"
 
 # Reporting
 reports:

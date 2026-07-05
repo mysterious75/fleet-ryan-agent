@@ -1,4 +1,4 @@
-# Fleet-Ryan Architecture Document
+# Fleet-[Client] Architecture Document
 
 > Autonomous AI Agent for Fleet Management — Built on OpenClaw
 
@@ -6,7 +6,7 @@
 
 ## 1. System Overview
 
-Fleet-Ryan is an autonomous fleet management agent that combines OpenClaw's always-on agent runtime with a Python backend for fleet API integration, background monitoring, and human-in-the-loop escalation.
+Fleet-[Client] is an autonomous fleet management agent that combines OpenClaw's always-on agent runtime with a Python backend for fleet API integration, background monitoring, and human-in-the-loop escalation.
 
 ### Key Design Decisions
 

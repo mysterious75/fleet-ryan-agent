@@ -1,6 +1,6 @@
 """
-Fleet-Ryan Backend — FastAPI Application
-Autonomous Fleet Management System for Orbital Installation Technologies
+Fleet-[Client] Backend — FastAPI Application
+Autonomous Fleet Management System for Fleet Management Company
 """
 
 from contextlib import asynccontextmanager
@@ -24,7 +24,7 @@ logger = structlog.get_logger()
 async def lifespan(app: FastAPI):
     """Application lifespan — startup and shutdown."""
     # Startup
-    logger.info("Starting Fleet-Ryan Backend", version=settings.APP_VERSION)
+    logger.info("Starting Fleet-[Client] Backend", version=settings.APP_VERSION)
     try:
         await init_db()
     except Exception as e:
@@ -33,20 +33,20 @@ async def lifespan(app: FastAPI):
         await init_redis()
     except Exception as e:
         logger.warning("Redis init failed (running without cache)", error=str(e))
-    logger.info("Fleet-Ryan Backend started successfully")
+    logger.info("Fleet-[Client] Backend started successfully")
 
     yield
 
     # Shutdown
-    logger.info("Shutting down Fleet-Ryan Backend")
+    logger.info("Shutting down Fleet-[Client] Backend")
     await close_db()
     await close_redis()
-    logger.info("Fleet-Ryan Backend shut down")
+    logger.info("Fleet-[Client] Backend shut down")
 
 
 app = FastAPI(
-    title="Fleet-Ryan API",
-    description="Autonomous Fleet Management System — Orbital Installation Technologies",
+    title="Fleet-[Client] API",
+    description="Autonomous Fleet Management System — Fleet Management Company",
     version=settings.APP_VERSION,
     lifespan=lifespan,
     docs_url="/docs",
@@ -114,10 +114,10 @@ async def root():
     if index_file.exists():
         return FileResponse(str(index_file))
     return {
-        "name": "Fleet-Ryan API",
+        "name": "Fleet-[Client] API",
         "version": settings.APP_VERSION,
         "description": "Autonomous Fleet Management System",
-        "company": "Orbital Installation Technologies, LLC",
+        "company": "Fleet Management Company",
         "docs": "/docs",
         "dashboard": "/static/index.html",
     }

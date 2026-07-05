@@ -2,7 +2,7 @@
 
 ## Fleet Knowledge
 
-### Orbital Installation Technologies
+### Fleet Installation Company
 - Founded 2006, 20+ years in business
 - 80+ regional hubs across US
 - 1M+ completed installations
@@ -44,4 +44,4 @@
 - [To be populated]
 
 ## Key Contacts
-- Ryan Scharnowske (COO) — ryan@orbitalinstalls.com — (317) 774-3668
+- [Client Name] (COO) — [Email] — [Phone]

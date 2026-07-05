@@ -1,6 +1,6 @@
-# Fleet-Ryan — Autonomous AI Agent for Fleet Management
+# Fleet-[Client] — Autonomous AI Agent for Fleet Management
 
-> Built on OpenClaw | Designed for Orbital Installation Technologies
+> Built on OpenClaw | Designed for Fleet Installation Company
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green.svg)](https://fastapi.tiangolo.com)
@@ -14,7 +14,7 @@
 
 An **autonomous fleet management agent** that runs 24/7 using OpenClaw's heartbeat pattern. It monitors fleet vehicles, detects anomalies, takes safe actions, and escalates to humans when needed.
 
-**Built for:** Ryan Scharnowske, COO — Orbital Installation Technologies, LLC
+**Built for:** Fleet Installation Company
 
 **Key Capabilities:**
 - 24/7 continuous monitoring via heartbeat pattern
@@ -219,7 +219,7 @@ When Samsara API token is set, the system automatically switches to real data.
 | `AGENTS.md` | Operating manual + guardrails |
 | `HEARTBEAT.md` | Monitoring tasks (5 intervals) |
 | `MEMORY.md` | Long-term fleet knowledge |
-| `USER.md` | Client context (Ryan Scharnowske) |
+| `USER.md` | Client context ([Client Name]) |
 | `TOOLS.md` | Fleet API tool documentation |
 | `IDENTITY.md` | Agent identity card |
 
@@ -349,7 +349,6 @@ fleet-ryan-agent/
 │
 └── docs/                               # Documentation
     ├── ARCHITECTURE.md                 # Technical architecture
-    ├── RESEARCH.md                     # Client research
     ├── IMPROVEMENTS.md                 # Feature roadmap
     └── COMPLETE_PROJECT_GUIDE.md       # Everything in one doc
 ```
@@ -428,7 +427,6 @@ Open `http://localhost:8765/docs` in browser for interactive API documentation.
 |----------|-------------|
 | [README.md](README.md) | This file — project overview |
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Technical architecture deep dive |
-| [RESEARCH.md](docs/RESEARCH.md) | Client research (Ryan, Orbital, fleet AI) |
 | [IMPROVEMENTS.md](docs/IMPROVEMENTS.md) | Feature roadmap (20 improvements) |
 | [COMPLETE_PROJECT_GUIDE.md](docs/COMPLETE_PROJECT_GUIDE.md) | Everything in one doc (costs, timeline, deployment) |
 
@@ -442,6 +440,6 @@ MIT License — See [LICENSE](LICENSE) for details.
 
 ## Built For
 
-**Ryan Scharnowske** — COO, Orbital Installation Technologies, LLC
+**Fleet Installation Company**
 
-Orbital is a nationwide fleet technology installation company with 20+ years experience, 80+ regional hubs, and 1M+ completed installations. This agent represents their evolution from "we install the hardware" to "our AI manages your fleet."
+A nationwide fleet technology installation company with 20+ years experience, 80+ regional hubs, and 1M+ completed installations. This agent represents their evolution from "we install the hardware" to "our AI manages your fleet."

@@ -1,4 +1,4 @@
-# Fleet-Ryan Improvements & Roadmap
+# Fleet-[Client] Improvements & Roadmap
 
 > Comprehensive list of improvements from all aspects
 
@@ -31,7 +31,7 @@
 /summary — Daily summary
 /help — Show commands
 ```
-**Impact:** Shows Ryan the bot is interactive, not just one-way.
+**Impact:** Shows [Client] the bot is interactive, not just one-way.
 
 ### 3. Real-Time Dashboard (Simple)
 **Problem:** No visual interface for fleet overview.
@@ -84,7 +84,7 @@
 - Recommended maintenance window
 - Estimated cost
 ```
-**Impact:** This is what Ryan's blog talks about — "predictive telematics."
+**Impact:** This is what [Client]'s blog talks about — "predictive telematics."
 
 ### 7. Route Optimization Engine
 **Problem:** No route optimization (mentioned in Phase 4).
@@ -97,7 +97,7 @@
 - Fuel efficiency optimization
 - Traffic-aware routing
 ```
-**Impact:** Directly addresses Ryan's "reroute drivers mid-run" vision.
+**Impact:** Directly addresses [Client]'s "reroute drivers mid-run" vision.
 
 ### 8. Fuel Analytics Dashboard
 **Problem:** Fuel tracking is basic.
@@ -234,7 +234,7 @@ Level 1 (Current): Query, notify, log
 Level 2 (New): Schedule maintenance, order parts, file reports
 Level 3 (Future): Reroute drivers, adjust schedules, negotiate rates
 ```
-**Impact:** Moves toward Ryan's "fleets that self-optimize" vision.
+**Impact:** Moves toward [Client]'s "fleets that self-optimize" vision.
 
 ### 19. Blockchain Audit Trail
 **Problem:** Audit trail is in database.

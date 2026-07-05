@@ -13,7 +13,7 @@ async def health_check():
     """Basic health check."""
     return {
         "status": "healthy",
-        "service": "Fleet-Ryan API",
+        "service": "Fleet-[Client] API",
         "timestamp": datetime.utcnow().isoformat(),
     }
 

@@ -1,4 +1,4 @@
-# Fleet-Ryan — Complete Project Guide
+# Fleet-[Client] — Complete Project Guide
 
 > EVERYTHING you need to know — Architecture, Costs, Timeline, Requirements, Deployment
 
@@ -35,7 +35,7 @@ An **autonomous AI fleet management agent** that:
 
 ### Who Is It For?
 
-**Ryan Scharnowske**, COO of Orbital Installation Technologies
+[Client Name], COO of Fleet Installation Company
 - 20+ year old fleet hardware installation company
 - 80+ regional hubs, 1M+ installs completed
 - Wants to evolve from "we install hardware" to "our AI manages your fleet"
@@ -143,7 +143,7 @@ agent-workspace/
 ├── AGENTS.md            # Operating manual (guardrails, workflows)
 ├── HEARTBEAT.md         # Monitoring tasks (5 intervals)
 ├── IDENTITY.md          # Agent identity card
-├── USER.md              # Ryan's profile & preferences
+├── USER.md              # [Client]'s profile & preferences
 ├── TOOLS.md             # Fleet API tool documentation
 ├── MEMORY.md            # Long-term fleet knowledge
 ├── memory/              # Daily memory logs
@@ -340,7 +340,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 - [ ] Basic automated tests (pytest)
 - [ ] Error handling improvements
 - [ ] Logging improvements (structured logs)
-- [ ] Ryan demo preparation
+- [ ] [Client] demo preparation
 
 ### Phase 3: Production Foundation (Week 3-4)
 
@@ -433,7 +433,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 | Requirement | Details |
 |-------------|---------|
 | **Bot Token** | Get from @BotFather on Telegram |
-| **Chat ID** | Ryan's Telegram user ID |
+| **Chat ID** | [Client]'s Telegram user ID |
 | **Privacy Mode** | Disable for group chats |
 | **Commands** | /status, /vehicles, /approve, /help |
 
@@ -502,8 +502,8 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 | **Disaster recovery plan** | What if server crashes? | Planning time |
 | **On-call rotation** | Who gets paged at 3 AM? | Time/coverage |
 | **Documentation** | API docs, runbook, training | Time cost |
-| **Client training** | Teach Ryan how to use the system | Time cost |
-| **Support channel** | How does Ryan report bugs? | Tool cost |
+| **Client training** | Teach [Client] how to use the system | Time cost |
+| **Support channel** | How does [Client] report bugs? | Tool cost |
 | **Version control** | Git branching strategy | Free (GitHub) |
 | **Dependency updates** | Security patches, breaking changes | Time cost |
 | **Database migrations** | Schema changes over time | Alembic (free) |
@@ -513,7 +513,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 | **Backup strategy** | Daily? Weekly? How many copies? | Storage cost |
 | **Scaling strategy** | What if fleet grows to 500+ vehicles? | Architecture cost |
 
-### 🟢 Things Ryan Might Ask
+### 🟢 Things [Client] Might Ask
 
 | Question | Answer |
 |----------|--------|
@@ -530,7 +530,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 | Risk | Probability | Impact | Mitigation |
 |------|-------------|--------|------------|
-| **Ryan picks another freelancer** | Medium | High | Apply ASAP, show working prototype |
+| **[Client] picks another freelancer** | Medium | High | Apply ASAP, show working prototype |
 | **Samsara API changes** | Low | High | Abstract API layer, use versioning |
 | **Server downtime** | Low | Medium | Health checks, auto-restart, backups |
 | **Security breach** | Low | Critical | Security audit, guardrails, encryption |
@@ -545,7 +545,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 ## 10. PRICING STRATEGY
 
-### For Ryan (Client)
+### For [Client] (Client)
 
 | Phase | Deliverable | Hours | Rate | Cost |
 |-------|-------------|-------|------|------|
@@ -561,10 +561,10 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 | Service | Cost | Who Pays |
 |---------|------|----------|
-| Server hosting | Ryan |
-| Fleet API (Samsara) | $0 (API) | Ryan (hardware subscription) |
+| Server hosting | [Client] |
+| Fleet API (Samsara) | $0 (API) | [Client] (hardware subscription) |
 | Monitoring tools | $0-10 | You (included) |
-| Support & maintenance | $500-1000/mo | Ryan (optional retainer) |
+| Support & maintenance | $500-1000/mo | [Client] (optional retainer) |
 
 ### Retainer Option
 
@@ -582,7 +582,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 - [ ] Get Samsara API token from Ryan
 - [ ] Create Telegram bot via @BotFather
-- [ ] Get Ryan's Telegram chat ID
+- [ ] Get [Client]'s Telegram chat ID
 - [ ] Choose hosting provider (Hetzner recommended)
 - [ ] Register domain name
 - [ ] Set up GitHub repository (private)
@@ -675,7 +675,7 @@ POST /api/v1/webhooks/fleetio             → Fleetio webhook
 
 | Decision | Options | Chosen | Why |
 |----------|---------|--------|-----|
-| Agent runtime | OpenClaw, Hermes, Custom | OpenClaw | Ryan specifically asked for it |
+| Agent runtime | OpenClaw, Hermes, Custom | OpenClaw | [Client] specifically asked for it |
 | Backend | FastAPI, Django, Flask | FastAPI | Async, Pydantic, OpenAPI |
 | Database | PostgreSQL, MySQL, MongoDB | PostgreSQL | JSON support, audit trails |
 | Cache/Queue | Redis, RabbitMQ, SQS | Redis | Simple, fast, Celery native |
